@@ -18,6 +18,25 @@
     - service: name=webitel-acr enabled=yes state=started
     - copy: src=systemd/webitel-admin.service dest=/etc/systemd/system/webitel-admin.service
     - service: name=webitel-admin enabled=yes state=started
+    - sysctl: 
+        name: "{{ item.name }}"
+        value: "{{ item.value }}"
+        sysctl_set: yes 
+        state: present 
+        reload: yes 
+      with_items:
+        - { 
+          name: "net.core.rmem_max",
+          value: 16777216
+        }   
+        - { 
+          name: "net.core.wmem_max",
+          value: 16777216
+        }   
+        - { 
+          name: "kernel.core_pattern",
+          value: "core.%p"
+        }   
 
 - hosts: all
   name: "Start webitel systemd services"
