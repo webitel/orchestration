@@ -1,0 +1,12 @@
+[Unit]
+Description=Webitel MongoDB containers
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/docker start -a mongo
+ExecStop=/usr/bin/docker stop -t 2 mongo
+
+[Install]
+WantedBy=local.target

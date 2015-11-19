@@ -1,0 +1,12 @@
+[Unit]
+Description=Webitel Admin containers
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/docker start -a admin
+ExecStop=/usr/bin/docker stop -t 2 admin
+
+[Install]
+WantedBy=local.target

@@ -1,0 +1,12 @@
+[Unit]
+Description=Webitel Core containers
+Requires=docker.service
+After=webitel-wconsole.service
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/docker start -a core
+ExecStop=/usr/bin/docker stop -t 2 core
+
+[Install]
+WantedBy=local.target

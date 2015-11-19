@@ -1,0 +1,85 @@
+--- 
+moh:
+  image: webitel/freeswitch-sound:moh
+  container_name: moh
+
+en:
+  image: webitel/freeswitch-sound:en
+  container_name: en
+
+ru:
+  image: webitel/freeswitch-sound:ru
+  container_name: ru
+
+mongo:
+  image: mongo:3
+  container_name: mongo
+  volumes:
+   - /opt/webitel/mongodb:/data/db
+  ports:
+   - "172.17.0.1:27017:27017"
+   
+cdr:
+  image: webitel/cdr-server:latest
+  container_name: cdr
+  ports:
+   - "172.17.0.1:10021:10021"
+   - "10023:10023"
+  env_file: 
+   - ./common.env
+   - ./cdr.env
+  volumes:
+   - /opt/webitel/storage:/recordings
+  links:
+   - mongo:MONGODB_HOST
+
+wconsole:
+  image: webitel/wconsole:latest
+  container_name: wconsole
+  restart: always
+  env_file: ./common.env
+  volumes:
+   - /opt/webitel/wconsole_db:/webitel/db
+  ports:
+   - "10024:10024"
+
+admin:
+  image: webitel/admin
+  container_name: admin
+  env_file: ./common.env
+  ports:
+   - "10020:10020"
+
+freeswitch:
+  image: webitel/freeswitch-master:latest
+  container_name: freeswitch
+  privileged: true
+  net: "host"
+  environment:
+   - CDR_SERVER=172.17.0.1:10021
+   - ACR_SERVER=172.17.0.1:10030
+   - CONF_SERVER=172.17.0.1:10024
+  volumes_from:
+   - moh
+   - en
+   - ru
+
+core:
+  image: webitel/core-server:latest
+  container_name: core
+  env_file: ./common.env
+  ports:
+   - "10022:10022"
+  links:
+   - wconsole:CONSOLE_HOST
+   - mongo:MONGODB_HOST
+
+acr:
+  image: webitel/acr:latest
+  container_name: acr
+  env_file: ./common.env
+  ports:
+   - "172.17.0.1:10030:10030"
+  links:
+   - mongo:MONGODB_HOST
+

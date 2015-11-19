@@ -1,0 +1,12 @@
+[Unit]
+Description=Webitel CDR containers
+Requires=docker.service
+After=webitel-core.service
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/docker start -a cdr
+ExecStop=/usr/bin/docker stop -t 2 cdr
+
+[Install]
+WantedBy=local.target

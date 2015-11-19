@@ -1,0 +1,12 @@
+[Unit]
+Description=Webitel ACR containers
+Requires=docker.service
+After=webitel-core.service
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/docker start -a acr
+ExecStop=/usr/bin/docker stop -t 2 acr
+
+[Install]
+WantedBy=local.target
