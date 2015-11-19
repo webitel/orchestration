@@ -51,7 +51,7 @@ admin:
    - "10020:10020"
 
 freeswitch:
-  image: webitel/freeswitch-master:latest
+  image: webitel/freeswitch:latest
   container_name: freeswitch
   privileged: true
   net: "host"
