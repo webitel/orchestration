@@ -1,7 +1,8 @@
 [Unit]
 Description=Webitel FreeSWITCH containers
 Requires=docker.service
-After=webitel-wconsole.service
+After=docker.service
+After=webitel-mongo.service
 
 [Service]
 Restart=always
@@ -9,4 +10,4 @@ ExecStart=/usr/bin/docker start -a freeswitch
 ExecStop=/usr/bin/docker stop -t 2 freeswitch
 
 [Install]
-WantedBy=local.target
+WantedBy=multi-user.target

@@ -5,25 +5,19 @@
   gather_facts: no
   tasks:
     - copy: src=systemd/webitel-mongo.service dest=/etc/systemd/system/webitel-mongo.service
+    - service: name=webitel-mongo enabled=yes state=started
     - copy: src=systemd/webitel-wconsole.service dest=/etc/systemd/system/webitel-wconsole.service
+    - service: name=webitel-wconsole enabled=yes state=started
     - copy: src=systemd/webitel-core.service dest=/etc/systemd/system/webitel-core.service
+    - service: name=webitel-core enabled=yes state=started
     - copy: src=systemd/webitel-freeswitch.service dest=/etc/systemd/system/webitel-freeswitch.service
+    - service: name=webitel-freeswitch enabled=yes state=started
     - copy: src=systemd/webitel-cdr.service dest=/etc/systemd/system/webitel-cdr.service
+    - service: name=webitel-cdr enabled=yes state=started
     - copy: src=systemd/webitel-acr.service dest=/etc/systemd/system/webitel-acr.service
+    - service: name=webitel-acr enabled=yes state=started
     - copy: src=systemd/webitel-admin.service dest=/etc/systemd/system/webitel-admin.service
-
-- hosts: all
-  name: "Enable webitel systemd services"
-  tags: ['enable']
-  gather_facts: no
-  tasks:
-    - service: name=webitel-mongo enabled=yes
-    - service: name=webitel-wconsole enabled=yes
-    - service: name=webitel-core enabled=yes
-    - service: name=webitel-freeswitch enabled=yes
-    - service: name=webitel-cdr enabled=yes 
-    - service: name=webitel-acr enabled=yes
-    - service: name=webitel-admin enabled=yes
+    - service: name=webitel-admin enabled=yes state=started
 
 - hosts: all
   name: "Start webitel systemd services"

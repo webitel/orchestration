@@ -10,9 +10,6 @@ PRIVATE_KEY=~/.ssh/id_rsa
 install:
 	@(ansible-playbook -i hosts boot.yml -u root -t install --private-key $(PRIVATE_KEY))
 
-enable:
-	@(ansible-playbook -i hosts boot.yml -u root -t enable --private-key $(PRIVATE_KEY))
-
 start:
 	@(ansible-playbook -i hosts boot.yml -u root -t start --private-key $(PRIVATE_KEY))
 

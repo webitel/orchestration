@@ -1,6 +1,7 @@
 [Unit]
 Description=Webitel wconsole containers
 Requires=docker.service
+After=docker.service
 After=webitel-mongo.service
 
 [Service]
@@ -9,4 +10,4 @@ ExecStart=/usr/bin/docker start -a wconsole
 ExecStop=/usr/bin/docker stop -t 2 wconsole
 
 [Install]
-WantedBy=local.target
+WantedBy=multi-user.target
