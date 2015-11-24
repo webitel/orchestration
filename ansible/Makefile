@@ -19,6 +19,12 @@ stop:
 update:
 	@(ansible-playbook -i hosts software.yml -u root -t update --private-key $(PRIVATE_KEY))
 
+dns-add:
+	    @(ansible-playbook aws.yml -t dns_add)   
+
+dns-del:
+	    @(ansible-playbook aws.yml -t dns_del)   
+
 ps:
 	@(ansible docker -i hosts -m shell -a "docker ps -a" -u root --private-key $(PRIVATE_KEY))
 

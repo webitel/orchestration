@@ -1,0 +1,44 @@
+---
+- hosts: localhost
+  name: "AWS Route53"
+  gather_facts: no
+  tags: ['dns_add', 'dns_del']
+  tasks:
+    - easy_install: name=boto 
+
+- hosts: localhost
+  name: "AWS Route53"
+  gather_facts: no
+  tags: ['dns_add']
+  tasks:
+    - include_vars: vars/dns_add_vars.yml
+    - name: "Create DNS records"
+      route53: 
+        command: create
+        zone: '{{ dns_zone }}'
+        record: '{{ item.record }}' 
+        ttl: '{{ item.ttl }}' 
+        type: '{{ item.type }}' 
+        value: '{{ item.value }}'
+      with_items:
+        - '{{ dns_records }}'
+      when: dns_records is defined
+
+- hosts: localhost
+  name: "AWS Route53"
+  gather_facts: no
+  tags: ['dns_del']
+  tasks:
+    - include_vars: vars/dns_del_vars.yml
+    - name: "Delete DNS records"
+      route53:
+        command: delete
+        zone: '{{ dns_zone }}'
+        record: '{{ item.record }}'
+        ttl: '{{ item.ttl }}'
+        type: '{{ item.type }}'
+        value: '{{ item.value }}'
+      with_items:
+        - '{{ dns_records }}'
+      when: dns_records is defined
+                        
