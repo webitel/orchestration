@@ -29,6 +29,7 @@ cdr:
    - ./common.env
    - ./cdr.env
   volumes:
+   - /opt/webitel/ssl:/cdr/cert
    - /opt/webitel/storage:/recordings
   links:
    - mongo:MONGODB_HOST
@@ -47,6 +48,8 @@ admin:
   image: webitel/admin
   container_name: admin
   env_file: ./common.env
+  volumes:
+   - /opt/webitel/ssl:/admin/cert
   ports:
    - "10020:10020"
 
@@ -59,6 +62,10 @@ freeswitch:
    - CDR_SERVER=172.17.0.1:10021
    - ACR_SERVER=172.17.0.1:10030
    - CONF_SERVER=172.17.0.1:10024
+  volumes:
+   - /opt/recordings:/recordings
+   - /opt/webitel/scripts:/scripts/lua
+   - /opt/webitel/ssl:/certs
   volumes_from:
    - moh
    - en
@@ -70,6 +77,8 @@ core:
   env_file: ./common.env
   ports:
    - "10022:10022"
+  volumes:
+   - /opt/webitel/ssl:/core/cert
   links:
    - wconsole:CONSOLE_HOST
    - mongo:MONGODB_HOST
