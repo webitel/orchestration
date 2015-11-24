@@ -11,7 +11,7 @@
   gather_facts: no
   tags: ['dns_add']
   tasks:
-    - include_vars: vars/dns_add_vars.yml
+    - include_vars: ../vars/dns_add_vars.yml
     - name: "Create DNS records"
       route53: 
         command: create
@@ -29,7 +29,7 @@
   gather_facts: no
   tags: ['dns_del']
   tasks:
-    - include_vars: vars/dns_del_vars.yml
+    - include_vars: ../vars/dns_del_vars.yml
     - name: "Delete DNS records"
       route53:
         command: delete
