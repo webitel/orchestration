@@ -4,19 +4,19 @@
   tags: ['install']
   gather_facts: no
   tasks:
-    - copy: src=systemd/webitel-mongo.service dest=/etc/systemd/system/webitel-mongo.service
+    - copy: src=../systemd/webitel-mongo.service dest=/etc/systemd/system/webitel-mongo.service
     - service: name=webitel-mongo enabled=yes state=started
-    - copy: src=systemd/webitel-wconsole.service dest=/etc/systemd/system/webitel-wconsole.service
+    - copy: src=../systemd/webitel-wconsole.service dest=/etc/systemd/system/webitel-wconsole.service
     - service: name=webitel-wconsole enabled=yes state=started
-    - copy: src=systemd/webitel-core.service dest=/etc/systemd/system/webitel-core.service
+    - copy: src=../systemd/webitel-core.service dest=/etc/systemd/system/webitel-core.service
     - service: name=webitel-core enabled=yes state=started
-    - copy: src=systemd/webitel-freeswitch.service dest=/etc/systemd/system/webitel-freeswitch.service
+    - copy: src=../systemd/webitel-freeswitch.service dest=/etc/systemd/system/webitel-freeswitch.service
     - service: name=webitel-freeswitch enabled=yes state=started
-    - copy: src=systemd/webitel-cdr.service dest=/etc/systemd/system/webitel-cdr.service
+    - copy: src=../systemd/webitel-cdr.service dest=/etc/systemd/system/webitel-cdr.service
     - service: name=webitel-cdr enabled=yes state=started
-    - copy: src=systemd/webitel-acr.service dest=/etc/systemd/system/webitel-acr.service
+    - copy: src=../systemd/webitel-acr.service dest=/etc/systemd/system/webitel-acr.service
     - service: name=webitel-acr enabled=yes state=started
-    - copy: src=systemd/webitel-admin.service dest=/etc/systemd/system/webitel-admin.service
+    - copy: src=../systemd/webitel-admin.service dest=/etc/systemd/system/webitel-admin.service
     - service: name=webitel-admin enabled=yes state=started
     - sysctl: 
         name: "{{ item.name }}"
