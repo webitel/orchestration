@@ -1,5 +1,7 @@
 # Webitel orchestration
 
+[![Join the chat at https://gitter.im/webitel/orchestration](https://badges.gitter.im/webitel/orchestration.svg)](https://gitter.im/webitel/orchestration?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Documentation Status](https://readthedocs.org/projects/webitel/badge/?version=latest)](http://api.webitel.com/en/latest/?badge=latest)
 
 Orchestrate webitel containers 
