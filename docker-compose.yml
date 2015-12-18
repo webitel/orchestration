@@ -20,7 +20,7 @@ mongo:
    - "172.17.0.1:27017:27017"
    
 cdr:
-  image: webitel/cdr-server:latest
+  image: webitel/cdr-server:3.1
   container_name: cdr
   ports:
    - "172.17.0.1:10021:10021"
@@ -35,7 +35,7 @@ cdr:
    - mongo:MONGODB_HOST
 
 wconsole:
-  image: webitel/wconsole:latest
+  image: webitel/wconsole:3.1
   container_name: wconsole
   restart: always
   env_file: ./common.env
@@ -54,7 +54,7 @@ admin:
    - "10020:10020"
 
 freeswitch:
-  image: webitel/freeswitch:latest
+  image: webitel/freeswitch:3.1
   container_name: freeswitch
   privileged: true
   net: "host"
@@ -72,7 +72,7 @@ freeswitch:
    - ru
 
 core:
-  image: webitel/core-server:latest
+  image: webitel/core-server:3.1
   container_name: core
   env_file: ./common.env
   ports:
@@ -84,7 +84,7 @@ core:
    - mongo:MONGODB_HOST
 
 acr:
-  image: webitel/acr:latest
+  image: webitel/acr:3.1
   container_name: acr
   env_file: ./common.env
   ports:
