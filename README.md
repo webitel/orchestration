@@ -1,4 +1,7 @@
 # Webitel orchestration
+
+[![Documentation Status](https://readthedocs.org/projects/webitel/badge/?version=latest)](http://api.webitel.com/en/latest/?badge=latest)
+
 Orchestrate webitel containers 
 
 ## Requirement
