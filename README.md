@@ -6,19 +6,22 @@ Orchestrate webitel containers
 - [Docker](https://docs.docker.com/engine/installation/debian/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 
-## Install
+## Get webitel 3.1
 
-## Configure without SSL
+	curl -L https://github.com/webitel/orchestration/archive/v.3.1.tar.gz | tar xz && mv orchestration-v.3.1 /opt/webitel
+	cd /opt/webitel
+	docker-compose pull
+
+## Change password & IP
 
 Change password for root user and set Your IP in the `common.env` file.
 
-## Run
+## Run webitel 3.1
 
-	docker-compose pull
 	docker-compose up -d
 
-Open in the browser: http://YOUR_IP:10020/
+Open in browser: http://YOUR_IP:10020/
 
-**login**: root
-**password**: CHANGE_ROOT_PASSWORD
-**server**: http://YOUR_IP:10022/
+- **login**: root
+- **password**: CHANGE_ROOT_PASSWORD
+- **server**: http://YOUR_IP:10022/
