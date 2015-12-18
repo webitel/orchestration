@@ -6,7 +6,7 @@ Orchestrate webitel containers
 
 ## Requirement
 
-- [Docker](https://docs.docker.com/engine/installation/debian/)
+- [Docker Engine](https://docs.docker.com/engine/installation/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 
 ## Get webitel 3.1
@@ -17,11 +17,11 @@ Orchestrate webitel containers
 	cd /opt/webitel
 	docker-compose pull
 
-## Change password & IP
+## Configure webitel
 
-Change password for root user and set Your IP in the `common.env` file.
+Change password for root user and set Your IP in the [common.env](common.env) file.
 
-## Run webitel 3.1
+## Run webitel
 
 	docker-compose up -d
 
