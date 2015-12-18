@@ -8,7 +8,9 @@ Orchestrate webitel containers
 
 ## Get webitel 3.1
 
-	curl -L https://github.com/webitel/orchestration/archive/v.3.1.tar.gz | tar xz && mv orchestration-v.3.1 /opt/webitel
+	cd /opt
+	curl -L https://github.com/webitel/orchestration/archive/v.3.1.tar.gz | tar xz
+	mv orchestration-v.3.1 webitel
 	cd /opt/webitel
 	docker-compose pull
 
