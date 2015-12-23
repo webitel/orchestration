@@ -19,7 +19,7 @@ Orchestrate webitel containers
 
 ## Configure webitel
 
-Change password for root user and set Your IP in the [common.env](common.env) file.
+Change password for root, token key  and set Your IP in the [common.env](common.env) file.
 
 ## Run webitel
 

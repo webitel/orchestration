@@ -1,9 +1,0 @@
-[apt]
-#ubuntu.debian.org
-
-[yum]
-#centos.host.com ansible_ssh_port=23303 
-
-[docker:children]
-apt
-yum

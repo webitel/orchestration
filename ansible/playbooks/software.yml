@@ -1,7 +1,0 @@
----
-- hosts: apt
-  name: "Update with apt"
-  tags: ['update']
-  gather_facts: no
-  tasks:
-    - apt: upgrade=yes update_cache=yes

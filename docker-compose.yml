@@ -45,7 +45,7 @@ wconsole:
    - "10024:10024"
 
 admin:
-  image: webitel/admin
+  image: webitel/admin:3.1
   container_name: admin
   env_file: ./common.env
   volumes:
