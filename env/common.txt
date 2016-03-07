@@ -1,0 +1,6 @@
+ssl:enabled=false
+application:loglevel=warn
+conference:enable=false
+conference:validateMail=false
+webitelServer:host=wconsole
+mongodb:uri=mongodb://mongo:27017/webitel

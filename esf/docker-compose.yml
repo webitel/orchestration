@@ -1,0 +1,25 @@
+--- 
+version: '2'
+
+services:
+  elasticsearch:
+    image: webitel/elasticsearch
+    container_name: elasticsearch
+    ports:
+      - "172.17.0.1:9200:9200"
+    volumes:
+      - "${WEBITEL_DIR}/elasticsearch:/usr/share/elasticsearch/data"
+    command: -Des.node.name="Webitel"
+    networks:
+      - net
+  fluent:
+    image: webitel/fluentd
+    container_name: fluentd
+    ports:
+      - "172.17.0.1:24224:24224"
+    networks:
+      - net
+    
+networks:
+  net:
+    driver: bridge

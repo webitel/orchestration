@@ -1,0 +1,12 @@
+[Unit]
+Description=Webitel containers
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+ExecStart=/opt/orchestration/bin/webitel-start.sh
+ExecStop=/opt/orchestration/bin/webitel-stop.sh
+
+[Install]
+WantedBy=local.target

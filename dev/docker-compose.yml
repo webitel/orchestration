@@ -1,0 +1,124 @@
+--- 
+version: '2'
+
+services:
+  moh:
+    image: webitel/freeswitch-sound:moh
+    container_name: moh
+    network_mode: "none"
+  en:
+    image: webitel/freeswitch-sound:en
+    container_name: en
+    network_mode: "none"
+  client:
+    image: "webitel/client:${WEBITEL_VERSION}"
+    container_name: web-client
+    network_mode: "none"
+  mongo:
+    image: mongo:3
+    container_name: mongo
+    volumes:
+      - "${WEBITEL_DIR}/mongodb:/data/db"
+    ports:
+      - "27017:27017"
+    networks:
+      - net
+  acr:
+    image: "webitel/acr:${WEBITEL_VERSION}"
+    container_name: acr
+    ports:
+      - "10030:10030"
+    depends_on:
+      - mongo
+    networks:
+      - net
+    env_file: 
+      - "${DIR}/env/dev.txt"
+  wconsole:
+    image: "webitel/wconsole:${WEBITEL_VERSION}"
+    container_name: wconsole
+    privileged: true
+    environment: 
+      - "ROOT_PASSWORD=${WEBITEL_PASS}"
+      - "LOGLEVEL=trace"
+    volumes:
+      - "${WEBITEL_DIR}/db:/webitel/db"
+    ports:
+      - "6873:6873"
+      - "10024:10024"
+    depends_on:
+      - mongo
+    networks:
+      - net
+  engine:
+    image: "webitel/engine:${WEBITEL_VERSION}"
+    container_name: engine
+    env_file: "${DIR}/env/dev.txt"
+    depends_on:
+      - mongo
+      - wconsole
+      - freeswitch
+    ports:
+      - "10022:10022"
+    environment:
+      - "webitelServer:secret=${WEBITEL_PASS}"
+    networks:
+      - net
+  cdr:
+    image: "webitel/cdr-server:${WEBITEL_VERSION}"
+    container_name: cdr
+    ports:
+      - "10021:10021"
+      - "10023:10023"
+    env_file: "${DIR}/env/dev.txt"
+    volumes:
+      - "${WEBITEL_DIR}/recordings:/recordings"
+    depends_on:
+      - mongo
+    networks:
+      - net
+  freeswitch:
+    image: "webitel/freeswitch:${WEBITEL_VERSION}"
+    container_name: freeswitch
+    privileged: true
+    network_mode: "host"
+    environment:
+      - LOGLEVEL=all
+      - CDR_SERVER=172.17.0.1:10021
+      - ACR_SERVER=172.17.0.1:10030
+      - CONF_SERVER=172.17.0.1:10024
+    volumes:
+      - fs-data:/recordings
+      - "${WEBITEL_DIR}/lua:/scripts/lua"
+      - "${WEBITEL_DIR}/ssl:/certs"
+    volumes_from:
+      - moh
+      - en
+    depends_on:
+      - wconsole
+      - cdr
+      - acr
+  nginx:
+    image: "webitel/nginx:${WEBITEL_VERSION}"
+    container_name: nginx
+    environment:
+      - "WEBITEL_HOST=${WEBITEL_HOST}"
+      - "WEBITEL_SSL=${WEBITEL_SSL}"
+    volumes:
+      - "${WEBITEL_DIR}/ssl:/etc/nginx/ssl"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes_from:
+      - client
+    depends_on:
+      - engine
+    networks:
+      - net
+
+volumes:
+  fs-data:
+  
+networks:
+  net:
+    driver: bridge

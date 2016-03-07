@@ -1,0 +1,175 @@
+--- 
+version: '2'
+
+services:
+  moh:
+    image: webitel/freeswitch-sound:moh
+    container_name: moh
+    network_mode: "none"
+  en:
+    image: webitel/freeswitch-sound:en
+    container_name: en
+    network_mode: "none"
+  ru:
+    image: webitel/freeswitch-sound:ru
+    container_name: ru
+    network_mode: "none"
+  client:
+    image: "webitel/client:${WEBITEL_VERSION}"
+    container_name: web-client
+    network_mode: "none"
+  mongo:
+    image: mongo:3
+    container_name: mongo
+    volumes:
+      - "${WEBITEL_DIR}/mongodb:/data/db"
+    ports:
+      - "172.17.0.1:27017:27017"
+    networks:
+      - net
+  kibana:
+    image: "webitel/kibana:${WEBITEL_VERSION}"
+    container_name: kibana
+    environment:
+      - "ENGINE_URL=${WEBITEL_PROTO}://${WEBITEL_HOST}/engine/"
+      - "FS_URL=${WEBITEL_PROTO}://${WEBITEL_HOST}/verto/"
+    ports:
+      - "5601"
+    networks:
+      - net
+  acr:
+    image: "webitel/acr:${WEBITEL_VERSION}"
+    container_name: acr
+    restart: always
+    env_file: "${DIR}/env/common.txt"
+    ports:
+      - "172.17.0.1:10030:10030"
+    depends_on:
+      - mongo
+    networks:
+      - net
+    logging:
+      driver: fluentd
+      options:
+        fluentd-tag: "ACR"
+        fluentd-address: "172.17.0.1:24224"
+  wconsole:
+    image: "webitel/wconsole:${WEBITEL_VERSION}"
+    container_name: wconsole
+    privileged: true
+    restart: always
+    env_file: "${DIR}/env/common.txt"
+    environment: 
+      - "ROOT_PASSWORD=${WEBITEL_PASS}"
+    volumes:
+      - "${WEBITEL_DIR}/db:/webitel/db"
+    ports:
+      - "172.17.0.1:10024:10024"
+    depends_on:
+      - mongo
+    networks:
+      - net
+    logging:
+      driver: fluentd
+      options:
+        fluentd-tag: "WConsole"
+        fluentd-address: "172.17.0.1:24224"
+  engine:
+    image: "webitel/engine:${WEBITEL_VERSION}"
+    container_name: engine
+    env_file: "${DIR}/env/common.txt"
+    restart: always
+    ports:
+      - "172.17.0.1:10022:10022"
+    depends_on:
+      - mongo
+      - wconsole
+      - freeswitch
+    environment:
+      - "application:auth:tokenSecretKey=${WEBITEL_KEY}"
+      - "webitelServer:secret=${WEBITEL_PASS}"
+      - "cdrServer:useProxy=false"
+      - "cdrServer:host=${WEBITEL_PROTO}://${WEBITEL_HOST}/cdr/"
+    networks:
+      - net
+    logging:
+      driver: fluentd
+      options:
+        fluentd-tag: "Engine"
+        fluentd-address: "172.17.0.1:24224"
+  cdr:
+    image: "webitel/cdr-server:${WEBITEL_VERSION}"
+    container_name: cdr
+    restart: always
+    ports:
+      - "172.17.0.1:10021:10021"
+      - "172.17.0.1:10023:10023"
+    env_file:
+      - "${DIR}/env/common.txt"
+      - "${DIR}/env/cdr.txt"
+    environment:
+      - "application:auth:tokenSecretKey=${WEBITEL_KEY}"
+    volumes:
+      - "${WEBITEL_DIR}/recordings:/recordings"
+    depends_on:
+      - mongo
+    networks:
+      - net
+    logging:
+      driver: fluentd
+      options:
+        fluentd-tag: "CDR"
+        fluentd-address: "172.17.0.1:24224"
+  freeswitch:
+    image: "webitel/freeswitch:${WEBITEL_VERSION}"
+    container_name: freeswitch
+    restart: always
+    privileged: true
+    network_mode: "host"
+    environment:
+      - SIPDOS=true
+      - LOGLEVEL=all
+      - CDR_SERVER=172.17.0.1:10021
+      - ACR_SERVER=172.17.0.1:10030
+      - CONF_SERVER=172.17.0.1:10024
+    volumes:
+      - fs-data:/recordings
+      - "${WEBITEL_DIR}/lua:/scripts/lua"
+      - "${WEBITEL_DIR}/ssl:/certs"
+    volumes_from:
+      - moh
+      - en
+      - ru
+    depends_on:
+      - wconsole
+      - cdr
+      - acr   
+    logging:
+      driver: fluentd
+      options:
+        fluentd-tag: "FreeSWITCH"
+        fluentd-address: "172.17.0.1:24224"
+  nginx:
+    image: "webitel/nginx:${WEBITEL_VERSION}"
+    container_name: nginx
+    environment:
+      - "WEBITEL_HOST=${WEBITEL_HOST}"
+      - "WEBITEL_SSL=${WEBITEL_SSL}"
+    volumes:
+      - "${WEBITEL_DIR}/ssl:/etc/nginx/ssl"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes_from:
+      - client
+    depends_on:
+      - engine
+    networks:
+      - net
+      
+volumes:
+  fs-data:
+  
+networks:
+  net:
+    driver: bridge
