@@ -15,8 +15,8 @@ Orchestrate webitel containers
 	curl -L https://github.com/webitel/orchestration/archive/v3.2.0.tar.gz | tar xz
 	mv orchestration-3.2.0 orchestration
 	cd /opt/orchestration
-	./bin/bootstrap.sh elf pull
-	./bin/bootstrap.sh elf up -d
+	./bin/bootstrap.sh esf pull
+	./bin/bootstrap.sh esf up -d
 	./bin/bootstrap.sh pull
 
 ## Configure webitel
