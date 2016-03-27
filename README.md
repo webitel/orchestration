@@ -13,7 +13,7 @@ Orchestrate webitel containers
 
 	cd /opt
 	curl -L https://github.com/webitel/orchestration/archive/v3.2.1.tar.gz | tar xz
-	mv orchestration-3.1.0 orchestration
+	mv orchestration-3.2.1 orchestration
 	cd /opt/orchestration
 	./bin/bootstrap.sh esf pull
 	./bin/bootstrap.sh esf up -d
