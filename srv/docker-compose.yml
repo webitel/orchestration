@@ -27,6 +27,9 @@ services:
       - "172.17.0.1:27017:27017"
     networks:
       - net
+    ulimits:
+      nproc: 65535
+      nofile: 65535
   kibana:
     image: "webitel/kibana:${WEBITEL_VERSION}"
     container_name: kibana

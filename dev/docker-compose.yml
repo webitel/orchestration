@@ -111,6 +111,8 @@ services:
       - "443:443"
     volumes_from:
       - client
+    extra_hosts:
+      - "kibana:172.17.0.1"
     depends_on:
       - engine
     networks:

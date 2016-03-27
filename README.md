@@ -9,11 +9,11 @@ Orchestrate webitel containers
 - [Docker Engine v1.10+](https://docs.docker.com/engine/installation/)
 - [Docker Compose v1.6+](https://docs.docker.com/compose/install/)
 
-## Get webitel v3.2.0
+## Get webitel v3.2.1
 
 	cd /opt
-	curl -L https://github.com/webitel/orchestration/archive/v3.2.0.tar.gz | tar xz
-	mv orchestration-3.2.0 orchestration
+	curl -L https://github.com/webitel/orchestration/archive/v3.2.1.tar.gz | tar xz
+	mv orchestration-3.1.0 orchestration
 	cd /opt/orchestration
 	./bin/bootstrap.sh esf pull
 	./bin/bootstrap.sh esf up -d
