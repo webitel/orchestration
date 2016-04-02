@@ -1,0 +1,17 @@
+--- 
+version: '2'
+
+services:
+  backupDB:
+    image: mongo:3
+    volumes:
+      - "${WEBITEL_DIR}/mongodb_backup:/backup"
+    ports:
+      - "27017:27017"
+    networks:
+      - net
+    command: "mongodump -h mongodb -o /backup/dump" 
+    
+networks:
+  net:
+    driver: bridge
