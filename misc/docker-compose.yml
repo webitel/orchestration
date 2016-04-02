@@ -5,12 +5,10 @@ services:
   backupDB:
     image: mongo:3
     volumes:
-      - "${WEBITEL_DIR}/mongodb_backup:/backup"
-    ports:
-      - "27017:27017"
+      - "${WEBITEL_DIR}/backup:/backup"
     networks:
       - net
-    command: "mongodump -h mongodb -o /backup/dump" 
+    command: "mongodump -h mongo -o /backup/dump" 
     
 networks:
   net:

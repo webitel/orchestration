@@ -27,8 +27,8 @@ case "$1" in
     "backup")
         $DC -p webitel -f "${DIR}/misc/docker-compose.yml" up backupDB
         $DC -p webitel -f "${DIR}/misc/docker-compose.yml" rm -f backupDB
-        tar -cvzf ${WEBITEL_DIR}/backup/backup_$TIMESTAMP.tar.gz "${WEBITEL_DIR}/ssl" "${WEBITEL_DIR}/db" "${WEBITEL_DIR}/elasticsearch" "${WEBITEL_DIR}/mongodb_backup/dump"
-        rm -rf ${WEBITEL_DIR}/mongodb_backup/dump
+        tar -cvzf ${WEBITEL_DIR}/backup/backup_$TIMESTAMP.tar.gz "${WEBITEL_DIR}/ssl" "${WEBITEL_DIR}/db" "${WEBITEL_DIR}/elasticsearch" "${WEBITEL_DIR}/backup/dump"
+        rm -rf ${WEBITEL_DIR}/backup/dump
         find ${WEBITEL_DIR}/backup/ -maxdepth 1 -mtime +$BACKUP_LIFETIME_DAYS -type f -exec rm {} \;
         ;;
     "fs")
