@@ -30,6 +30,16 @@ services:
     ulimits:
       nproc: 65535
       nofile: 65535
+  rabbitmq:
+    image: rabbitmq:3
+    container_name: rabbitmq
+    ports:
+      - "172.17.0.1:5672:5672"
+    environment:
+      - "RABBITMQ_DEFAULT_USER=webitel"
+      - "RABBITMQ_DEFAULT_PASS=${WEBITEL_PASS}"
+    networks:
+      - net
   kibana:
     image: "webitel/kibana:${WEBITEL_VERSION}"
     container_name: kibana
@@ -86,6 +96,7 @@ services:
       - "172.17.0.1:10022:10022"
     depends_on:
       - mongo
+      - rabbitmq
       - wconsole
       - freeswitch
     environment:
@@ -93,6 +104,7 @@ services:
       - "webitelServer:secret=${WEBITEL_PASS}"
       - "cdrServer:useProxy=false"
       - "cdrServer:host=${WEBITEL_PROTO}://${WEBITEL_HOST}/cdr/"
+      - "broker:amqp:uri=amqp://webitel:${WEBITEL_PASS}@rabbitmq?heartbeat=0"
     networks:
       - net
     logging:
@@ -132,6 +144,7 @@ services:
     environment:
       - SIPDOS=true
       - LOGLEVEL=all
+      - AMQP_HOST=172.17.0.1
       - CDR_SERVER=172.17.0.1:10021
       - ACR_SERVER=172.17.0.1:10030
       - CONF_SERVER=172.17.0.1:10024
@@ -145,6 +158,7 @@ services:
       - ru
     depends_on:
       - wconsole
+      - rabbitmq
       - cdr
       - acr   
     logging:

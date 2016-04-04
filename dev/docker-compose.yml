@@ -23,6 +23,17 @@ services:
       - "27017:27017"
     networks:
       - net
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - "RABBITMQ_DEFAULT_USER=webitel"
+      - "RABBITMQ_DEFAULT_PASS=${WEBITEL_PASS}"
+    networks:
+      - net
   acr:
     image: "webitel/acr:${WEBITEL_VERSION}"
     container_name: acr
@@ -56,12 +67,14 @@ services:
     env_file: "${DIR}/env/dev.txt"
     depends_on:
       - mongo
+      - rabbitmq
       - wconsole
       - freeswitch
     ports:
       - "10022:10022"
     environment:
       - "webitelServer:secret=${WEBITEL_PASS}"
+      - "broker:amqp:uri=amqp://webitel:${WEBITEL_PASS}@rabbitmq?heartbeat=0"
     networks:
       - net
   cdr:
@@ -84,6 +97,7 @@ services:
     network_mode: "host"
     environment:
       - LOGLEVEL=all
+      - AMQP_HOST=172.17.0.1
       - CDR_SERVER=172.17.0.1:10021
       - ACR_SERVER=172.17.0.1:10030
       - CONF_SERVER=172.17.0.1:10024
@@ -96,6 +110,7 @@ services:
       - en
     depends_on:
       - wconsole
+      - rabbitmq
       - cdr
       - acr
   nginx:
