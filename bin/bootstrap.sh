@@ -20,7 +20,7 @@ case "$1" in
         ;;
     "pull")
         printf "Pull new images\n\n"
-        $DC -p webitel -f "${DIR}/esf/docker-compose.yml" pull
+        $DC -p webitel -f "${DIR}/var/docker-compose.yml" pull
         $DC -p webitel -f "${DIR}/srv/docker-compose.yml" pull
         ;;
     "backup")
