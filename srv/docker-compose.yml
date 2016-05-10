@@ -25,27 +25,18 @@ services:
       - "${WEBITEL_DIR}/mongodb:/data/db"
     ports:
       - "172.17.0.1:27017:27017"
+    command: --storageEngine wiredTiger
     networks:
       - net
     ulimits:
       nproc: 65535
       nofile: 65535
-  rabbitmq:
-    image: rabbitmq:3
-    container_name: rabbitmq
-    ports:
-      - "172.17.0.1:5672:5672"
-    environment:
-      - "RABBITMQ_DEFAULT_USER=webitel"
-      - "RABBITMQ_DEFAULT_PASS=${WEBITEL_PASS}"
-    networks:
-      - net
   kibana:
     image: "webitel/kibana:${WEBITEL_VERSION}"
     container_name: kibana
     environment:
-      - "ENGINE_URL=${WEBITEL_PROTO}://${WEBITEL_HOST}/engine/"
-      - "FS_URL=${WEBITEL_PROTO}://${WEBITEL_HOST}/verto/"
+      - "ENGINE_URL=${WEBITEL_WS}://${WEBITEL_HOST}/engine/"
+      - "FS_URL=${WEBITEL_WS}://${WEBITEL_HOST}/verto/"
     ports:
       - "5601"
     networks:
@@ -96,7 +87,6 @@ services:
       - "172.17.0.1:10022:10022"
     depends_on:
       - mongo
-      - rabbitmq
       - wconsole
       - freeswitch
     environment:
@@ -158,7 +148,6 @@ services:
       - ru
     depends_on:
       - wconsole
-      - rabbitmq
       - cdr
       - acr   
     logging:

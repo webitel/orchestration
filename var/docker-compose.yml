@@ -19,6 +19,16 @@ services:
       - "172.17.0.1:24224:24224"
     networks:
       - net
+  rabbitmq:
+    image: rabbitmq:3
+    container_name: rabbitmq
+    ports:
+      - "172.17.0.1:5672:5672"
+    environment:
+      - "RABBITMQ_DEFAULT_USER=webitel"
+      - "RABBITMQ_DEFAULT_PASS=${WEBITEL_PASS}"
+    networks:
+      - net
     
 networks:
   net:
