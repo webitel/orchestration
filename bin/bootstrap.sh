@@ -12,7 +12,7 @@ echo "********************************************"
 case "$1" in
     "var")
         printf "Logs and broker containers\n\n"
-        $DC -p webitel -f "${DIR}/esf/docker-compose.yml" $2 $3 $4
+        $DC -p webitel -f "${DIR}/var/docker-compose.yml" $2 $3 $4
         ;;
     "dev")
         printf "Webitel developers stack\n\n"
