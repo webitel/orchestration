@@ -2,6 +2,8 @@
 
 set -e
 
+sleep 1m
+
 do_test=$(curl --silent -X POST -H 'Content-Type: application/json' -d '{"username":"root","password":"secret"}' "http://${WEBITEL_HOST}/engine/login")
 
 if [ -z "$do_test" ]; then
