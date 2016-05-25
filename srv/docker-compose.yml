@@ -94,7 +94,7 @@ services:
       - "webitelServer:secret=${WEBITEL_PASS}"
       - "cdrServer:useProxy=false"
       - "cdrServer:host=${WEBITEL_PROTO}://${WEBITEL_HOST}/cdr/"
-      - "broker:amqp:uri=amqp://webitel:${WEBITEL_PASS}@rabbitmq?heartbeat=0"
+      - "broker:connectionString=amqp://webitel:${WEBITEL_PASS}@rabbitmq?heartbeat=0"
     networks:
       - net
     logging:
