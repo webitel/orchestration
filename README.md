@@ -6,8 +6,8 @@ Orchestrate webitel containers
 
 ## Requirement
 
-- [Docker Engine v1.10+](https://docs.docker.com/engine/installation/)
-- [Docker Compose v1.6+](https://docs.docker.com/compose/install/)
+- [Docker Engine v1.11+](https://docs.docker.com/engine/installation/)
+- [Docker Compose v1.7+](https://docs.docker.com/compose/install/)
 
 ## Get webitel v3.3.0
 
