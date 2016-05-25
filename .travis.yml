@@ -1,0 +1,23 @@
+sudo: required
+language: bash
+
+services: 
+  - docker
+
+env:
+  - WEBITEL_VERSION="latest"
+  - WEBITEL_PASS="secret"
+  - WEBITEL_PROTO="http"
+  - WEBITEL_SSL="off"
+  - WEBITEL_DIR="./"
+  - WEBITEL_HOST="$(hostname -I | cut -d' ' -f1)"
+
+before_install:
+  - docker-compose -f dev/docker-compose.yml pull
+
+install:  
+  - docker-compose -f dev/docker-compose.yml up -d
+
+script:  
+  - curl -X POST -H 'Content-Type: application/json' -d '{"username":"root","password":"secret"}' "http://'${WEBITEL_HOST}'/engine/login"
+
