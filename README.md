@@ -9,19 +9,29 @@ Orchestrate webitel containers
 - [Docker Engine v1.11+](https://docs.docker.com/engine/installation/)
 - [Docker Compose v1.7+](https://docs.docker.com/compose/install/)
 
-## Get webitel v3.3.0
+## Download the source code with Git
 
-	cd /opt
-	curl -L https://github.com/webitel/orchestration/archive/v3.3.0.tar.gz | tar xz
-	mv orchestration-3.3.0 orchestration
-	cd /opt/orchestration
-	./bin/bootstrap.sh pull
+Webitel is constantly evolving therefore, we advise you to download and use the latest tagged release. 
+
+	$ cd /opt
+	$ git pull https://github.com/webitel/orchestration.git
+	$ cd /opt/orchestration
+	$ git tag -l
+	
+	v3.2.0
+	v3.2.1
+	v3.2.2
+	v3.3.0
+	
+	$ git checkout v3.3.0
 
 ## Configure webitel
 
-Change password for root in the [bin/setenv.sh](bin/setenv.sh) file.
+By default Webitel comes with a env/*.example file. You'll need to copy this file to new without .example.
 
-## Run webitel
+It's now just a case of editing new **env/environment** file and setting the values of your setup.
+
+## Start webitel
 
 	./bin/webitel-start.sh
 

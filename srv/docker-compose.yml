@@ -45,7 +45,7 @@ services:
     image: "webitel/acr:${WEBITEL_VERSION}"
     container_name: acr
     restart: always
-    env_file: "${DIR}/env/common.txt"
+    env_file: "${DIR}/env/common"
     ports:
       - "172.17.0.1:10030:10030"
     depends_on:
@@ -62,7 +62,7 @@ services:
     container_name: wconsole
     privileged: true
     restart: always
-    env_file: "${DIR}/env/common.txt"
+    env_file: "${DIR}/env/common"
     environment: 
       - "ROOT_PASSWORD=${WEBITEL_PASS}"
     volumes:
@@ -81,7 +81,7 @@ services:
   engine:
     image: "webitel/engine:${WEBITEL_VERSION}"
     container_name: engine
-    env_file: "${DIR}/env/common.txt"
+    env_file: "${DIR}/env/common"
     restart: always
     ports:
       - "172.17.0.1:10022:10022"
@@ -92,7 +92,6 @@ services:
     environment:
       - "application:auth:tokenSecretKey=${WEBITEL_KEY}"
       - "webitelServer:secret=${WEBITEL_PASS}"
-      - "cdrServer:useProxy=false"
       - "cdrServer:host=${WEBITEL_PROTO}://${WEBITEL_HOST}/cdr/"
       - "broker:connectionString=amqp://webitel:${WEBITEL_PASS}@rabbitmq?heartbeat=0"
     networks:
@@ -110,8 +109,8 @@ services:
       - "172.17.0.1:10021:10021"
       - "172.17.0.1:10023:10023"
     env_file:
-      - "${DIR}/env/common.txt"
-      - "${DIR}/env/cdr.txt"
+      - "${DIR}/env/common"
+      - "${DIR}/env/cdr"
     environment:
       - "application:auth:tokenSecretKey=${WEBITEL_KEY}"
     volumes:
@@ -131,13 +130,7 @@ services:
     restart: always
     privileged: true
     network_mode: "host"
-    environment:
-      - SIPDOS=true
-      - LOGLEVEL=all
-      - AMQP_HOST=172.17.0.1
-      - CDR_SERVER=172.17.0.1:10021
-      - ACR_SERVER=172.17.0.1:10030
-      - CONF_SERVER=172.17.0.1:10024
+    env_file: "${DIR}/env/freeswitch"
     volumes:
       - fs-data:/recordings
       - "${WEBITEL_DIR}/lua:/scripts/lua"

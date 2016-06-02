@@ -44,7 +44,7 @@ services:
     networks:
       - net
     env_file: 
-      - "${DIR}/env/dev.txt"
+      - "${DIR}/env/dev.env"
   wconsole:
     image: "webitel/wconsole:${WEBITEL_VERSION}"
     container_name: wconsole
@@ -64,7 +64,7 @@ services:
   engine:
     image: "webitel/engine:${WEBITEL_VERSION}"
     container_name: engine
-    env_file: "${DIR}/env/dev.txt"
+    env_file: "${DIR}/env/dev.env"
     depends_on:
       - mongo
       - rabbitmq
@@ -83,7 +83,7 @@ services:
     ports:
       - "10021:10021"
       - "10023:10023"
-    env_file: "${DIR}/env/dev.txt"
+    env_file: "${DIR}/env/dev.env"
     volumes:
       - "${WEBITEL_DIR}/recordings:/recordings"
     depends_on:
