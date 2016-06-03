@@ -35,7 +35,7 @@ services:
     image: "webitel/kibana:${WEBITEL_VERSION}"
     container_name: kibana
     environment:
-      - "ENGINE_URL=${WEBITEL_WS}://${WEBITEL_HOST}/engine/"
+      - "ENGINE_URL=${WEBITEL_PROTO}://${WEBITEL_HOST}/engine/"
       - "FS_URL=${WEBITEL_WS}://${WEBITEL_HOST}/verto/"
     ports:
       - "5601"
