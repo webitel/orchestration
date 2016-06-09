@@ -1,20 +1,20 @@
-# environment variables for Webitel docker continers
-# This file has the syntax:
-# export VARIABLE="simple value"
-
+# Environment variables for webitel docker continers
+# changed at 2016-06-07
+#
 # Webitel root password. Change it!!!
 export WEBITEL_PASS="secret"
 # secret key for token. Change it!!!
-export WEBITEL_KEY="m4Se5!re7+Su9er#ey2sA-qJ1"
+export WEBITEL_KEY="m4Se5!re7+Su9er#ey2sA-qJ1wg67+2jBm1a"
 # webitel version
 export WEBITEL_VERSION="latest"
-# WebSocket protocol: ws or wss (for HTTPS)
+# WebSocket protocol: ws or wss (WebSocket with SSL)
 export WEBITEL_WS="ws"
-# WebSocket protocol: of or on (for HTTPS)
+# WebSocket protocol: off or on (for HTTPS)
 export WEBITEL_SSL="off"
-# WebSocket protocol: of or on (for HTTPS)
+# WebSocket protocol: http or https
 export WEBITEL_PROTO="http"
-# Webitel IP or hostname. Please, use FQDN hostname for HTTPS
+# Webitel IP or hostname.
+# Please, use the FQDN hostname for HTTPS site
 export WEBITEL_HOST="$(hostname -I | cut -d' ' -f1)"
 # webitel data directory
 export WEBITEL_DIR="/opt/webitel"

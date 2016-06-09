@@ -27,7 +27,7 @@ Webitel is constantly evolving therefore, we advise you to download and use the 
 
 ## Configure webitel
 
-By default Webitel comes with a env/*.example file. You'll need to copy this file to new without .example.
+By default Webitel comes with an env/*.example file. You'll need to copy this file to new without .example.
 
 It's now just a case of editing new **env/environment** file and setting the values of your setup.
 
