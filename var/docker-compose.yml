@@ -3,7 +3,7 @@ version: '2'
 
 services:
   elasticsearch:
-    image: webitel/elasticsearch
+    image: elasticsearch:2
     container_name: elasticsearch
     ports:
       - "172.17.0.1:9200:9200"

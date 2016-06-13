@@ -14,7 +14,7 @@ Orchestrate webitel containers
 Webitel is constantly evolving therefore, we advise you to download and use the latest tagged release. 
 
 	$ cd /opt
-	$ git pull https://github.com/webitel/orchestration.git
+	$ git clone https://github.com/webitel/orchestration.git
 	$ cd /opt/orchestration
 	$ git tag -l
 	
