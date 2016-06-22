@@ -22,7 +22,7 @@ services:
     ports:
       - "27017:27017"
     networks:
-      - net
+      - dev
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
@@ -33,7 +33,7 @@ services:
       - "RABBITMQ_DEFAULT_USER=webitel"
       - "RABBITMQ_DEFAULT_PASS=${WEBITEL_PASS}"
     networks:
-      - net
+      - dev
   acr:
     image: "webitel/acr:${WEBITEL_VERSION}"
     container_name: acr
@@ -42,7 +42,7 @@ services:
     depends_on:
       - mongo
     networks:
-      - net
+      - dev
     env_file: 
       - "${DIR}/env/dev.env"
   wconsole:
@@ -60,7 +60,7 @@ services:
     depends_on:
       - mongo
     networks:
-      - net
+      - dev
   engine:
     image: "webitel/engine:${WEBITEL_VERSION}"
     container_name: engine
@@ -76,7 +76,7 @@ services:
       - "webitelServer:secret=${WEBITEL_PASS}"
       - "broker:connectionString=amqp://webitel:${WEBITEL_PASS}@rabbitmq?heartbeat=0"
     networks:
-      - net
+      - dev
   cdr:
     image: "webitel/cdr-server:${WEBITEL_VERSION}"
     container_name: cdr
@@ -89,7 +89,7 @@ services:
     depends_on:
       - mongo
     networks:
-      - net
+      - dev
   freeswitch:
     image: "webitel/freeswitch:${WEBITEL_VERSION}"
     container_name: freeswitch
@@ -131,11 +131,11 @@ services:
     depends_on:
       - engine
     networks:
-      - net
+      - dev
 
 volumes:
   fs-data:
   
 networks:
-  net:
+  dev:
     driver: bridge

@@ -2,6 +2,26 @@
 version: '2'
 
 services:
+  elasticsearch:
+    image: elasticsearch:2
+    container_name: elasticsearch
+    ports:
+      - "172.17.0.1:9200:9200"
+    volumes:
+      - "${WEBITEL_DIR}/elastic:/usr/share/elasticsearch/data"
+    command: -Des.node.name="Webitel"
+    networks:
+      - wtel
+  rabbitmq:
+    image: rabbitmq:3
+    container_name: rabbitmq
+    ports:
+      - "172.17.0.1:5672:5672"
+    environment:
+      - "RABBITMQ_DEFAULT_USER=webitel"
+      - "RABBITMQ_DEFAULT_PASS=${WEBITEL_PASS}"
+    networks:
+      - wtel
   moh:
     image: webitel/freeswitch-sound:moh
     container_name: moh
@@ -27,7 +47,7 @@ services:
       - "172.17.0.1:27017:27017"
     command: --storageEngine wiredTiger
     networks:
-      - net
+      - wtel
     ulimits:
       nproc: 65535
       nofile: 65535
@@ -39,8 +59,10 @@ services:
       - "FS_URL=${WEBITEL_WS}://${WEBITEL_HOST}/verto/"
     ports:
       - "5601"
+    depends_on:
+      - elasticsearch
     networks:
-      - net
+      - wtel
   acr:
     image: "webitel/acr:${WEBITEL_VERSION}"
     container_name: acr
@@ -51,12 +73,7 @@ services:
     depends_on:
       - mongo
     networks:
-      - net
-    logging:
-      driver: fluentd
-      options:
-        fluentd-tag: "ACR"
-        fluentd-address: "172.17.0.1:24224"
+      - wtel
   wconsole:
     image: "webitel/wconsole:${WEBITEL_VERSION}"
     container_name: wconsole
@@ -72,12 +89,7 @@ services:
     depends_on:
       - mongo
     networks:
-      - net
-    logging:
-      driver: fluentd
-      options:
-        fluentd-tag: "WConsole"
-        fluentd-address: "172.17.0.1:24224"
+      - wtel
   engine:
     image: "webitel/engine:${WEBITEL_VERSION}"
     container_name: engine
@@ -87,6 +99,7 @@ services:
       - "172.17.0.1:10022:10022"
     depends_on:
       - mongo
+      - rabbitmq
       - wconsole
       - freeswitch
     environment:
@@ -95,12 +108,7 @@ services:
       - "cdrServer:host=${WEBITEL_PROTO}://${WEBITEL_HOST}/cdr/"
       - "broker:connectionString=amqp://webitel:${WEBITEL_PASS}@rabbitmq?heartbeat=0"
     networks:
-      - net
-    logging:
-      driver: fluentd
-      options:
-        fluentd-tag: "Engine"
-        fluentd-address: "172.17.0.1:24224"
+      - wtel
   cdr:
     image: "webitel/cdr-server:${WEBITEL_VERSION}"
     container_name: cdr
@@ -116,14 +124,10 @@ services:
     volumes:
       - "${WEBITEL_DIR}/recordings:/recordings"
     depends_on:
+      - elasticsearch
       - mongo
     networks:
-      - net
-    logging:
-      driver: fluentd
-      options:
-        fluentd-tag: "CDR"
-        fluentd-address: "172.17.0.1:24224"
+      - wtel
   freeswitch:
     image: "webitel/freeswitch:${WEBITEL_VERSION}"
     container_name: freeswitch
@@ -142,12 +146,7 @@ services:
     depends_on:
       - wconsole
       - cdr
-      - acr   
-    logging:
-      driver: fluentd
-      options:
-        fluentd-tag: "FreeSWITCH"
-        fluentd-address: "172.17.0.1:24224"
+      - acr
   nginx:
     image: "webitel/nginx:${WEBITEL_VERSION}"
     container_name: nginx
@@ -164,11 +163,11 @@ services:
     depends_on:
       - engine
     networks:
-      - net
-      
+      - wtel
+  
 volumes:
   fs-data:
   
 networks:
-  net:
+  wtel:
     driver: bridge

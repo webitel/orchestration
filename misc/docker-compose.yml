@@ -7,9 +7,9 @@ services:
     volumes:
       - "${WEBITEL_DIR}/backup:/backup"
     networks:
-      - net
+      - wtel
     command: "mongodump -h mongo -o /backup/dump" 
     
 networks:
-  net:
+  wtel:
     driver: bridge

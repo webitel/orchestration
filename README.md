@@ -33,7 +33,7 @@ It's now just a case of editing new **env/environment** file and setting the val
 
 ## Start webitel
 
-	./bin/webitel-start.sh
+	./bin/bootstrap.sh up -d
 
 Open in browser: http://YOUR_HOST_IP/
 
