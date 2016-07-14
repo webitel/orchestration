@@ -13,6 +13,10 @@ case "$1" in
         printf "Webitel developers stack\n\n"
         $DC -p webitel -f "${DIR}/dev/docker-compose.yml" $2 $3 $4
         ;;
+    "custom")
+        printf "Webitel custom docker-compose file\n\n"
+        $DC -p webitel -f "${DIR}/$2/docker-compose.yml" $3 $4 $5
+        ;;
     "backup")
         $DC -p webitel -f "${DIR}/misc/docker-compose.yml" up backupDB
         $DC -p webitel -f "${DIR}/misc/docker-compose.yml" rm -f backupDB

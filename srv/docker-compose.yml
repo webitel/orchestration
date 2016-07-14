@@ -3,7 +3,7 @@ version: '2'
 
 services:
   elasticsearch:
-    image: elasticsearch:2
+    image: elasticsearch:2.3
     container_name: elasticsearch
     ports:
       - "172.17.0.1:9200:9200"
@@ -144,8 +144,8 @@ services:
       - en
       - ru
     depends_on:
+      - rabbitmq
       - wconsole
-      - cdr
       - acr
   nginx:
     image: "webitel/nginx:${WEBITEL_VERSION}"
