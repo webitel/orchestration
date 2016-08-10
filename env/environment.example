@@ -6,7 +6,7 @@ export WEBITEL_PASS="secret"
 # secret key for token. Change it!!!
 export WEBITEL_KEY="m4Se5!re7+Su9er#ey2sA-qJ1wg67+2jBm1a"
 # webitel version
-export WEBITEL_VERSION="3.3.0"
+export WEBITEL_VERSION="3.3.1"
 # WebSocket protocol: ws or wss (WebSocket with SSL)
 export WEBITEL_WS="ws"
 # WebSocket protocol: off or on (for HTTPS)
