@@ -145,7 +145,6 @@ services:
       - ru
     depends_on:
       - rabbitmq
-      - wconsole
   nginx:
     image: "webitel/nginx:${WEBITEL_VERSION}"
     container_name: nginx
