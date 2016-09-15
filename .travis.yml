@@ -19,5 +19,9 @@ before_install:
 install:  
   - docker-compose -f dev/docker-compose.yml up -d
 
+after_install:
+  - docker-compose -f dev/docker-compose.yml ps
+  - docker-compose -f dev/docker-compose.yml logs
+
 script:  
   - ./bin/test.sh
