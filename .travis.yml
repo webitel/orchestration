@@ -18,9 +18,9 @@ before_install:
 
 install:  
   - docker-compose -f dev/docker-compose.yml up -d
-  - sleep 1000
+  - sleep 10s
   - docker-compose -f dev/docker-compose.yml ps
-  - sleep 1000
+  - sleep 10s
   - docker-compose -f dev/docker-compose.yml logs
 
 script:  
