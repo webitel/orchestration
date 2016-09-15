@@ -109,16 +109,16 @@ services:
       - "broker:connectionString=amqp://webitel:${WEBITEL_PASS}@rabbitmq?heartbeat=0"
     networks:
       - wtel
-  cdr:
-    image: "webitel/cdr-server:${WEBITEL_VERSION}"
-    container_name: cdr
+  storage:
+    image: "webitel/storage:${WEBITEL_VERSION}"
+    container_name: storage
     restart: always
     ports:
       - "172.17.0.1:10021:10021"
       - "172.17.0.1:10023:10023"
     env_file:
       - "${DIR}/env/common"
-      - "${DIR}/env/cdr"
+      - "${DIR}/env/storage"
     environment:
       - "application:auth:tokenSecretKey=${WEBITEL_KEY}"
     volumes:

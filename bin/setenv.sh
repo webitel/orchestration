@@ -19,13 +19,13 @@ if [ ! -f "$DIR/env/freeswitch" ]; then
     cp "$DIR/env/freeswitch.example" "$DIR/env/freeswitch"
 fi
 
-if [ ! -f "$DIR/env/cdr" ]; then
-    echo "$DIR/env/cdr not found!"
-    cp "$DIR/env/cdr.example" "$DIR/env/cdr"
+if [ ! -f "$DIR/env/storage" ]; then
+    echo "$DIR/env/storage not found!"
+    cp "$DIR/env/storage.example" "$DIR/env/storage"
 fi
 
 DC="$(which docker-compose)"
 if ! type "$DC" > /dev/null; then
-  echo "docker-compose version 1.7.0 or greater is required"
+  echo "docker-compose version 1.8.0 or greater is required"
   exit 1;
 fi

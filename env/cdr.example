@@ -1,3 +1,0 @@
-elastic:enabled=true
-recordFile:transport=file
-recordFile:fileRoot=/recordings/

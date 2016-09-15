@@ -77,9 +77,9 @@ services:
       - "broker:connectionString=amqp://webitel:${WEBITEL_PASS}@rabbitmq?heartbeat=0"
     networks:
       - dev
-  cdr:
-    image: "webitel/cdr-server:${WEBITEL_VERSION}"
-    container_name: cdr
+  storage:
+    image: "webitel/storage:${WEBITEL_VERSION}"
+    container_name: storage
     ports:
       - "10021:10021"
       - "10023:10023"
@@ -111,7 +111,7 @@ services:
     depends_on:
       - wconsole
       - rabbitmq
-      - cdr
+      - storage
       - acr
   nginx:
     image: "webitel/nginx:${WEBITEL_VERSION}"
