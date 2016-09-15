@@ -1,4 +1,4 @@
 elastic:enabled=true
 recordFile:defaultProvider=local
-providers:local:fileRoot=/recordings/
+recordFile:providers:local:fileRoot=/recordings/
 mediaFile:providers:local:fileRoot=/recordings/
