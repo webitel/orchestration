@@ -24,8 +24,9 @@ Webitel is constantly evolving therefore, we advise you to download and use the 
 	v3.3.0
 	v3.4.0
 	v3.4.1
+	v3.4.2
 	
-	$ git checkout v3.4.1
+	$ git checkout v3.4.2
 
 ## Configure webitel
 
