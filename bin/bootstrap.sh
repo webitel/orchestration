@@ -24,12 +24,25 @@ case "$1" in
         rm -rf ${WEBITEL_DIR}/backup/dump
         find ${WEBITEL_DIR}/backup/ -maxdepth 1 -mtime +$BACKUP_LIFETIME_DAYS -type f -exec rm {} \;
         ;;
+    "cdr2csv")
+        if [ ! -f "${WEBITEL_DIR}/export/bin/db2scv.sh" ]; then
+            echo "db2scv.sh not found!"
+            mkdir -p "${WEBITEL_DIR}/export/bin"
+            cp "$DIR/bin/db2scv.sh" "${WEBITEL_DIR}/export/bin/db2scv.sh"
+            chmod +x "${WEBITEL_DIR}/export/bin/db2scv.sh"
+        fi
+        $DC -p webitel -f "${DIR}/misc/docker-compose.yml" up exportDB
+        $DC -p webitel -f "${DIR}/misc/docker-compose.yml" rm -f exportDB
+        bzip2 "${WEBITEL_DIR}/export/cdr-${TIMESTAMP}.csv"
+        find ${WEBITEL_DIR}/export/ -maxdepth 1 -mtime +$BACKUP_LIFETIME_DAYS -type f -exec rm {} \;
+        ;;
     "fs")
         docker run -i --rm -t "webitel/freeswitch:${WEBITEL_VERSION}" fs_cli -H 172.17.0.1
         ;;
     "help")
         echo "dev - Webitel containers in the development mode"
         echo "backup - Backup webitel files"
+        echo "cdr2csv - Export webitel CDR from MongoDB into CSV file"
         echo "fs - Run FreeSWITCH client"
         exit 0
         ;;
