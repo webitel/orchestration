@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export TIMESTAMP=`date "+%Y-%m-%d"`
+export TIMESTAMP=`date "+%Y-%m-%d" -u`
 export DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" && pwd )"
 
 if [ ! -f "$DIR/env/environment" ]; then

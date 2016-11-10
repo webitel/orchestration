@@ -33,7 +33,7 @@ case "$1" in
         fi
         $DC -p webitel -f "${DIR}/misc/docker-compose.yml" up exportDB
         $DC -p webitel -f "${DIR}/misc/docker-compose.yml" rm -f exportDB
-        bzip2 "${WEBITEL_DIR}/export/cdr-${TIMESTAMP}.csv"
+        gzip ${WEBITEL_DIR}/export/cdr-${TIMESTAMP}.csv
         find ${WEBITEL_DIR}/export/ -maxdepth 1 -mtime +$BACKUP_LIFETIME_DAYS -type f -exec rm {} \;
         ;;
     "fs")
