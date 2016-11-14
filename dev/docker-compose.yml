@@ -22,7 +22,7 @@ services:
     volumes:
       - "${WEBITEL_DIR}/elasticsearch5:/usr/share/elasticsearch/data"
     networks:
-      - wtel
+      - dev
   mongo:
     image: mongo:3
     container_name: mongo
