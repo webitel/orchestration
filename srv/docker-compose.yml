@@ -3,13 +3,12 @@ version: '2'
 
 services:
   elasticsearch:
-    image: webitel/elasticsearch
+    image: elasticsearch:5.0.0
     container_name: elasticsearch
     ports:
       - "172.17.0.1:9200:9200"
     volumes:
-      - "${WEBITEL_DIR}/elastic:/usr/share/elasticsearch/data"
-    command: -Des.node.name="Webitel"
+      - "${WEBITEL_DIR}/elasticsearch5:/usr/share/elasticsearch/data"
     networks:
       - wtel
   rabbitmq:
