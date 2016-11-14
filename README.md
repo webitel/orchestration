@@ -34,6 +34,9 @@ By default Webitel comes with an env/*.example file. You'll need to copy this fi
 
 It's now just a case of editing new **env/environment** file and setting the values of your setup.
 
+	$ sudo echo "vm.max_map_count=262144" >> /etc/sysctl.conf
+	$ sudo sysctl -p
+
 ## Start webitel
 
 	./bin/bootstrap.sh up -d
