@@ -14,15 +14,6 @@ services:
     image: "webitel/client:${WEBITEL_VERSION}"
     container_name: web-client
     network_mode: "none"
-  elasticsearch:
-    image: elasticsearch:5.0.0
-    container_name: elasticsearch
-    ports:
-      - "172.17.0.1:9200:9200"
-    volumes:
-      - "${WEBITEL_DIR}/elasticsearch5:/usr/share/elasticsearch/data"
-    networks:
-      - dev
   mongo:
     image: mongo:3
     container_name: mongo
@@ -96,7 +87,6 @@ services:
     volumes:
       - "${WEBITEL_DIR}/recordings:/recordings"
     depends_on:
-      - elasticsearch
       - mongo
     networks:
       - dev
