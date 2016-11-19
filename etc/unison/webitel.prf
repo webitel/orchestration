@@ -1,0 +1,13 @@
+batch = true
+# Roots of the synchronization
+root = /opt/webitel
+root = ssh://10.0.2.4//opt/webitel
+# Paths to synchronize
+path = db
+path = ssl
+path = lua
+path = backup
+path = export
+path = recordings
+ignore = Regex .*wtl
+ignore = Path backup/dump
