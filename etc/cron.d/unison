@@ -1,0 +1,11 @@
+#
+# cron.d/unison -- schedules sync webitel files every minute
+#
+# Copyright © vitaly kovalyshyn <v.kovalyshyn@webitel.com>
+# distributed under the terms of the Artistic Licence 2.0
+#
+
+HELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+*/1 *   * * *   root    unison webitel &> /dev/null
