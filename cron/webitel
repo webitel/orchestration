@@ -1,0 +1,11 @@
+#
+# cron.d/webitel -- schedules start weibitel after reboot
+#
+# Copyright © vitaly kovalyshyn <v.kovalyshyn@webitel.com>
+# distributed under the terms of the Artistic Licence 2.0
+#
+
+HELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+@reboot root    /opt/orchestration/bin/reboot.sh
