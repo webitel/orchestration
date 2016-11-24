@@ -17,6 +17,14 @@ case "$1" in
         printf "Webitel custom docker-compose file\n\n"
         $DC -p webitel -f "${DIR}/$2/docker-compose.yml" $3 $4 $5
         ;;
+    "archive")
+        printf "Webitel Sorage stack\n\n"
+        if [ ! -f "$DIR/env/archive" ]; then
+            echo "$DIR/env/archive not found!"
+            cp "$DIR/env/archive.example" "$DIR/env/archive"
+        fi
+        $DC -p webitel -f "${DIR}/misc/archive-compose.yml" $2 $3 $4
+        ;;
     "backup")
         $DC -p webitel -f "${DIR}/misc/docker-compose.yml" up backupDB
         $DC -p webitel -f "${DIR}/misc/docker-compose.yml" rm -f backupDB
@@ -43,6 +51,7 @@ case "$1" in
         echo "dev - Webitel containers in the development mode"
         echo "backup - Backup webitel files"
         echo "cdr2csv - Export webitel CDR from MongoDB into CSV file"
+        echo "archive - Webitel archive storage only"
         echo "fs - Run FreeSWITCH client"
         exit 0
         ;;

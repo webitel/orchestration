@@ -83,6 +83,7 @@ services:
     ports:
       - "10021:10021"
       - "10023:10023"
+      - "10025:10025"
     env_file: "${DIR}/env/dev.env"
     volumes:
       - "${WEBITEL_DIR}/recordings:/recordings"

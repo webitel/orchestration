@@ -1,0 +1,59 @@
+--- 
+version: '2'
+
+services:
+  elasticsearch:
+    image: elasticsearch:5.0.1
+    container_name: elasticsearch
+    volumes:
+      - "${WEBITEL_DIR}/elasticsearch5:/usr/share/elasticsearch/data"
+    networks:
+      - wnet
+  kibana:
+    image: "webitel/kibana:${WEBITEL_VERSION}"
+    container_name: kibana
+    environment:
+      - "WEBITEL_PASS=${WEBITEL_PASS}"
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    networks:
+      - wnet
+  storage:
+    image: "webitel/storage:${WEBITEL_VERSION}"
+    container_name: storage
+    restart: always
+    ports:
+      - "10025:10025"
+    env_file:
+      - "${DIR}/env/archive"
+    environment:
+      - "archive:password=${WEBITEL_PASS}"
+      - "application:auth:tokenSecretKey=${WEBITEL_KEY}"
+    volumes:
+      - "${WEBITEL_DIR}/recordings:/recordings"
+    depends_on:
+      - elasticsearch
+    networks:
+      - wnet
+  nginx:
+    image: "webitel/nginx:${WEBITEL_VERSION}"
+    container_name: nginx
+    environment:
+      - "WEBITEL_HOST=${WEBITEL_HOST}"
+      - "WEBITEL_SSL=${WEBITEL_SSL}"
+      - "WEBITEL_ARCHIVE=${WEBITEL_ARCHIVE}"
+    volumes:
+      - "${WEBITEL_DIR}/ssl:/etc/nginx/ssl"
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - storage
+    networks:
+      - wnet
+  
+networks:
+  wnet:
+    driver: bridge

@@ -1,5 +1,6 @@
 env/cdr
 env/common
 env/storage
+env/archive
 env/freeswitch
 env/environment
