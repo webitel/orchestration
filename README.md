@@ -25,8 +25,9 @@ Webitel is constantly evolving therefore, we advise you to download and use the 
 	v3.4.0
 	v3.4.1
 	v3.4.2
+	v3.5.0
 	
-	$ git checkout v3.4.2
+	$ git checkout v3.5.0
 
 ## Configure webitel
 
@@ -46,3 +47,7 @@ Open in browser: http://YOUR_HOST_IP/
 - **login**: root
 - **password**: secret
 - **server**: http://YOUR_HOST_IP/engine
+
+## Autostart webitel
+
+	$ sudo cp /opt/orchestration/etc/cron.d/webitel /etc/cron.d/

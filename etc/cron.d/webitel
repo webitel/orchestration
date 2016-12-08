@@ -1,5 +1,5 @@
 #
-# cron.d/webitel -- schedules start weibitel after reboot
+# cron.d/webitel -- schedules start webitel after reboot
 #
 # Copyright © vitaly kovalyshyn <v.kovalyshyn@webitel.com>
 # distributed under the terms of the Artistic Licence 2.0
