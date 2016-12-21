@@ -1,5 +1,6 @@
 #!/bin/bash
 
+export COMPOSE_HTTP_TIMEOUT=300
 export TIMESTAMP=`date "+%Y-%m-%d" -u`
 export DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" && pwd )"
 
