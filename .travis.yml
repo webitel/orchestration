@@ -14,14 +14,14 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
   - sudo apt-get update && sudo apt-get -y --quiet -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install docker-engine jq
   - mkdir tmp
-  - docker-compose -f dev/docker-compose.yml pull
+  - docker-compose -f misc/docker-compose.yml mini pull
 
 install:  
-  - docker-compose -f dev/docker-compose.yml mini up -d
+  - docker-compose -f misc/docker-compose.yml mini up -d
   - sleep 10s
-  - docker-compose -f dev/docker-compose.yml mini ps
+  - docker-compose -f misc/docker-compose.yml mini ps
   - sleep 10s
-  - docker-compose -f dev/docker-compose.yml mini logs
+  - docker-compose -f misc/docker-compose.yml mini logs
 
 script:  
   - ./bin/test.sh
