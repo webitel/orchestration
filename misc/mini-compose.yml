@@ -118,6 +118,8 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    extra_hosts:
+      - "kibana:172.17.0.1"
     volumes_from:
       - client
     depends_on:
