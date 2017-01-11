@@ -25,6 +25,10 @@ case "$1" in
         fi
         $DC -p webitel -f "${DIR}/misc/archive-compose.yml" $2 $3 $4
         ;;
+    "mini")
+        printf "Webitel minimal stack\n\n"
+        $DC -p webitel -f "${DIR}/misc/mini-compose.yml" $2 $3 $4
+        ;;
     "backup")
         $DC -p webitel -f "${DIR}/misc/docker-compose.yml" up backupDB
         $DC -p webitel -f "${DIR}/misc/docker-compose.yml" rm -f backupDB

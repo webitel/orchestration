@@ -17,11 +17,11 @@ before_install:
   - docker-compose -f dev/docker-compose.yml pull
 
 install:  
-  - docker-compose -f dev/docker-compose.yml up -d
+  - docker-compose -f dev/docker-compose.yml mini up -d
   - sleep 10s
-  - docker-compose -f dev/docker-compose.yml ps
+  - docker-compose -f dev/docker-compose.yml mini ps
   - sleep 10s
-  - docker-compose -f dev/docker-compose.yml logs
+  - docker-compose -f dev/docker-compose.yml mini logs
 
 script:  
   - ./bin/test.sh
