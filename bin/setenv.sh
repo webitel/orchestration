@@ -3,6 +3,8 @@
 export COMPOSE_HTTP_TIMEOUT=300
 export TIMESTAMP=`date "+%Y-%m-%d" -u`
 export DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" && pwd )"
+export ES_MEMORY="2g"
+export ES_MEMORY_LIMIT="4g"
 
 if [ ! -f "$DIR/env/environment" ]; then
     echo "$DIR/env/environment not found!"
