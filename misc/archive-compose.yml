@@ -7,7 +7,6 @@ services:
     container_name: elasticsearch
     environment:
       - "bootstrap.memory_lock=true"
-      - "threadpool.bulk.queue_size=100"
       - "ES_JAVA_OPTS=-Xms${ES_MEMORY} -Xmx${ES_MEMORY}"
     ulimits:
       memlock:
