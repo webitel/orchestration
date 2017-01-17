@@ -3,7 +3,7 @@ version: '2'
 
 services:
   elasticsearch:
-    image: elasticsearch:5.0.1
+    image: elasticsearch:5.1
     container_name: elasticsearch
     environment:
       - "bootstrap.memory_lock=true"
