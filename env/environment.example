@@ -1,10 +1,10 @@
 # Environment variables for webitel docker continers
-# changed at 2016-11-24
+# changed at 2017-01-17
 #
 # Webitel root password. Change it!!!
 export WEBITEL_PASS="secret"
 # secret key for token. Change it!!!
-export WEBITEL_KEY="m4Se5!rYHHTgbT^ghbevdgtTRFVGBHgdvy65ree+r2bTmG12la02vs-xqe2m7+2jBm1a"
+export WEBITEL_KEY="m4Se^3g1!h25Gs5bLd+djsBfw4CabTdnee+r2bTmG12la02vs-xqe2m7+2jBm1a"
 # webitel version
 export WEBITEL_VERSION="latest"
 # WebSocket protocol: ws or wss (WebSocket with SSL)
@@ -22,3 +22,6 @@ export WEBITEL_HOST="$(hostname -I | cut -d' ' -f1)"
 export WEBITEL_DIR="/opt/webitel"
 # backups lifetime 
 export BACKUP_LIFETIME_DAYS="3"
+# Elastisearch memory limits
+export ES_MEMORY="2g"
+export ES_MEMORY_LIMIT="4g"

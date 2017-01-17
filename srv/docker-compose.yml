@@ -3,11 +3,11 @@ version: '2'
 
 services:
   elasticsearch:
-    image: elasticsearch:5.0.1
+    image: elasticsearch:5.1
     container_name: elasticsearch
     environment:
       - "bootstrap.memory_lock=true"
-      - "ES_JAVA_OPTS=-Xms4g -Xmx4g"
+      - "ES_JAVA_OPTS=-Xms${ES_MEMORY} -Xmx${ES_MEMORY}"
     ulimits:
       memlock:
         soft: -1
@@ -15,7 +15,7 @@ services:
       nofile:
         soft: 65536
         hard: 65536
-    mem_limit: 8g
+    mem_limit: "${ES_MEMORY_LIMIT}"
     cap_add:
       - IPC_LOCK
     ports:
