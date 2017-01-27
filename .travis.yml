@@ -5,7 +5,7 @@ services:
   - docker
 
 env:
-  - DOCKER_COMPOSE_VERSION: 1.8.0
+  - DOCKER_COMPOSE_VERSION: 1.9.0
 
 before_install:
   - sudo rm -rf /usr/local/bin/docker-compose 
@@ -14,7 +14,7 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
   - sudo apt-get update && sudo apt-get -y --quiet -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install docker-engine jq
   - mkdir tmp
-  - mkdir -p /opt/webitel/ssl
+  - echo ${WEBITEL_DIR}
   - openssl genrsa -out /opt/webitel/ssl/token.key 1024 
   - docker-compose -f dev/docker-compose.yml pull
 
