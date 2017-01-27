@@ -1,29 +1,28 @@
 sudo: required
 language: bash
-
-services: 
-  - docker
-
+services:
+- docker
 env:
-  - DOCKER_COMPOSE_VERSION: 1.9.0
-
+- DOCKER_COMPOSE_VERSION: 1.9.0
 before_install:
-  - sudo rm -rf /usr/local/bin/docker-compose 
-  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
-  - chmod +x docker-compose
-  - sudo mv docker-compose /usr/local/bin
-  - sudo apt-get update && sudo apt-get -y --quiet -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install docker-engine jq
-  - mkdir tmp
-  - echo ${WEBITEL_DIR}
-  - openssl genrsa -out /opt/webitel/ssl/token.key 1024 
-  - docker-compose -f dev/docker-compose.yml pull
-
-install:  
-  - docker-compose -f dev/docker-compose.yml up -d
-  - sleep 10s
-  - docker-compose -f dev/docker-compose.yml ps
-  - sleep 10s
-  - docker-compose -f dev/docker-compose.yml logs
-
-script:  
-  - ./bin/test.sh
+- sudo rm -rf /usr/local/bin/docker-compose
+- curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname
+  -s`-`uname -m` > docker-compose
+- chmod +x docker-compose
+- sudo mv docker-compose /usr/local/bin
+- sudo apt-get update && sudo apt-get -y --quiet -o Dpkg::Options::="--force-confdef"
+  -o Dpkg::Options::="--force-confold" install docker-engine jq
+- mkdir -p tmp/ssl
+- openssl genrsa -out tmp/ssl/token.key 1024
+- docker-compose -f dev/docker-compose.yml pull
+install:
+- docker-compose -f dev/docker-compose.yml up -d
+- sleep 10s
+- docker-compose -f dev/docker-compose.yml ps
+- sleep 10s
+- docker-compose -f dev/docker-compose.yml logs
+script:
+- "./bin/test.sh"
+notifications:
+  slack:
+    secure: LYZg6oP0nNbM3t2kEhcwYxNGflh8o1v0/fR4PrYJgVsNQ8UVn8Jynf9NSDYspzTHrTffdtGArQcRQfnyHax2erMuliQVDw7GOB3C+yV55JVFnrva2iqHtum5VCqQgoQt9NBbp2v3D81s8LmenYGNnrV+hWgVC1/PVZOR6VLi6+wotWPnSUe9GHcCEYkpseOt0F/nfL6tmECFzSR8FT//sOdz7/tWkFwVrlZh/E3PCjozRKyrNghjLx4NOQi0qwaCSsyMNNB8/ouR8ouX8HhFUlE7ryirtkaE/SaafGieoWQ/J3aO62z6dZdtxjuABAQN8Ep3PoDh+ZfuHnet8Y/WlUGuSUVaGk2b4rXPV/Z4eSryYNdYJ5p0U226R7sDlxn8JLsnTqBx01XE0rmt6qABCBWmXW/hOEfomoelYSu0wOtsnE28TpMp27z8kaBRTbvkPq2euC8kTreyBhaUitCOOnNeAOjZFyHlZMmE4HdsWdPhTHZ1uUfwqC43DBVovzBIfQjoH5a9IXDa5v40TLsLLGnLArbq6JUqbkTzxxyetoCXhqkAsls9cWh/H4erNmeJzLRVNOcWD2V61CMcYkNSA6n4jFGDzysxjsrI5x0gX73T4hqPslaL0K2UgXYFXmSkvwczUzL64o8RK5wPQFkKvkZpsV+B3F9v9UiwZbBKY3w=
