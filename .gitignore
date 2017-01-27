@@ -4,3 +4,4 @@ env/storage
 env/archive
 env/freeswitch
 env/environment
+.vscode
