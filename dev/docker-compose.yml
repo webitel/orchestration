@@ -75,6 +75,8 @@ services:
     environment:
       - "webitelServer:secret=${WEBITEL_PASS}"
       - "broker:connectionString=amqp://webitel:${WEBITEL_PASS}@rabbitmq?heartbeat=0"
+    volumes:
+      - "${WEBITEL_DIR}/ssl:/ssl"
     networks:
       - dev
   storage:
@@ -88,6 +90,7 @@ services:
     environment:
       - "broker:connectionString=amqp://webitel:${WEBITEL_PASS}@rabbitmq?heartbeat=0"
     volumes:
+      - "${WEBITEL_DIR}/ssl:/ssl"
       - "${WEBITEL_DIR}/recordings:/recordings"
     depends_on:
       - mongo
