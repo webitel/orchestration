@@ -44,9 +44,9 @@ services:
       - "${DIR}/env/archive"
     environment:
       - "archive:password=${WEBITEL_PASS}"
-      - "application:auth:tokenSecretKey=${WEBITEL_KEY}"
     volumes:
       - "${WEBITEL_DIR}/recordings:/recordings"
+      - "${WEBITEL_DIR}/ssl:/ssl" 
     depends_on:
       - elasticsearch
     networks:

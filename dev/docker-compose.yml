@@ -85,6 +85,8 @@ services:
       - "10023:10023"
       - "10025:10025"
     env_file: "${DIR}/env/dev.env"
+    environment:
+      - "broker:connectionString=amqp://webitel:${WEBITEL_PASS}@rabbitmq?heartbeat=0"
     volumes:
       - "${WEBITEL_DIR}/recordings:/recordings"
     depends_on:

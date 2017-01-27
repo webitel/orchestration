@@ -115,10 +115,11 @@ services:
       - wconsole
       - freeswitch
     environment:
-      - "application:auth:tokenSecretKey=${WEBITEL_KEY}"
       - "webitelServer:secret=${WEBITEL_PASS}"
       - "cdrServer:host=${WEBITEL_PROTO}://${WEBITEL_HOST}/cdr/"
       - "broker:connectionString=amqp://webitel:${WEBITEL_PASS}@rabbitmq?heartbeat=0"
+    volumes:
+      - "${WEBITEL_DIR}/ssl:/ssl"
     networks:
       - wtel
   storage:
@@ -133,9 +134,10 @@ services:
       - "${DIR}/env/common"
       - "${DIR}/env/storage"
     environment:
-      - "application:auth:tokenSecretKey=${WEBITEL_KEY}"
+      - "broker:connectionString=amqp://webitel:${WEBITEL_PASS}@rabbitmq?heartbeat=0"
     volumes:
       - "${WEBITEL_DIR}/recordings:/recordings"
+      - "${WEBITEL_DIR}/ssl:/ssl"
     depends_on:
       - elasticsearch
       - mongo
