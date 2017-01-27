@@ -27,14 +27,15 @@ if [ ! -f "$DIR/env/storage" ]; then
     cp "$DIR/env/storage.example" "$DIR/env/storage"
 fi
 
-if [ ! -f "$WEBITEL_DIR/ssl/token.key" ]; then
-    echo "$WEBITEL_DIR/ssl/token.key not found!"
+if [ ! -f "${WEBITEL_DIR}/ssl/token.key" ]; then
+    echo "${WEBITEL_DIR}/ssl/token.key not found!"
+    mkdir -p "${WEBITEL_DIR}/ssl/"
     OPENSSL="$(which openssl)"
     if ! type "$OPENSSL" > /dev/null; then
         echo "openssl is required"
         exit 1;
     fi
-    $OPENSSL genrsa -out "$WEBITEL_DIR/ssl/token.key" 4096
+    $OPENSSL genrsa -out "${WEBITEL_DIR}ssl/token.key" 4096
 fi
 
 DC="$(which docker-compose)"
