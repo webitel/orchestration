@@ -35,7 +35,7 @@ if [ ! -f "${WEBITEL_DIR}/ssl/token.key" ]; then
         echo "openssl is required"
         exit 1;
     fi
-    $OPENSSL genrsa -out "${WEBITEL_DIR}ssl/token.key" 4096
+    $OPENSSL genrsa -out "${WEBITEL_DIR}/ssl/token.key" 4096
 fi
 
 DC="$(which docker-compose)"
