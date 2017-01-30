@@ -1,4 +1,3 @@
-broker:enable=false
 elastic:enabled=true
 mediaFile:providers:local:fileRoot=/recordings/
 recordFile:defaultProvider=local

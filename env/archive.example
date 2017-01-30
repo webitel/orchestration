@@ -1,3 +1,4 @@
+broker:enable=false
 elastic:enabled=true
 archive:enabled=true
 archive:ssl=false
