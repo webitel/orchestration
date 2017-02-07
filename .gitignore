@@ -4,4 +4,5 @@ env/storage
 env/archive
 env/freeswitch
 env/environment
+bin/db2scv.sh
 .vscode
