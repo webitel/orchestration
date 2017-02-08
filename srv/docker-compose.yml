@@ -51,7 +51,7 @@ services:
     container_name: web-client
     network_mode: "none"
   mongo:
-    image: mongo:3
+    image: mongo:3.4
     container_name: mongo
     volumes:
       - "${WEBITEL_DIR}/mongodb:/data/db"
