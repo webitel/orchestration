@@ -10,3 +10,5 @@ recordFile:providers:local:fileRoot=/recordings/
 #recordFile:providers:b2:bucketId=bucketId
 #recordFile:providers:b2:applicationKey=applicationKey
 #recordFile:providers:b2:accountId=accountId
+#recordFile:cronJobDeleteOldFile=30 2 * * *
+#recordFile:defaultDaysLifeFiles=365
