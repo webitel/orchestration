@@ -56,7 +56,7 @@ case "$1" in
         find ${WEBITEL_DIR}/export/ -maxdepth 1 -mtime +$BACKUP_LIFETIME_DAYS -type f -exec rm {} \;
         ;;
     "fs")
-        docker run -i --rm -t "webitel/freeswitch:${WEBITEL_VERSION}" fs_cli -H 172.17.0.1
+        docker exec -it freeswitch /usr/local/freeswitch/bin/fs_cli -H 172.17.0.1
         ;;
     "letsencrypt")
         echo "boostraping dependencies to work with letsencrypt and acquiring the certificates"
@@ -75,15 +75,19 @@ case "$1" in
         docker exec -it `docker ps|grep nginx|cut -d' ' -f1` bash -c 'cat /etc/letsencrypt/archive/$WEBITEL_HOST/fullchain1.pem /etc/letsencrypt/archive/$WEBITEL_HOST/privkey1.pem > /etc/nginx/ssl/wss.pem'
         docker exec -it `docker ps|grep nginx|cut -d' ' -f1` bash -c 'cat /etc/letsencrypt/archive/$WEBITEL_HOST/fullchain1.pem /etc/letsencrypt/archive/$WEBITEL_HOST/privkey1.pem > /etc/nginx/ssl/tls.pem'
         docker exec -it `docker ps|grep nginx|cut -d' ' -f1` bash -c 'cat /etc/letsencrypt/archive/$WEBITEL_HOST/fullchain1.pem /etc/letsencrypt/archive/$WEBITEL_HOST/privkey1.pem > /etc/nginx/ssl/dtls-srtp.pem'
+
+        docker exec -it freeswitch /usr/local/freeswitch/bin/fs_cli -H 172.17.0.1 -x 'sofia profile internal restart'
+        docker exec -it freeswitch /usr/local/freeswitch/bin/fs_cli -H 172.17.0.1 -x 'sofia profile nonreg restart'
+        docker restart `docker ps|grep nginx|cut -d' ' -f1`
         fi
         ;;
     "help")
+        echo "fs - Run FreeSWITCH client"
         echo "dev - Webitel containers in the development mode"
         echo "backup - Backup webitel files"
         echo "cdr2csv - Export webitel CDR from MongoDB into CSV file"
         echo "archive - Webitel archive storage only"
         echo "letsencrypt - Get your free HTTPS certificate"
-        echo "fs - Run FreeSWITCH client"
         exit 0
         ;;
     *)
