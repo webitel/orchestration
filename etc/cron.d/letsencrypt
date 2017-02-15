@@ -1,0 +1,12 @@
+#
+# cron.d/letsencrypt -- schedules update TLS certificates
+#
+# Copyright © vitaly kovalyshyn <v.kovalyshyn@webitel.com>
+# distributed under the terms of the Artistic Licence 2.0
+#
+
+HELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+2 21   1 * *   root    /opt/orchestration/bin/bootstrap.sh letsencrypt
+

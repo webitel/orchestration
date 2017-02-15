@@ -60,18 +60,13 @@ case "$1" in
         ;;
     "letsencrypt")
         echo "boostraping dependencies to work with letsencrypt and acquiring the certificates"
-        docker exec -it `docker ps|grep nginx|cut -d' ' -f1` bash -c 'cd /opt/letsencrypt/ && ./letsencrypt-auto --config ./www/site.conf certonly --agree-tos'
+        docker exec -it `docker ps|grep nginx|cut -d' ' -f1` bash -c 'cd /opt/letsencrypt/ && ./letsencrypt-auto --config ./www/site.conf certonly --agree-tos -n'
         docker exec -it `docker ps|grep nginx|cut -d' ' -f1` bash -c 'cp /etc/letsencrypt/archive/$WEBITEL_HOST/privkey1.pem /etc/nginx/ssl/'
         docker exec -it `docker ps|grep nginx|cut -d' ' -f1` bash -c 'cp /etc/letsencrypt/archive/$WEBITEL_HOST/fullchain1.pem /etc/nginx/ssl/'
         echo ""
         echo ""
         echo "the files privkey1 and fullchain1 were saved locally in the ${WEBITEL_DIR}/ssl/."
 
-        echo ""
-        read -p "Replace You curent certificates? (y/N) " -n 1 -r
-        echo ""
-        if [[ $REPLY =~ ^[Yy]$ ]]
-        then
         docker exec -it `docker ps|grep nginx|cut -d' ' -f1` bash -c 'cat /etc/letsencrypt/archive/$WEBITEL_HOST/fullchain1.pem /etc/letsencrypt/archive/$WEBITEL_HOST/privkey1.pem > /etc/nginx/ssl/wss.pem'
         docker exec -it `docker ps|grep nginx|cut -d' ' -f1` bash -c 'cat /etc/letsencrypt/archive/$WEBITEL_HOST/fullchain1.pem /etc/letsencrypt/archive/$WEBITEL_HOST/privkey1.pem > /etc/nginx/ssl/tls.pem'
         docker exec -it `docker ps|grep nginx|cut -d' ' -f1` bash -c 'cat /etc/letsencrypt/archive/$WEBITEL_HOST/fullchain1.pem /etc/letsencrypt/archive/$WEBITEL_HOST/privkey1.pem > /etc/nginx/ssl/dtls-srtp.pem'
@@ -79,7 +74,6 @@ case "$1" in
         docker exec -it freeswitch /usr/local/freeswitch/bin/fs_cli -H 172.17.0.1 -x 'sofia profile internal restart'
         docker exec -it freeswitch /usr/local/freeswitch/bin/fs_cli -H 172.17.0.1 -x 'sofia profile nonreg restart'
         docker restart `docker ps|grep nginx|cut -d' ' -f1`
-        fi
         ;;
     "help")
         echo "fs - Run FreeSWITCH client"
