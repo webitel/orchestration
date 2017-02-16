@@ -32,8 +32,8 @@ case "$1" in
         $DC -p webitel -f "${DIR}/misc/mini-compose.yml" $2 $3 $4
         ;;
     "backup")
-        docker exec -it `docker ps|grep mongo|cut -d' ' -f1` bash -c 'mongodump -h mongo -o /data/db/dump/'
-        if [ ! -d "${WEBITEL_DIR}/backup/" ]; then		
+        docker exec -it mongo bash -c 'mongodump -h mongo -o /data/db/dump/'
+        if [ ! -d "${WEBITEL_DIR}/backup/" ]; then
             mkdir ${WEBITEL_DIR}/backup/	
         fi
         tar -cvzf ${WEBITEL_DIR}/backup/$TIMESTAMP.tgz "${DIR}/env" "${WEBITEL_DIR}/ssl" "${WEBITEL_DIR}/db" "${WEBITEL_DIR}/mongodb/dump"
@@ -47,9 +47,9 @@ case "$1" in
             chmod +x "$DIR/bin/db2scv.sh"
         fi
         docker cp $DIR/bin/db2scv.sh `docker ps|grep mongo|cut -d' ' -f1`:/db2scv.sh
-        docker exec -it `docker ps|grep mongo|cut -d' ' -f1` bash -c '/db2scv.sh'
-        if [ ! -d "${WEBITEL_DIR}/export/" ]; then		
-            mkdir ${WEBITEL_DIR}/export/	
+        docker exec -it mongo bash -c '/db2scv.sh'
+        if [ ! -d "${WEBITEL_DIR}/export/" ]; then
+            mkdir ${WEBITEL_DIR}/export/
         fi
         mv ${WEBITEL_DIR}/mongodb/export/cdr.csv ${WEBITEL_DIR}/export/cdr-${TIMESTAMP}.csv
         gzip ${WEBITEL_DIR}/export/cdr-${TIMESTAMP}.csv
@@ -60,20 +60,20 @@ case "$1" in
         ;;
     "letsencrypt")
         echo "boostraping dependencies to work with letsencrypt and acquiring the certificates"
-        docker exec -it `docker ps|grep nginx|cut -d' ' -f1` bash -c 'cd /opt/letsencrypt/ && ./letsencrypt-auto --config ./www/site.conf certonly --agree-tos -n'
-        docker exec -it `docker ps|grep nginx|cut -d' ' -f1` bash -c 'cp /etc/letsencrypt/archive/$WEBITEL_HOST/privkey1.pem /etc/nginx/ssl/'
-        docker exec -it `docker ps|grep nginx|cut -d' ' -f1` bash -c 'cp /etc/letsencrypt/archive/$WEBITEL_HOST/fullchain1.pem /etc/nginx/ssl/'
+        docker exec -it nginx bash -c 'cd /opt/letsencrypt/ && ./letsencrypt-auto --config ./www/site.conf certonly --agree-tos -n'
+        docker exec -it nginx bash -c 'cp /etc/letsencrypt/archive/$WEBITEL_HOST/privkey1.pem /etc/nginx/ssl/'
+        docker exec -it nginx bash -c 'cp /etc/letsencrypt/archive/$WEBITEL_HOST/fullchain1.pem /etc/nginx/ssl/'
         echo ""
         echo ""
         echo "the files privkey1 and fullchain1 were saved locally in the ${WEBITEL_DIR}/ssl/."
 
-        docker exec -it `docker ps|grep nginx|cut -d' ' -f1` bash -c 'cat /etc/letsencrypt/archive/$WEBITEL_HOST/fullchain1.pem /etc/letsencrypt/archive/$WEBITEL_HOST/privkey1.pem > /etc/nginx/ssl/wss.pem'
-        docker exec -it `docker ps|grep nginx|cut -d' ' -f1` bash -c 'cat /etc/letsencrypt/archive/$WEBITEL_HOST/fullchain1.pem /etc/letsencrypt/archive/$WEBITEL_HOST/privkey1.pem > /etc/nginx/ssl/tls.pem'
-        docker exec -it `docker ps|grep nginx|cut -d' ' -f1` bash -c 'cat /etc/letsencrypt/archive/$WEBITEL_HOST/fullchain1.pem /etc/letsencrypt/archive/$WEBITEL_HOST/privkey1.pem > /etc/nginx/ssl/dtls-srtp.pem'
+        docker exec -it nginx bash -c 'cat /etc/letsencrypt/archive/$WEBITEL_HOST/fullchain1.pem /etc/letsencrypt/archive/$WEBITEL_HOST/privkey1.pem > /etc/nginx/ssl/wss.pem'
+        docker exec -it nginx bash -c 'cat /etc/letsencrypt/archive/$WEBITEL_HOST/fullchain1.pem /etc/letsencrypt/archive/$WEBITEL_HOST/privkey1.pem > /etc/nginx/ssl/tls.pem'
+        docker exec -it nginx bash -c 'cat /etc/letsencrypt/archive/$WEBITEL_HOST/fullchain1.pem /etc/letsencrypt/archive/$WEBITEL_HOST/privkey1.pem > /etc/nginx/ssl/dtls-srtp.pem'
 
         docker exec -it freeswitch /usr/local/freeswitch/bin/fs_cli -H 172.17.0.1 -x 'sofia profile internal restart'
         docker exec -it freeswitch /usr/local/freeswitch/bin/fs_cli -H 172.17.0.1 -x 'sofia profile nonreg restart'
-        docker restart `docker ps|grep nginx|cut -d' ' -f1`
+        docker restart nginx
         ;;
     "help")
         echo "fs - Run FreeSWITCH client"
