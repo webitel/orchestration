@@ -8,4 +8,8 @@
 HELL=/bin/sh
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
-@reboot root    /opt/orchestration/bin/reboot.sh
+@reboot root    /opt/orchestration/bin/reboot.sh > /var/log/webitel.log 2>&1
+
+# backup
+03 3    * * *   root    /opt/orchestration/bin/bootstrap.sh backup > /var/log/webitel.log 2>&1
+

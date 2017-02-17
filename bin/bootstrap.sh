@@ -32,12 +32,15 @@ case "$1" in
         $DC -p webitel -f "${DIR}/misc/mini-compose.yml" $2 $3 $4
         ;;
     "backup")
+        if [ ! -d "${WEBITEL_DIR}/mongodb/dump/" ]; then
+            mkdir ${WEBITEL_DIR}/mongodb/dump/
+        fi
         docker exec -it mongo bash -c 'mongodump -h mongo -o /data/db/dump/'
         if [ ! -d "${WEBITEL_DIR}/backup/" ]; then
-            mkdir ${WEBITEL_DIR}/backup/	
+            mkdir ${WEBITEL_DIR}/backup/
         fi
         tar -cvzf ${WEBITEL_DIR}/backup/$TIMESTAMP.tgz "${DIR}/env" "${WEBITEL_DIR}/ssl" "${WEBITEL_DIR}/db" "${WEBITEL_DIR}/mongodb/dump"
-        rm -rf ${WEBITEL_DIR}/mongodb/dump
+        rm -rf ${WEBITEL_DIR}/mongodb/dump/*
         find ${WEBITEL_DIR}/backup/ -maxdepth 1 -mtime +$BACKUP_LIFETIME_DAYS -type f -exec rm {} \;
         ;;
     "cdr2csv")
