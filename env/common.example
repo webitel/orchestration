@@ -5,3 +5,4 @@ conference:validateMail=false
 mongodb:uri=mongodb://mongo:27017/webitel
 webitelServer:host=wconsole
 cdrServer:useProxy=false
+#defaultPublicRout=0000
