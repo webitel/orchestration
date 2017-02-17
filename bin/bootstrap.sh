@@ -4,6 +4,7 @@ export DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" && pwd )"
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 . $DIR/setenv.sh
 
+date
 echo ""
 echo "********************************************"
 echo "webitel ${WEBITEL_VERSION} software stack orchestration"
@@ -35,7 +36,7 @@ case "$1" in
         if [ ! -d "${WEBITEL_DIR}/mongodb/dump/" ]; then
             mkdir ${WEBITEL_DIR}/mongodb/dump/
         fi
-        docker exec -it mongo bash -c 'mongodump -h mongo -o /data/db/dump/'
+        docker exec -t mongo bash -c 'mongodump -h mongo -o /data/db/dump/'
         if [ ! -d "${WEBITEL_DIR}/backup/" ]; then
             mkdir ${WEBITEL_DIR}/backup/
         fi
@@ -50,7 +51,7 @@ case "$1" in
             chmod +x "$DIR/bin/db2scv.sh"
         fi
         docker cp $DIR/bin/db2scv.sh `docker ps|grep mongo|cut -d' ' -f1`:/db2scv.sh
-        docker exec -it mongo bash -c '/db2scv.sh'
+        docker exec -t mongo bash -c '/db2scv.sh'
         if [ ! -d "${WEBITEL_DIR}/export/" ]; then
             mkdir ${WEBITEL_DIR}/export/
         fi
@@ -63,19 +64,19 @@ case "$1" in
         ;;
     "letsencrypt")
         echo "boostraping dependencies to work with letsencrypt and acquiring the certificates"
-        docker exec -it nginx bash -c 'cd /opt/letsencrypt/ && ./letsencrypt-auto --config ./www/site.conf certonly --agree-tos -n'
-        docker exec -it nginx bash -c 'cp /etc/letsencrypt/archive/$WEBITEL_HOST/privkey1.pem /etc/nginx/ssl/'
-        docker exec -it nginx bash -c 'cp /etc/letsencrypt/archive/$WEBITEL_HOST/fullchain1.pem /etc/nginx/ssl/'
+        docker exec -t nginx bash -c 'cd /opt/letsencrypt/ && ./letsencrypt-auto --config ./www/site.conf certonly --agree-tos -n'
+        docker exec -t nginx bash -c 'cp /etc/letsencrypt/archive/$WEBITEL_HOST/privkey1.pem /etc/nginx/ssl/'
+        docker exec -t nginx bash -c 'cp /etc/letsencrypt/archive/$WEBITEL_HOST/fullchain1.pem /etc/nginx/ssl/'
         echo ""
         echo ""
         echo "the files privkey1 and fullchain1 were saved locally in the ${WEBITEL_DIR}/ssl/."
 
-        docker exec -it nginx bash -c 'cat /etc/letsencrypt/archive/$WEBITEL_HOST/fullchain1.pem /etc/letsencrypt/archive/$WEBITEL_HOST/privkey1.pem > /etc/nginx/ssl/wss.pem'
-        docker exec -it nginx bash -c 'cat /etc/letsencrypt/archive/$WEBITEL_HOST/fullchain1.pem /etc/letsencrypt/archive/$WEBITEL_HOST/privkey1.pem > /etc/nginx/ssl/tls.pem'
-        docker exec -it nginx bash -c 'cat /etc/letsencrypt/archive/$WEBITEL_HOST/fullchain1.pem /etc/letsencrypt/archive/$WEBITEL_HOST/privkey1.pem > /etc/nginx/ssl/dtls-srtp.pem'
+        docker exec -t nginx bash -c 'cat /etc/letsencrypt/archive/$WEBITEL_HOST/fullchain1.pem /etc/letsencrypt/archive/$WEBITEL_HOST/privkey1.pem > /etc/nginx/ssl/wss.pem'
+        docker exec -t nginx bash -c 'cat /etc/letsencrypt/archive/$WEBITEL_HOST/fullchain1.pem /etc/letsencrypt/archive/$WEBITEL_HOST/privkey1.pem > /etc/nginx/ssl/tls.pem'
+        docker exec -t nginx bash -c 'cat /etc/letsencrypt/archive/$WEBITEL_HOST/fullchain1.pem /etc/letsencrypt/archive/$WEBITEL_HOST/privkey1.pem > /etc/nginx/ssl/dtls-srtp.pem'
 
-        docker exec -it freeswitch /usr/local/freeswitch/bin/fs_cli -H 172.17.0.1 -x 'sofia profile internal restart'
-        docker exec -it freeswitch /usr/local/freeswitch/bin/fs_cli -H 172.17.0.1 -x 'sofia profile nonreg restart'
+        docker exec -t freeswitch /usr/local/freeswitch/bin/fs_cli -H 172.17.0.1 -x 'sofia profile internal restart'
+        docker exec -t freeswitch /usr/local/freeswitch/bin/fs_cli -H 172.17.0.1 -x 'sofia profile nonreg restart'
         docker restart nginx
         ;;
     "help")

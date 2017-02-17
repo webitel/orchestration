@@ -8,5 +8,5 @@
 HELL=/bin/sh
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
-2 21   1 * *   root    /opt/orchestration/bin/bootstrap.sh letsencrypt
+4 4  1 * *   root    /opt/orchestration/bin/bootstrap.sh letsencrypt > /var/log/webitel.log 2>&1
 
