@@ -18,7 +18,7 @@ case "$1" in
         ;;
     "custom")
         printf "Webitel custom docker-compose file\n\n"
-        $DC -p webitel -f "${DIR}/custome/docker-compose.yml" $2 $3 $4
+        $DC -p webitel -f "${DIR}/custom/docker-compose.yml" $2 $3 $4
         ;;
     "archive")
         printf "Webitel Sorage stack\n\n"
