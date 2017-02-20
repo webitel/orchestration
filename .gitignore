@@ -5,5 +5,5 @@ env/archive
 env/freeswitch
 env/environment
 bin/db2scv.sh
-custome/*
 .vscode
+custom/*
