@@ -37,7 +37,7 @@ case "$1" in
         if [ ! -d "${WEBITEL_DIR}/backup/" ]; then
             mkdir ${WEBITEL_DIR}/backup/
         fi
-        tar -cvzf ${WEBITEL_DIR}/backup/$TIMESTAMP.tgz "${DIR}/env" "${WEBITEL_DIR}/ssl" "${WEBITEL_DIR}/db" "${WEBITEL_DIR}/mongodb/dump"
+        tar -cvzf ${WEBITEL_DIR}/backup/$TIMESTAMP.tgz "${DIR}/env" "${DIR}/custom" "${WEBITEL_DIR}/ssl" "${WEBITEL_DIR}/db" "${WEBITEL_DIR}/mongodb/dump"
         rm -rf ${WEBITEL_DIR}/mongodb/dump
         find ${WEBITEL_DIR}/backup/ -maxdepth 1 -mtime +$BACKUP_LIFETIME_DAYS -type f -exec rm {} \;
         ;;
