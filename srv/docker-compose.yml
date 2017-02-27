@@ -150,6 +150,7 @@ services:
     privileged: true
     network_mode: "host"
     env_file: "${DIR}/env/freeswitch"
+    tmpfs: /db
     volumes:
       - fs-data:/recordings
       - "${WEBITEL_DIR}/lua:/scripts/lua"

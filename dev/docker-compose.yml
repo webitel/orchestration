@@ -130,6 +130,7 @@ services:
       - CDR_SERVER=172.17.0.1:10021
       - ACR_SERVER=172.17.0.1:10030
       - CONF_SERVER=172.17.0.1:10024
+    tmpfs: /db
     volumes:
       - fs-data:/recordings
       - "${WEBITEL_DIR}/lua:/scripts/lua"
