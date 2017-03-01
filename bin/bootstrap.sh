@@ -16,10 +16,6 @@ case "$1" in
         printf "Webitel developers stack\n\n"
         $DC -p webitel -f "${DIR}/dev/docker-compose.yml" $2 $3 $4
         ;;
-    "custom")
-        printf "Webitel custom docker-compose file\n\n"
-        $DC -p webitel -f "${DIR}/custom/docker-compose.yml" $2 $3 $4
-        ;;
     "archive")
         printf "Webitel Sorage stack\n\n"
         if [ ! -f "$DIR/env/archive" ]; then
@@ -76,17 +72,24 @@ case "$1" in
         docker exec -t freeswitch /usr/local/freeswitch/bin/fs_cli -H 172.17.0.1 -x 'sofia profile nonreg restart'
         docker restart nginx
         ;;
+    "db-repair")
+        printf "Mongo DB repair\n\n"
+        $DC -p webitel -f "${DIR}/misc/utils-compose.yml" up mongo-repair
+        $DC -p webitel -f "${DIR}/misc/utils-compose.yml" stop mongo-repair 
+        $DC -p webitel -f "${DIR}/misc/utils-compose.yml" rm -f mongo-repair
+        ;;
     "help")
         echo "fs - Run FreeSWITCH client"
         echo "dev - Webitel containers in the development mode"
         echo "backup - Backup webitel files"
         echo "cdr2csv - Export webitel CDR from MongoDB into CSV file"
         echo "archive - Webitel archive storage only"
+        echo "db-repair - Repair MongoDB after crash"
         echo "letsencrypt - Get your free HTTPS certificate"
         exit 0
         ;;
     *)
-        printf "Webitel containers\n\n"
-        $DC -p webitel -f "${DIR}/srv/docker-compose.yml" $1 $2 $3 $4
+        printf "Webitel ${WEBITEL_DC} containers\n\n"
+        $DC -p webitel -f "${DIR}/${WEBITEL_DC}/docker-compose.yml" $1 $2 $3 $4
         ;;
 esac

@@ -1,0 +1,13 @@
+--- 
+version: '2'
+
+services:
+  mongo-repair:
+    image: mongo:3.4
+    restart: always
+    volumes:
+      - "${WEBITEL_DIR}/mongodb:/data/db"
+    command: --repair
+    ulimits:
+      nproc: 65535
+      nofile: 65535

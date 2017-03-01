@@ -1,5 +1,5 @@
 # Environment variables for webitel docker continers
-# changed at 2017-01-26
+# changed at 2017-03-01
 #
 # Webitel root password. Change it!!!
 export WEBITEL_PASS="secret"
@@ -16,10 +16,12 @@ export WEBITEL_ARCHIVE="off"
 # Webitel IP or hostname.
 # Please, use the FQDN hostname for HTTPS site
 export WEBITEL_HOST="$(hostname -I | cut -d' ' -f1)"
+# docker-compose file: default or custom
+export WEBITEL_DC="default"
 # webitel data directory
 export WEBITEL_DIR="/opt/webitel"
 # backups lifetime 
-export BACKUP_LIFETIME_DAYS="3"
+export BACKUP_LIFETIME_DAYS="2"
 # Elastisearch memory limits
 export ES_MEMORY="2g"
 export ES_MEMORY_LIMIT="4g"
