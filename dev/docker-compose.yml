@@ -15,7 +15,7 @@ services:
     container_name: web-client
     network_mode: "none"
   elasticsearch:
-    image: elasticsearch:5.1
+    image: elasticsearch:5.2
     container_name: elasticsearch
     environment:
       - "bootstrap.memory_lock=true"
