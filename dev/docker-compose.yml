@@ -67,6 +67,8 @@ services:
       - dev
     env_file: 
       - "${DIR}/env/dev.env"
+    environment:
+      - "broker:connectionString=amqp://webitel:${WEBITEL_PASS}@rabbitmq?heartbeat=0"
   wconsole:
     image: "webitel/wconsole:${WEBITEL_VERSION}"
     container_name: wconsole
