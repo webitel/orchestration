@@ -44,3 +44,9 @@ if ! type "$DC" > /dev/null; then
   echo "docker-compose version 1.8.0 or greater is required"
   exit 1;
 fi
+
+# Elasticsearch permission 
+if [ ! -f "${WEBITEL_DIR}/elasticsearch5" ]; then
+    mkdir "${WEBITEL_DIR}/elasticsearch5"
+fi
+chown -R 1000:1000 "${WEBITEL_DIR}/elasticsearch5"
