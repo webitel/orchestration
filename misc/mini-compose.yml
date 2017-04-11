@@ -2,14 +2,6 @@
 version: '2'
 
 services:
-  moh:
-    image: webitel/freeswitch-sound:moh
-    container_name: moh
-    network_mode: "none"
-  en:
-    image: webitel/freeswitch-sound:en
-    container_name: en
-    network_mode: "none"
   client:
     image: "webitel/client:${WEBITEL_VERSION}"
     container_name: web-client
@@ -104,11 +96,9 @@ services:
     tmpfs: /db
     volumes:
       - fs-data:/recordings
+      - fs-sounds:/sounds      
       - "${WEBITEL_DIR}/lua:/scripts/lua"
       - "${WEBITEL_DIR}/ssl:/certs"
-    volumes_from:
-      - moh
-      - en
   nginx:
     image: "webitel/nginx:${WEBITEL_VERSION}"
     container_name: nginx
@@ -133,6 +123,7 @@ services:
   
 volumes:
   fs-data:
+  fs-sounds:  
   
 networks:
   wtel:

@@ -2,14 +2,6 @@
 version: '2'
 
 services:
-  moh:
-    image: webitel/freeswitch-sound:moh
-    container_name: moh
-    network_mode: "none"
-  en:
-    image: webitel/freeswitch-sound:en
-    container_name: en
-    network_mode: "none"
   client:
     image: "webitel/client:${WEBITEL_VERSION}"
     container_name: web-client
@@ -130,18 +122,15 @@ services:
     network_mode: "host"
     environment:
       - LOGLEVEL=all
+      - MOH=true
       - AMQP_HOST=172.17.0.1
       - CDR_SERVER=172.17.0.1:10021
       - ACR_SERVER=172.17.0.1:10030
       - CONF_SERVER=172.17.0.1:10024
     tmpfs: /db
     volumes:
-      - fs-data:/recordings
       - "${WEBITEL_DIR}/lua:/scripts/lua"
       - "${WEBITEL_DIR}/ssl:/certs"
-    volumes_from:
-      - moh
-      - en
     depends_on:
       - wconsole
       - rabbitmq
@@ -166,9 +155,6 @@ services:
       - engine
     networks:
       - dev
-
-volumes:
-  fs-data:
   
 networks:
   dev:

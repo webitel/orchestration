@@ -34,20 +34,10 @@ services:
     environment:
       - "RABBITMQ_DEFAULT_USER=webitel"
       - "RABBITMQ_DEFAULT_PASS=${WEBITEL_PASS}"
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq
     networks:
       - wtel
-  moh:
-    image: webitel/freeswitch-sound:moh
-    container_name: moh
-    network_mode: "none"
-  en:
-    image: webitel/freeswitch-sound:en
-    container_name: en
-    network_mode: "none"
-  ru:
-    image: webitel/freeswitch-sound:ru
-    container_name: ru
-    network_mode: "none"
   client:
     image: "webitel/client:${WEBITEL_VERSION}"
     container_name: web-client
@@ -142,6 +132,7 @@ services:
     volumes:
       - "${WEBITEL_DIR}/recordings:/recordings"
       - "${WEBITEL_DIR}/ssl:/ssl"
+      - storage:/cdr/cache
     depends_on:
       - elasticsearch
       - mongo
@@ -157,12 +148,9 @@ services:
     tmpfs: /db
     volumes:
       - fs-data:/recordings
+      - fs-sounds:/sounds      
       - "${WEBITEL_DIR}/lua:/scripts/lua"
       - "${WEBITEL_DIR}/ssl:/certs"
-    volumes_from:
-      - moh
-      - en
-      - ru
     depends_on:
       - rabbitmq
   nginx:
@@ -185,8 +173,11 @@ services:
       - wtel
   
 volumes:
+  rabbitmq:
+  storage:
   fs-data:
-  
+  fs-sounds:
+
 networks:
   wtel:
     driver: bridge
