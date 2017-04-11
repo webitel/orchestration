@@ -123,6 +123,7 @@ services:
     environment:
       - LOGLEVEL=all
       - MOH=true
+      - SND_RATE=8000
       - AMQP_HOST=172.17.0.1
       - CDR_SERVER=172.17.0.1:10021
       - ACR_SERVER=172.17.0.1:10030
