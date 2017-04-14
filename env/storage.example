@@ -1,7 +1,10 @@
 elastic:enabled=true
 mediaFile:providers:local:fileRoot=/recordings/
+recordFile:cronJobDeleteOldFile=30 2 * * *
+recordFile:defaultDaysLifeFiles=1200
 recordFile:defaultProvider=local
 recordFile:providers:local:fileRoot=/recordings/
+mediaFile:providers:local:fileRoot=/recordings/
 #recordFile:providers:s3:region=eu-west-1
 #recordFile:providers:s3:bucketName=webitel.s3.com
 #recordFile:providers:s3:accessKeyId=accessKeyId
