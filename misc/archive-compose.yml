@@ -35,7 +35,7 @@ services:
     volumes:
       - rabbitmq:/var/lib/rabbitmq
     networks:
-      - wtel
+      - wnet
   kibana:
     image: "webitel/kibana:${WEBITEL_VERSION}"
     container_name: kibana
