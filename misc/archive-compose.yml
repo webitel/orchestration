@@ -24,6 +24,18 @@ services:
       - "${WEBITEL_DIR}/elasticsearch5:/usr/share/elasticsearch/data"
     networks:
       - wnet
+  rabbitmq:
+    image: rabbitmq:3
+    container_name: rabbitmq
+    ports:
+      - "172.17.0.1:5672:5672"
+    environment:
+      - "RABBITMQ_DEFAULT_USER=webitel"
+      - "RABBITMQ_DEFAULT_PASS=${WEBITEL_PASS}"
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq
+    networks:
+      - wtel
   kibana:
     image: "webitel/kibana:${WEBITEL_VERSION}"
     container_name: kibana
@@ -46,9 +58,11 @@ services:
       - "${DIR}/env/archive"
     environment:
       - "archive:password=${WEBITEL_PASS}"
+      - "broker:connectionString=amqp://webitel:${WEBITEL_PASS}@rabbitmq?heartbeat=0"
     volumes:
       - "${WEBITEL_DIR}/recordings:/recordings"
-      - "${WEBITEL_DIR}/ssl:/ssl" 
+      - "${WEBITEL_DIR}/ssl:/ssl"
+      - storage:/cdr/cache
     depends_on:
       - elasticsearch
     networks:
@@ -69,7 +83,11 @@ services:
       - storage
     networks:
       - wnet
-  
+
+volumes:
+  rabbitmq:
+  storage:
+
 networks:
   wnet:
     driver: bridge
