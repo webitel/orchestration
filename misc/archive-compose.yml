@@ -22,6 +22,8 @@ services:
       - IPC_LOCK
     volumes:
       - "${WEBITEL_DIR}/elasticsearch5:/usr/share/elasticsearch/data"
+    ports:
+      - "172.17.0.1:9200:9200"
     networks:
       - wnet
   kibana:
