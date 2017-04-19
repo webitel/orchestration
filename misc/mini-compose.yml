@@ -25,6 +25,8 @@ services:
     container_name: acr
     restart: always
     env_file: "${DIR}/env/common"
+    environment:
+      - "broker::enable=false"
     ports:
       - "172.17.0.1:10030:10030"
     depends_on:
@@ -78,7 +80,7 @@ services:
       - "${DIR}/env/common"
       - "${DIR}/env/storage"
     environment:
-      - "broker:connectionString=amqp://webitel:${WEBITEL_PASS}@rabbitmq?heartbeat=0"
+      - "broker::enable=false"
     volumes:
       - "${WEBITEL_DIR}/ssl:/ssl"
       - "${WEBITEL_DIR}/recordings:/recordings"
