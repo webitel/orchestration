@@ -38,10 +38,6 @@ services:
       - rabbitmq:/var/lib/rabbitmq
     networks:
       - wtel
-  client:
-    image: "webitel/client:${WEBITEL_VERSION}"
-    container_name: web-client
-    network_mode: "none"
   mongo:
     image: mongo:3.4
     container_name: mongo
@@ -156,6 +152,8 @@ services:
   nginx:
     image: "webitel/nginx:${WEBITEL_VERSION}"
     container_name: nginx
+    env_file:
+      - "${DIR}/env/storage"
     environment:
       - "WEBITEL_HOST=${WEBITEL_HOST}"
       - "WEBITEL_SSL=${WEBITEL_SSL}"
@@ -164,8 +162,6 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    volumes_from:
-      - client
     depends_on:
       - engine
       - storage
