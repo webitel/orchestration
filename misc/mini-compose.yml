@@ -76,7 +76,7 @@ services:
       - "${DIR}/env/common"
       - "${DIR}/env/storage"
     environment:
-      - "broker::enable=false"
+      - "broker:enable=false"
     volumes:
       - "${WEBITEL_DIR}/ssl:/ssl"
       - "${WEBITEL_DIR}/recordings:/recordings"
