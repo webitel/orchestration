@@ -6,8 +6,8 @@ Orchestrate webitel containers
 
 ## Requirement
 
-- [Docker Engine v1.12+](https://docs.docker.com/engine/installation/)
-- [Docker Compose v1.8+](https://docs.docker.com/compose/install/)
+- [Docker CE Stable](https://www.docker.com/community-edition#/download/)
+- [Docker Compose v1.12+](https://docs.docker.com/compose/install/)
 
 ## Download the source code with Git
 
@@ -17,20 +17,7 @@ Webitel is constantly evolving therefore, we advise you to download and use the 
 	$ git clone https://github.com/webitel/orchestration.git
 	$ cd /opt/orchestration
 	$ git tag -l
-	
-	v3.2.0
-	v3.2.1
-	v3.2.2
-	v3.3.0
-	v3.4.0
-	v3.4.1
-	v3.4.2
-	v3.5.0
-	v3.6.0
-	v3.6.1
-	v3.6.2
-	
-	$ git checkout v3.6.2
+	$ git checkout v3.6.3
 
 ## Configure webitel
 
