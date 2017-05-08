@@ -1,5 +1,7 @@
 ssl:enabled=false
 application:loglevel=warn
+application:writeUserStatus=false
+application:dialerCbMinusAttempt=true
 conference:enable=false
 conference:validateMail=false
 mongodb:uri=mongodb://mongo:27017/webitel
