@@ -81,6 +81,7 @@ services:
     volumes:
       - "${WEBITEL_DIR}/ssl:/ssl"
       - "${WEBITEL_DIR}/recordings:/recordings"
+      - storage:/cdr/cache
     depends_on:
       - mongo
     networks:
@@ -120,8 +121,9 @@ services:
       - wtel
   
 volumes:
+  storage:
   fs-data:
-  fs-sounds:  
+  fs-sounds:
   
 networks:
   wtel:
