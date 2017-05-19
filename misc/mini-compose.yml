@@ -22,7 +22,7 @@ services:
     restart: always
     env_file: "${DIR}/env/common"
     environment:
-      - "broker::enable=false"
+      - "broker:enable=false"
     ports:
       - "172.17.0.1:10030:10030"
     depends_on:
