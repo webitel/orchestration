@@ -51,6 +51,19 @@ services:
     ulimits:
       nproc: 65535
       nofile: 65535
+  postgres:
+    image: postgres:9.6
+    container_name: postgres
+    environment:
+      - "POSTGRES_DB=webitel"
+      - "POSTGRES_USER=webitel"
+      - "POSTGRES_PASSWORD=webitel"
+    ports:
+      - "172.17.0.1:5432:5432"
+    volumes:
+      - "${WEBITEL_DIR}/pgsql:/var/lib/postgresql/data"
+    networks:
+      - wtel
   kibana:
     image: "webitel/kibana:${WEBITEL_VERSION}"
     container_name: kibana
@@ -101,7 +114,6 @@ services:
       - "172.17.0.1:10022:10022"
     depends_on:
       - mongo
-      - rabbitmq
       - wconsole
       - freeswitch
     environment:
@@ -141,7 +153,6 @@ services:
     privileged: true
     network_mode: "host"
     env_file: "${DIR}/env/freeswitch"
-    tmpfs: /db
     volumes:
       - fs-data:/recordings
       - fs-sounds:/sounds      
@@ -149,6 +160,7 @@ services:
       - "${WEBITEL_DIR}/ssl:/certs"
     depends_on:
       - rabbitmq
+      - postgres
   nginx:
     image: "webitel/nginx:${WEBITEL_VERSION}"
     container_name: nginx
