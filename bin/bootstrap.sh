@@ -30,11 +30,11 @@ case "$1" in
         ;;
     "backup")
         docker exec -t mongo bash -c 'mongodump -h mongo -o /data/db/dump/'
-        docker exec -e PGPASSWORD=webitel -t postgres bash -c 'pg_dump -U webitel webitel > /var/lib/postgresql/data/pgsql_dump.sql'
+        docker exec -e PGPASSWORD=webitel -t postgres bash -c 'pg_dump -U webitel webitel > /var/lib/postgresql/data/dump.sql'
         if [ ! -d "${WEBITEL_DIR}/backup/" ]; then
             mkdir ${WEBITEL_DIR}/backup/
         fi
-        tar -cvzf ${WEBITEL_DIR}/backup/$TIMESTAMP.tgz "${DIR}/env" "${DIR}/custom" "${WEBITEL_DIR}/ssl" "${WEBITEL_DIR}/db" "${WEBITEL_DIR}/mongodb/dump" "${WEBITEL_DIR}/pgsql/pgsql_dump.sql"
+        tar -cvzf ${WEBITEL_DIR}/backup/$TIMESTAMP.tgz "${DIR}/env" "${DIR}/custom" "${WEBITEL_DIR}/ssl" "${WEBITEL_DIR}/db" "${WEBITEL_DIR}/mongodb/dump" "${WEBITEL_DIR}/pgsql/dump.sql"
         rm -rf ${WEBITEL_DIR}/mongodb/dump
         find ${WEBITEL_DIR}/backup/ -maxdepth 1 -mtime +$BACKUP_LIFETIME_DAYS -type f -exec rm {} \;
         ;;
