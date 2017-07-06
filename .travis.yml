@@ -14,13 +14,12 @@ before_install:
   -o Dpkg::Options::="--force-confold" install docker-ce jq
 - mkdir -p tmp/ssl
 - openssl genrsa -out tmp/ssl/token.key 1024
-- docker-compose -f dev/docker-compose.yml pull
 install:
-- docker-compose -f dev/docker-compose.yml up -d
+- "./bin/reboot.sh"
 - sleep 10s
-- docker-compose -f dev/docker-compose.yml ps
+- "./bin/bootstrap.sh ps"
 - sleep 10s
-- docker-compose -f dev/docker-compose.yml logs
+- "./bin/bootstrap.sh logs"
 script:
 - "./bin/test.sh"
 notifications:
