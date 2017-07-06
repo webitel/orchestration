@@ -12,10 +12,6 @@ echo "********************************************"
 echo ""
 
 case "$1" in
-    "dev")
-        printf "Webitel developers stack\n\n"
-        $DC -p webitel -f "${DIR}/dev/docker-compose.yml" $2 $3 $4
-        ;;
     "archive")
         printf "Webitel Sorage stack\n\n"
         if [ ! -f "$DIR/env/archive" ]; then
@@ -23,10 +19,6 @@ case "$1" in
             cp "$DIR/env/archive.example" "$DIR/env/archive"
         fi
         $DC -p webitel -f "${DIR}/misc/archive-compose.yml" $2 $3 $4
-        ;;
-    "mini")
-        printf "Webitel minimal stack\n\n"
-        $DC -p webitel -f "${DIR}/misc/mini-compose.yml" $2 $3 $4
         ;;
     "backup")
         docker exec -t mongo bash -c 'mongodump -h mongo -o /data/db/dump/'
@@ -81,8 +73,7 @@ case "$1" in
         ;;
     "help")
         echo "fs - Run FreeSWITCH client"
-        echo "dev - Webitel containers in the development mode"
-        echo "backup - Backup webitel files"
+        echo "backup - Backup webitel files and databases"
         echo "cdr2csv - Export webitel CDR from MongoDB into CSV file"
         echo "archive - Webitel archive storage only"
         echo "db-repair - Repair MongoDB after crash"
