@@ -12,8 +12,6 @@ before_install:
 - sudo mv docker-compose /usr/local/bin
 - sudo apt-get update && sudo apt-get -y --quiet -o Dpkg::Options::="--force-confdef"
   -o Dpkg::Options::="--force-confold" install docker-ce jq
-- mkdir -p tmp/ssl
-- openssl genrsa -out tmp/ssl/token.key 1024
 install:
 - "./bin/reboot.sh"
 - sleep 10s

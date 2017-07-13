@@ -171,6 +171,7 @@ services:
       - "WEBITEL_SSL=${WEBITEL_SSL}"
     volumes:
       - "${WEBITEL_DIR}/ssl:/etc/nginx/ssl"
+      - "${WEBITEL_DIR}/widgets:/webitel/widgets/domains"
     ports:
       - "80:80"
       - "443:443"
