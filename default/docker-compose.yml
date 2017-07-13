@@ -125,6 +125,7 @@ services:
       - "broker:connectionString=amqp://webitel:${WEBITEL_PASS}@rabbitmq?heartbeat=0"
     volumes:
       - "${WEBITEL_DIR}/ssl:/ssl"
+      - "${WEBITEL_DIR}/widgets:/webitel/widgets/domains"
     networks:
       - wtel
   storage:
