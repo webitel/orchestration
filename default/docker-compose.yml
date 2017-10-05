@@ -44,7 +44,7 @@ services:
     command: --storageEngine wiredTiger
     networks:
       - wtel
-    ulimits: 65535
+    ulimits:
       nproc: 65535
       nofile: 65535
   postgres:
