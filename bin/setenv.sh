@@ -45,7 +45,6 @@ if ! type "$DC" > /dev/null; then
   exit 1;
 fi
 
-
  if [ ! -d "${WEBITEL_DIR}/elasticsearch5" ]; then
      mkdir "${WEBITEL_DIR}/elasticsearch5"
      chown -R 1000:1000 "${WEBITEL_DIR}/elasticsearch5"
