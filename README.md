@@ -7,7 +7,7 @@ Orchestrate webitel containers
 ## Requirement
 
 - [Docker CE Stable](https://www.docker.com/community-edition#/download/)
-- [Docker Compose v1.14+](https://docs.docker.com/compose/install/)
+- [Docker Compose v1.15+](https://docs.docker.com/compose/install/)
 
 ## Download the source code with Git
 
@@ -21,12 +21,17 @@ Webitel is constantly evolving therefore, we advise you to download and use the 
 
 ## Configure webitel
 
-By default Webitel comes with an env/*.example file. You'll need to copy this file to new withoutz .example.
+By default Webitel comes with an env/*.example file. You'll need to copy this file to new without .example.
 
 It's now just a case of editing new **env/environment** file and setting the values of your setup.
 
 	$ sudo cat /opt/orchestration/etc/sysctl.conf >> /etc/sysctl.conf
 	$ sudo sysctl -p
+
+For Ubuntu:
+
+	$ sudo apparmor_parser -R /etc/apparmor.d/usr.sbin.tcpdump
+
 
 ## Start webitel
 
