@@ -17,15 +17,15 @@ Webitel is constantly evolving therefore, we advise you to download and use the 
 	$ git clone https://github.com/webitel/orchestration.git
 	$ cd /opt/orchestration
 	$ git tag -l
-	$ git checkout v3.7.1
+	$ git checkout v3.8.0
 
 ## Configure webitel
 
-By default Webitel comes with an env/*.example file. You'll need to copy this file to new without .example.
+By default Webitel comes with an env/*.example file. You'll need to copy this file to new withoutz .example.
 
 It's now just a case of editing new **env/environment** file and setting the values of your setup.
 
-	$ sudo echo "vm.max_map_count=262144" >> /etc/sysctl.conf
+	$ sudo cat /opt/orchestration/etc/sysctl.conf >> /etc/sysctl.conf
 	$ sudo sysctl -p
 
 ## Start webitel

@@ -25,7 +25,5 @@ mediaFile:providers:local:fileRoot=/recordings/
 #tts:defaultProvider=polly
 #tts:polly:accessKey=
 #tts:polly:accessToken=
-#tts:ivona:accessKey=
-#tts:ivona:accessToken=
 #tts:microsoft:accessKey=
 #tts:microsoft:accessToken=
