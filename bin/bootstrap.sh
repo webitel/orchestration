@@ -63,6 +63,20 @@ case "$1" in
             docker restart nginx
         fi
         ;;
+    "self-signed-cert")
+        curl -o /tmp/ssl.tgz http://files.freeswitch.org/downloads/ssl.ca-0.1.tar.gz
+        cd /tmp
+        tar zxfv /tmp/ssl.tgz
+        cd ssl.ca-0.1/
+        perl -i -pe 's/md5/sha256/g' *.sh
+        perl -i -pe 's/1024/4096/g' *.sh
+        ./new-root-ca.sh
+        ./new-server-cert.sh $WEBITEL_HOST
+        ./sign-server-cert.sh $WEBITEL_HOST
+        cat ${WEBITEL_HOST}.crt ${WEBITEL_HOST}.key > ${WEBITEL_DIR}/ssl/wss.pem
+        cat ${WEBITEL_HOST}.crt ${WEBITEL_HOST}.key > ${WEBITEL_DIR}/ssl/tls.pem
+        cat ${WEBITEL_HOST}.crt ${WEBITEL_HOST}.key > ${WEBITEL_DIR}/ssl/dtls-srtp.pem
+        ;;
     "db-repair")
         printf "Mongo DB repair\n\n"
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" up mongo-repair
