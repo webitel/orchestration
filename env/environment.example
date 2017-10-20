@@ -4,7 +4,7 @@
 # Webitel root password. Change it!!!
 export WEBITEL_PASS="secret"
 # webitel version
-export WEBITEL_VERSION="3.8.0"
+export WEBITEL_VERSION="3.8.1"
 # WebSocket protocol: ws or wss (WebSocket with SSL)
 export WEBITEL_WS="ws"
 # WebSocket protocol: off or on (for HTTPS)
