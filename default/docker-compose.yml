@@ -116,6 +116,7 @@ services:
       - "webitelServer:secret=${WEBITEL_PASS}"
       - "cdrServer:host=${WEBITEL_PROTO}://${WEBITEL_HOST}/cdr/"
       - "freeSWITCH:verto=${WEBITEL_WS}://${WEBITEL_HOST}/verto/"
+      - "server:baseUrl=${WEBITEL_PROTO}://${WEBITEL_HOST}/engine/"
       - "widget:baseUri=${WEBITEL_PROTO}://${WEBITEL_HOST}/widgets"
       - "widget:publicWebRtc=${WEBITEL_WS}://${WEBITEL_HOST}/public/"
       - "widget:publicPostApi=${WEBITEL_PROTO}://${WEBITEL_HOST}/callback/members"
