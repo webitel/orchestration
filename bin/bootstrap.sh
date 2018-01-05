@@ -28,6 +28,8 @@ case "$1" in
         fi
         tar -cvzf ${WEBITEL_DIR}/backup/$TIMESTAMP.tgz "${DIR}/env" "${DIR}/custom" "${WEBITEL_DIR}/ssl" "${WEBITEL_DIR}/db" "${WEBITEL_DIR}/mongodb/dump" "${WEBITEL_DIR}/pgsql/dump.sql"
         rm -rf ${WEBITEL_DIR}/mongodb/dump
+        curl -XPUT -d '{"type": "fs","settings": { "compress": true, "location": "backup"}}' -H 'Content-Type: application/json' 
+        curl -XPUT http://172.17.0.1:9200/_snapshot/backup/snapshot_1
         find ${WEBITEL_DIR}/backup/ -maxdepth 1 -mtime +$BACKUP_LIFETIME_DAYS -type f -exec rm {} \;
         ;;
     "cdr2csv")
