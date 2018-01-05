@@ -6,8 +6,8 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:5.6.2
     container_name: elasticsearch
     environment:
-      - path.repo=/backups
       - bootstrap.memory_lock=true
+      - path.repo=/usr/share/elasticsearch/data/backups
       - "ES_JAVA_OPTS=-Xms${ES_MEMORY} -Xmx${ES_MEMORY}"
     ulimits:
       memlock: -1
@@ -189,6 +189,7 @@ services:
 volumes:
   rabbitmq:
   storage:
+  es-data:
   fs-data:
   fs-sounds:
 

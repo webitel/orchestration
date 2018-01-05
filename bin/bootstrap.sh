@@ -26,13 +26,14 @@ case "$1" in
         if [ ! -d "${WEBITEL_DIR}/backup/" ]; then
             mkdir ${WEBITEL_DIR}/backup/
         fi
-        docker exec -it elasticsearch curl -XPUT -d '{"type": "fs","settings": {"location": "backup"}}' -H 'Content-Type: application/json' localhost:9200/_snapshot/es_backup
-        docker exec -it elasticsearch curl -XPUT localhost:9200/_snapshot/es_backup/snapshot_1?wait_for_completion=true
-        docker cp elasticsearch:/backups/es_backup "${WEBITEL_DIR}/es_backup"
-        tar -cvzf ${WEBITEL_DIR}/backup/$TIMESTAMP.tgz "${WEBITEL_DIR}/backup/es_backup" "${DIR}/env" "${DIR}/custom" "${WEBITEL_DIR}/ssl" "${WEBITEL_DIR}/db" "${WEBITEL_DIR}/mongodb/dump" "${WEBITEL_DIR}/pgsql/dump.sql"
+        docker exec -it elasticsearch curl -XPUT -d '{"type": "fs","settings": {"location": "es"}}' -H 'Content-Type: application/json' localhost:9200/_snapshot/es
+        docker exec -it elasticsearch curl -XPUT "localhost:9200/_snapshot/es/snapshot_1?wait_for_completion=true"
+        
+        tar -cvzf ${WEBITEL_DIR}/backup/$TIMESTAMP.tgz "${WEBITEL_DIR}/elasticsearch5/backups/es" "${DIR}/env" "${DIR}/custom" "${WEBITEL_DIR}/ssl" "${WEBITEL_DIR}/db" "${WEBITEL_DIR}/mongodb/dump" "${WEBITEL_DIR}/pgsql/dump.sql"
+        
+        docker exec -it elasticsearch curl -XDELETE localhost:9200/_snapshot/es
         rm -rf ${WEBITEL_DIR}/mongodb/dump
-        rm -rf ${WEBITEL_DIR}/backup/es_backup
-        docker exec -it elasticsearch curl -XDELETE localhost:9200/_snapshot/es_backup
+        rm -rf $${WEBITEL_DIR}/elasticsearch5/es
         find ${WEBITEL_DIR}/backup/ -maxdepth 1 -mtime +$BACKUP_LIFETIME_DAYS -type f -exec rm {} \;
         ;;
     "cdr2csv")
