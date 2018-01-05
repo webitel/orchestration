@@ -33,7 +33,7 @@ case "$1" in
         
         docker exec -it elasticsearch curl -XDELETE localhost:9200/_snapshot/es
         rm -rf ${WEBITEL_DIR}/mongodb/dump
-        rm -rf $${WEBITEL_DIR}/elasticsearch5/es
+        rm -rf $${WEBITEL_DIR}/elasticsearch5/backups/es
         find ${WEBITEL_DIR}/backup/ -maxdepth 1 -mtime +$BACKUP_LIFETIME_DAYS -type f -exec rm {} \;
         ;;
     "cdr2csv")
