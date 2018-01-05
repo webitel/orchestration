@@ -7,6 +7,8 @@ services:
     container_name: elasticsearch
     environment:
       - bootstrap.memory_lock=true
+      - xpack.security.enabled=false
+      - xpack.monitoring.enabled=false
       - path.repo=/usr/share/elasticsearch/data/backups
       - "ES_JAVA_OPTS=-Xms${ES_MEMORY} -Xmx${ES_MEMORY}"
     ulimits:
