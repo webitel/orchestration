@@ -49,8 +49,3 @@ fi
      mkdir "${WEBITEL_DIR}/elasticsearch5"
      chown -R 1000:1000 "${WEBITEL_DIR}/elasticsearch5"
  fi
-
-  if [ ! -d "${WEBITEL_DIR}/backup/es" ]; then
-     mkdir -p "${WEBITEL_DIR}/backup/es"
-     chown -R 1000:1000 "${WEBITEL_DIR}/backup/es"
- fi

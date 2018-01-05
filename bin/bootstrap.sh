@@ -26,10 +26,13 @@ case "$1" in
         if [ ! -d "${WEBITEL_DIR}/backup/" ]; then
             mkdir ${WEBITEL_DIR}/backup/
         fi
-        tar -cvzf ${WEBITEL_DIR}/backup/$TIMESTAMP.tgz "${DIR}/env" "${DIR}/custom" "${WEBITEL_DIR}/ssl" "${WEBITEL_DIR}/db" "${WEBITEL_DIR}/mongodb/dump" "${WEBITEL_DIR}/pgsql/dump.sql"
+        docker exec -it elasticsearch curl -XPUT -d '{"type": "fs","settings": {"location": "backup"}}' -H 'Content-Type: application/json' localhost:9200/_snapshot/es_backup
+        docker exec -it elasticsearch curl -XPUT localhost:9200/_snapshot/es_backup/snapshot_1?wait_for_completion=true
+        docker cp elasticsearch:/backups/es_backup "${WEBITEL_DIR}/es_backup"
+        tar -cvzf ${WEBITEL_DIR}/backup/$TIMESTAMP.tgz "${WEBITEL_DIR}/backup/es_backup" "${DIR}/env" "${DIR}/custom" "${WEBITEL_DIR}/ssl" "${WEBITEL_DIR}/db" "${WEBITEL_DIR}/mongodb/dump" "${WEBITEL_DIR}/pgsql/dump.sql"
         rm -rf ${WEBITEL_DIR}/mongodb/dump
-        curl -XPUT -d '{"type": "fs","settings": { "compress": true, "location": "backup"}}' -H 'Content-Type: application/json' 
-        curl -XPUT http://172.17.0.1:9200/_snapshot/backup/snapshot_1
+        rm -rf ${WEBITEL_DIR}/backup/es_backup
+        docker exec -it elasticsearch curl -XDELETE localhost:9200/_snapshot/es_backup
         find ${WEBITEL_DIR}/backup/ -maxdepth 1 -mtime +$BACKUP_LIFETIME_DAYS -type f -exec rm {} \;
         ;;
     "cdr2csv")
