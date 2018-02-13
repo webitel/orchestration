@@ -88,7 +88,7 @@ case "$1" in
         docker exec -it elasticsearch5 curl -XDELETE localhost:9200/_snapshot/es
         docker exec -it elasticsearch5 curl -XPUT -d '{"type": "fs","settings": {"location": "es"}}' -H 'Content-Type: application/json' localhost:9200/_snapshot/es
         docker exec -it elasticsearch5 curl -XPUT "localhost:9200/_snapshot/es/snapshot?wait_for_completion=true"
-        mv "${WEBITEL_DIR}/elasticsearch5/backups" "${WEBITEL_DIR}/esdata6/"
+        mv -v "${WEBITEL_DIR}/elasticsearch5/backups" "${WEBITEL_DIR}/esdata6/"
         chown -R 1000:1000 "${WEBITEL_DIR}/esdata6"
         docker exec -it elasticsearch5 curl -XDELETE localhost:9200/_snapshot/es
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" stop elasticsearch5
