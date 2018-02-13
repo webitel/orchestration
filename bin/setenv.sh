@@ -28,6 +28,11 @@ if [ ! -f "$DIR/env/storage" ]; then
     cp "$DIR/env/storage.example" "$DIR/env/storage"
 fi
 
+if [ ! -f "$DIR/env/archive" ]; then
+    echo "$DIR/env/archive not found!"
+    cp "$DIR/env/archive.example" "$DIR/env/archive"
+fi
+
 if [ ! -f "${WEBITEL_DIR}/ssl/token.key" ]; then
     echo "${WEBITEL_DIR}/ssl/token.key not found!"
     mkdir -p "${WEBITEL_DIR}/ssl/"
