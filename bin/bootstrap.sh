@@ -12,14 +12,6 @@ echo "********************************************"
 echo ""
 
 case "$1" in
-    "archive")
-        printf "Webitel Sorage stack\n\n"
-        if [ ! -f "$DIR/env/archive" ]; then
-            echo "$DIR/env/archive not found!"
-            cp "$DIR/env/archive.example" "$DIR/env/archive"
-        fi
-        $DC -p webitel -f "${DIR}/misc/archive-compose.yml" $2 $3 $4
-        ;;
     "backup")
         docker exec -t mongo bash -c 'mongodump -h mongo -o /data/db/dump/'
         docker exec -e PGPASSWORD=webitel -t postgres bash -c 'pg_dump -U webitel webitel > /var/lib/postgresql/data/dump.sql'
@@ -27,13 +19,13 @@ case "$1" in
             mkdir ${WEBITEL_DIR}/backup/
         fi
         docker exec -it elasticsearch curl -XPUT -d '{"type": "fs","settings": {"location": "es"}}' -H 'Content-Type: application/json' localhost:9200/_snapshot/es
-        docker exec -it elasticsearch curl -XPUT "localhost:9200/_snapshot/es/snapshot_1?wait_for_completion=true"
+        docker exec -it elasticsearch curl -XPUT "localhost:9200/_snapshot/es/snapshot?wait_for_completion=true"
         
-        tar -cvzf ${WEBITEL_DIR}/backup/$TIMESTAMP.tgz "${WEBITEL_DIR}/elasticsearch5/backups/es" "${DIR}/env" "${DIR}/custom" "${WEBITEL_DIR}/ssl" "${WEBITEL_DIR}/db" "${WEBITEL_DIR}/mongodb/dump" "${WEBITEL_DIR}/pgsql/dump.sql"
+        tar -cvzf ${WEBITEL_DIR}/backup/$TIMESTAMP.tgz "${WEBITEL_DIR}/esdata6/backups/es" "${DIR}/env" "${DIR}/custom" "${WEBITEL_DIR}/ssl" "${WEBITEL_DIR}/db" "${WEBITEL_DIR}/mongodb/dump" "${WEBITEL_DIR}/pgsql/dump.sql"
         
         docker exec -it elasticsearch curl -XDELETE localhost:9200/_snapshot/es
         rm -rf ${WEBITEL_DIR}/mongodb/dump
-        rm -rf $${WEBITEL_DIR}/elasticsearch5/backups/es
+        rm -rf $${WEBITEL_DIR}/esdata6/backups/es
         find ${WEBITEL_DIR}/backup/ -maxdepth 1 -mtime +$BACKUP_LIFETIME_DAYS -type f -exec rm {} \;
         ;;
     "cdr2csv")
@@ -89,17 +81,37 @@ case "$1" in
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" stop mongo-repair 
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" rm -f mongo-repair
         ;;
+    "es526")
+        printf "Create snapshot of an index in 5.x and restore it in 6.x.\n\n"
+        $DC -p webitel -f "${DIR}/misc/utils-compose.yml" up elasticsearch5
+        docker exec -it elasticsearch curl -XPUT -d '{"type": "fs","settings": {"location": "es"}}' -H 'Content-Type: application/json' localhost:9200/_snapshot/es
+        docker exec -it elasticsearch curl -XPUT "localhost:9200/_snapshot/es/snapshot?wait_for_completion=true"
+        mkdir -p "$${WEBITEL_DIR}/esdata6/"
+        mv "$${WEBITEL_DIR}/elasticsearch5/backups" "$${WEBITEL_DIR}/esdata6/"
+        docker exec -it elasticsearch curl -XDELETE localhost:9200/_snapshot/es
+        $DC -p webitel -f "${DIR}/misc/utils-compose.yml" stop elasticsearch5
+        $DC -p webitel -f "${DIR}/misc/utils-compose.yml" rm -f elasticsearch5
+
+        $DC -p webitel -f "${DIR}/misc/utils-compose.yml" up elasticsearch6
+        docker exec -it elasticsearch curl -XPUT -d '{"type": "fs","settings": {"location": "es"}}' -H 'Content-Type: application/json' localhost:9200/_snapshot/es
+        docker exec -it elasticsearch curl -XPUT "localhost:9200/_snapshot/es/snapshot_1/_restore"
+        docker exec -it elasticsearch curl -XDELETE localhost:9200/_snapshot/es
+        $DC -p webitel -f "${DIR}/misc/utils-compose.yml" stop elasticsearch6
+        $DC -p webitel -f "${DIR}/misc/utils-compose.yml" rm -f elasticsearch6
+
+        rm -rf $${WEBITEL_DIR}/elasticsearch5/backups
+        rm -rf $${WEBITEL_DIR}/esdata6/backups
+        ;;
     "help")
         echo "fs - Run FreeSWITCH client"
         echo "backup - Backup webitel files and databases"
         echo "cdr2csv - Export webitel CDR from MongoDB into CSV file"
-        echo "archive - Webitel archive storage only"
         echo "db-repair - Repair MongoDB after crash"
         echo "letsencrypt - Get your free HTTPS certificate"
         exit 0
         ;;
     *)
         printf "Webitel ${WEBITEL_DC} containers\n\n"
-        $DC -p webitel -f "${DIR}/${WEBITEL_DC}/docker-compose.yml" $1 $2 $3 $4
+        $DC -p webitel -f "${DIR}/${WEBITEL_DC}/docker-compose.yml" $1 $2 $3 $4 $5 $6 $7 $8 $9
         ;;
 esac
