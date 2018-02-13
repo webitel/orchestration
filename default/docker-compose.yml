@@ -3,24 +3,40 @@ version: '2'
 
 services:
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.2
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.2.1
     container_name: elasticsearch
+    restart: always
     environment:
+      - cluster.name=webitel-cluster
       - bootstrap.memory_lock=true
-      - xpack.security.enabled=false
-      - xpack.monitoring.enabled=false
       - path.repo=/usr/share/elasticsearch/data/backups
       - "ES_JAVA_OPTS=-Xms${ES_MEMORY} -Xmx${ES_MEMORY}"
     ulimits:
-      memlock: -1
-      nofile: 65536
+      memlock:
+        soft: -1
+        hard: -1
     mem_limit: "${ES_MEMORY_LIMIT}"
-    cap_add:
-      - IPC_LOCK
     ports:
       - "172.17.0.1:9200:9200"
     volumes:
-      - "${WEBITEL_DIR}/elasticsearch5:/usr/share/elasticsearch/data"
+      - "${WEBITEL_DIR}/esdata6:/usr/share/elasticsearch/data"
+    networks:
+      - wtel
+  elasticsearch2:
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.2.1
+    container_name: elasticsearch2
+    restart: always
+    environment:
+      - cluster.name=webitel-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.zen.ping.unicast.hosts=elasticsearch"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - "es-data:/usr/share/elasticsearch/data"
     networks:
       - wtel
   rabbitmq:

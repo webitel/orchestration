@@ -104,11 +104,15 @@ case "$1" in
         rm -rf ${WEBITEL_DIR}/elasticsearch5/backups
         rm -rf ${WEBITEL_DIR}/esdata6/backups
         printf "Create dump of the pqsql 9.6 and restore it in 10.0.\n\n"
-        $DC -p webitel -f "${DIR}/misc/utils-compose.yml" up postgres9
+        $DC -p webitel -f "${DIR}/misc/utils-compose.yml" up -d postgres9
+        docker exec -e PGPASSWORD=webitel -t postgres9 bash -c 'pg_dump -Fc webitel > /var/lib/postgresql/data/db.dump'
+        mv ${WEBITEL_DIR}/pgsql/db.dump ${WEBITEL_DIR}/backup/
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" stop postgres9
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" rm -f postgres9
         rm -rf ${WEBITEL_DIR}/pgsql
-        $DC -p webitel -f "${DIR}/misc/utils-compose.yml" up postgres10
+        $DC -p webitel -f "${DIR}/misc/utils-compose.yml" up -d postgres10
+        mv ${WEBITEL_DIR}/backup/db.dump ${WEBITEL_DIR}/pgsql/
+        docker exec -e PGPASSWORD=webitel -t postgres10 bash -c 'pg_restore -C -d webitel /var/lib/postgresql/data/db.dump'
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" stop postgres10
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" rm -f postgres10
         ;;
