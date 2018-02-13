@@ -85,18 +85,18 @@ case "$1" in
         printf "Create snapshot of an index in 5.x and restore it in 6.x.\n\n"
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" up -d elasticsearch5
         sleep 30s
-        docker exec -it elasticsearch curl -XPUT -d '{"type": "fs","settings": {"location": "es"}}' -H 'Content-Type: application/json' localhost:9200/_snapshot/es
-        docker exec -it elasticsearch curl -XPUT "localhost:9200/_snapshot/es/snapshot?wait_for_completion=true"
+        docker exec -it elasticsearch5 curl -XPUT -d '{"type": "fs","settings": {"location": "es"}}' -H 'Content-Type: application/json' localhost:9200/_snapshot/es
+        docker exec -it elasticsearch5 curl -XPUT "localhost:9200/_snapshot/es/snapshot?wait_for_completion=true"
         mkdir -p "$${WEBITEL_DIR}/esdata6/"
         mv "$${WEBITEL_DIR}/elasticsearch5/backups" "$${WEBITEL_DIR}/esdata6/"
-        docker exec -it elasticsearch curl -XDELETE localhost:9200/_snapshot/es
+        docker exec -it elasticsearch5 curl -XDELETE localhost:9200/_snapshot/es
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" rm -f elasticsearch5
 
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" up -d elasticsearch6
         sleep 30s
-        docker exec -it elasticsearch curl -XPUT -d '{"type": "fs","settings": {"location": "es"}}' -H 'Content-Type: application/json' localhost:9200/_snapshot/es
-        docker exec -it elasticsearch curl -XPUT "localhost:9200/_snapshot/es/snapshot_1/_restore"
-        docker exec -it elasticsearch curl -XDELETE localhost:9200/_snapshot/es
+        docker exec -it elasticsearch6 curl -XPUT -d '{"type": "fs","settings": {"location": "es"}}' -H 'Content-Type: application/json' localhost:9200/_snapshot/es
+        docker exec -it elasticsearch6 curl -XPUT "localhost:9200/_snapshot/es/snapshot_1/_restore"
+        docker exec -it elasticsearch6 curl -XDELETE localhost:9200/_snapshot/es
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" rm -f elasticsearch6
 
         rm -rf $${WEBITEL_DIR}/elasticsearch5/backups
