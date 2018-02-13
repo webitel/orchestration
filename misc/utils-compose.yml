@@ -48,7 +48,6 @@ services:
       - "POSTGRES_PASSWORD=webitel"
     volumes:
       - "${WEBITEL_DIR}/pgsql:/var/lib/postgresql/data"
-    command: pg_dump -U webitel webitel > /var/lib/postgresql/data/dump.sql
   postgres10:
     image: postgres:10.0-alpine
     container_name: postgres10
@@ -58,4 +57,3 @@ services:
       - "POSTGRES_PASSWORD=webitel"
     volumes:
       - "${WEBITEL_DIR}/pgsql:/var/lib/postgresql/data"
-    command: pg_restore -C -U webitel webitel /var/lib/postgresql/data/dump.sql

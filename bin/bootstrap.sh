@@ -105,16 +105,19 @@ case "$1" in
         rm -rf ${WEBITEL_DIR}/esdata6/backups
         printf "Create dump of the pqsql 9.6 and restore it in 10.0.\n\n"
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" up -d postgres9
-        docker exec -e PGPASSWORD=webitel -t postgres9 bash -c 'pg_dump -Fc webitel > /var/lib/postgresql/data/db.dump'
-        mv ${WEBITEL_DIR}/pgsql/db.dump ${WEBITEL_DIR}/backup/
+        sleep 30s
+        docker exec -e PGPASSWORD=webitel -t postgres9 bash -c 'pg_dump -U webitel webitel > /var/lib/postgresql/data/dump.sql'
+        mv -v ${WEBITEL_DIR}/pgsql/dump.sql ${WEBITEL_DIR}/backup/
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" stop postgres9
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" rm -f postgres9
         rm -rf ${WEBITEL_DIR}/pgsql
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" up -d postgres10
-        mv ${WEBITEL_DIR}/backup/db.dump ${WEBITEL_DIR}/pgsql/
-        docker exec -e PGPASSWORD=webitel -t postgres10 bash -c 'pg_restore -C -d webitel /var/lib/postgresql/data/db.dump'
+        mv -v ${WEBITEL_DIR}/backup/dump.sql ${WEBITEL_DIR}/pgsql/
+        sleep 30s
+        docker exec -e PGPASSWORD=webitel -t postgres10 bash -c 'psql -U webitel webitel < /var/lib/postgresql/data/dump.sql'
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" stop postgres10
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" rm -f postgres10
+        rm -rf ${WEBITEL_DIR}/pgsql/dump.sql
         ;;
     "help")
         echo "fs - Run FreeSWITCH client"
