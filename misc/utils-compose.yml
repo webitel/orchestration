@@ -39,3 +39,23 @@ services:
         hard: -1
     volumes:
       - "${WEBITEL_DIR}/esdata6:/usr/share/elasticsearch/data"
+  postgres9:
+    image: postgres:9.6-alpine
+    container_name: postgres9
+    environment:
+      - "POSTGRES_DB=webitel"
+      - "POSTGRES_USER=webitel"
+      - "POSTGRES_PASSWORD=webitel"
+    volumes:
+      - "${WEBITEL_DIR}/pgsql:/var/lib/postgresql/data"
+    command: pg_dump -U webitel webitel > /var/lib/postgresql/data/dump.sql
+  postgres10:
+    image: postgres:10.0-alpine
+    container_name: postgres10
+    environment:
+      - "POSTGRES_DB=webitel"
+      - "POSTGRES_USER=webitel"
+      - "POSTGRES_PASSWORD=webitel"
+    volumes:
+      - "${WEBITEL_DIR}/pgsql:/var/lib/postgresql/data"
+    command: pg_restore -C -U webitel webitel /var/lib/postgresql/data/dump.sql

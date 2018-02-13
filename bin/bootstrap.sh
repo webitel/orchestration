@@ -25,7 +25,7 @@ case "$1" in
         
         docker exec -it elasticsearch curl -XDELETE localhost:9200/_snapshot/es
         rm -rf ${WEBITEL_DIR}/mongodb/dump
-        rm -rf $${WEBITEL_DIR}/esdata6/backups/es
+        rm -rf ${WEBITEL_DIR}/esdata6/backups/es
         find ${WEBITEL_DIR}/backup/ -maxdepth 1 -mtime +$BACKUP_LIFETIME_DAYS -type f -exec rm {} \;
         ;;
     "cdr2csv")
@@ -81,7 +81,7 @@ case "$1" in
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" stop mongo-repair 
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" rm -f mongo-repair
         ;;
-    "es526")
+    "3.8.x-3.9.0")
         printf "Create snapshot of an index in 5.x and restore it in 6.x.\n\n"
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" up -d elasticsearch5
         sleep 30s
@@ -95,12 +95,19 @@ case "$1" in
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" up -d elasticsearch6
         sleep 30s
         docker exec -it elasticsearch6 curl -XPUT -d '{"type": "fs","settings": {"location": "es"}}' -H 'Content-Type: application/json' localhost:9200/_snapshot/es
-        docker exec -it elasticsearch6 curl -XPOST "localhost:9200/_snapshot/es/snapshot/_restore"
+        docker exec -it elasticsearch6 curl -XPOST "localhost:9200/_snapshot/es/snapshot/_restore?wait_for_completion=true"
         docker exec -it elasticsearch6 curl -XDELETE localhost:9200/_snapshot/es
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" stop elasticsearch6
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" rm -f elasticsearch6
-        rm -rf $${WEBITEL_DIR}/elasticsearch5/backups
-        rm -rf $${WEBITEL_DIR}/esdata6/backups
+        rm -rf ${WEBITEL_DIR}/elasticsearch5/backups
+        rm -rf ${WEBITEL_DIR}/esdata6/backups
+        $DC -p webitel -f "${DIR}/misc/utils-compose.yml" up postgres9
+        $DC -p webitel -f "${DIR}/misc/utils-compose.yml" stop postgres9
+        $DC -p webitel -f "${DIR}/misc/utils-compose.yml" rm -f postgres9
+        rm -rf ${WEBITEL_DIR}/pgsql
+        $DC -p webitel -f "${DIR}/misc/utils-compose.yml" up postgres10
+        $DC -p webitel -f "${DIR}/misc/utils-compose.yml" stop postgres10
+        $DC -p webitel -f "${DIR}/misc/utils-compose.yml" rm -f postgres10
         ;;
     "help")
         echo "fs - Run FreeSWITCH client"
