@@ -1,0 +1,95 @@
+--- 
+version: '2'
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.2.1
+    container_name: elasticsearch
+    restart: always
+    environment:
+      - cluster.name=webitel-cluster
+      - bootstrap.memory_lock=true
+      - path.repo=/usr/share/elasticsearch/data/backups
+      - "ES_JAVA_OPTS=-Xms${ES_MEMORY} -Xmx${ES_MEMORY}"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: "${ES_MEMORY_LIMIT}"
+    ports:
+      - "172.17.0.1:9200:9200"
+    volumes:
+      - "${WEBITEL_DIR}/esdata6:/usr/share/elasticsearch/data"
+    networks:
+      - wtel
+  elasticsearch2:
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.2.1
+    container_name: elasticsearch2
+    restart: always
+    environment:
+      - cluster.name=webitel-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.zen.ping.unicast.hosts=elasticsearch"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - "es-data:/usr/share/elasticsearch/data"
+    networks:
+      - wtel
+  kibana:
+    image: "webitel/kibana:${WEBITEL_VERSION}"
+    container_name: kibana
+    environment:
+      - "WEBITEL_PASS=${WEBITEL_PASS}"
+      - "WEBITEL_ARCHIVE=${WEBITEL_ARCHIVE}"
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    networks:
+      - wnet
+  storage:
+    image: "webitel/storage:${WEBITEL_VERSION}"
+    container_name: storage
+    restart: always
+    ports:
+      - "10025:10025"
+    env_file:
+      - "${DIR}/env/archive"
+    environment:
+      - "archive:password=${WEBITEL_PASS}"
+      - "broker:enable=false"
+    volumes:
+      - "${WEBITEL_DIR}/recordings:/recordings"
+      - "${WEBITEL_DIR}/ssl:/ssl"
+      - storage:/cdr/cache
+    depends_on:
+      - elasticsearch
+    networks:
+      - wnet
+  nginx:
+    image: "webitel/nginx:${WEBITEL_VERSION}"
+    container_name: nginx
+    environment:
+      - "WEBITEL_HOST=${WEBITEL_HOST}"
+      - "WEBITEL_SSL=${WEBITEL_SSL}"
+      - "WEBITEL_ARCHIVE=${WEBITEL_ARCHIVE}"
+    volumes:
+      - "${WEBITEL_DIR}/ssl:/etc/nginx/ssl"
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - storage
+    networks:
+      - wnet
+
+volumes:
+  storage:
+
+networks:
+  wnet:
+    driver: bridge

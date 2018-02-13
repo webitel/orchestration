@@ -92,15 +92,13 @@ case "$1" in
         docker exec -it elasticsearch5 curl -XDELETE localhost:9200/_snapshot/es
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" stop elasticsearch5
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" rm -f elasticsearch5
-
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" up -d elasticsearch6
         sleep 30s
         docker exec -it elasticsearch6 curl -XPUT -d '{"type": "fs","settings": {"location": "es"}}' -H 'Content-Type: application/json' localhost:9200/_snapshot/es
-        docker exec -it elasticsearch6 curl -XPUT "localhost:9200/_snapshot/es/snapshot/_restore"
+        docker exec -it elasticsearch6 curl -XPOST "localhost:9200/_snapshot/es/snapshot/_restore"
         docker exec -it elasticsearch6 curl -XDELETE localhost:9200/_snapshot/es
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" stop elasticsearch6
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" rm -f elasticsearch6
-
         rm -rf $${WEBITEL_DIR}/elasticsearch5/backups
         rm -rf $${WEBITEL_DIR}/esdata6/backups
         ;;
