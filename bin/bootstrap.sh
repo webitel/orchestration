@@ -85,6 +85,7 @@ case "$1" in
         printf "Create snapshot of an index in 5.x and restore it in 6.x.\n\n"
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" up -d elasticsearch5
         sleep 30s
+        docker exec -it elasticsearch5 curl -XDELETE localhost:9200/_snapshot/es
         docker exec -it elasticsearch5 curl -XPUT -d '{"type": "fs","settings": {"location": "es"}}' -H 'Content-Type: application/json' localhost:9200/_snapshot/es
         docker exec -it elasticsearch5 curl -XPUT "localhost:9200/_snapshot/es/snapshot?wait_for_completion=true"
         mv "${WEBITEL_DIR}/elasticsearch5/backups" "${WEBITEL_DIR}/esdata6/"
@@ -94,6 +95,7 @@ case "$1" in
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" rm -f elasticsearch5
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" up -d elasticsearch6
         sleep 30s
+        docker exec -it elasticsearch6 curl -XDELETE localhost:9200/_snapshot/es
         docker exec -it elasticsearch6 curl -XPUT -d '{"type": "fs","settings": {"location": "es"}}' -H 'Content-Type: application/json' localhost:9200/_snapshot/es
         docker exec -it elasticsearch6 curl -XPOST "localhost:9200/_snapshot/es/snapshot/_restore?wait_for_completion=true"
         docker exec -it elasticsearch6 curl -XDELETE localhost:9200/_snapshot/es
@@ -101,6 +103,7 @@ case "$1" in
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" rm -f elasticsearch6
         rm -rf ${WEBITEL_DIR}/elasticsearch5/backups
         rm -rf ${WEBITEL_DIR}/esdata6/backups
+        printf "Create dump of the pqsql 9.6 and restore it in 10.0.\n\n"
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" up postgres9
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" stop postgres9
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" rm -f postgres9
