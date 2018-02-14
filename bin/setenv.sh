@@ -46,11 +46,13 @@ fi
 
 DC="$(which docker-compose)"
 if ! type "$DC" > /dev/null; then
-  echo "docker-compose version 1.8.0 or greater is required"
-  exit 1;
+    echo "docker-compose version 1.8.0 or greater is required"
+    exit 1;
 fi
 
  if [ ! -d "${WEBITEL_DIR}/esdata6" ]; then
-     mkdir "${WEBITEL_DIR}/esdata6"
-     chown -R 1000:1000 "${WEBITEL_DIR}/esdata6"
- fi
+    mkdir -p "${WEBITEL_DIR}/esdata6/0"
+    mkdir "${WEBITEL_DIR}/esdata6/1"
+    mkdir "${WEBITEL_DIR}/esdata6/backups"
+    chown -R 1000:1000 "${WEBITEL_DIR}/esdata6"
+fi

@@ -9,7 +9,7 @@ services:
     environment:
       - cluster.name=webitel-cluster
       - bootstrap.memory_lock=true
-      - path.repo=/usr/share/elasticsearch/data/backups
+      - path.repo=/usr/share/elasticsearch/backups
       - "ES_JAVA_OPTS=-Xms${ES_MEMORY} -Xmx${ES_MEMORY}"
     ulimits:
       memlock:
@@ -19,7 +19,8 @@ services:
     ports:
       - "172.17.0.1:9200:9200"
     volumes:
-      - "${WEBITEL_DIR}/esdata6:/usr/share/elasticsearch/data"
+      - "${WEBITEL_DIR}/esdata6/0:/usr/share/elasticsearch/data"
+      - "${WEBITEL_DIR}/esdata6/backups:/usr/share/elasticsearch/backups"
     networks:
       - wtel
   elasticsearch2:
@@ -36,7 +37,7 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - "es-data:/usr/share/elasticsearch/data"
+      - "${WEBITEL_DIR}/esdata6/1:/usr/share/elasticsearch/data"
     networks:
       - wtel
   rabbitmq:
