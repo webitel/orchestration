@@ -208,7 +208,6 @@ services:
 volumes:
   rabbitmq:
   storage:
-  es-data:
   fs-data:
   fs-sounds:
 
