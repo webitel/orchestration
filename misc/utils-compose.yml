@@ -33,5 +33,3 @@ services:
     image: "webitel/cdr-migration"
     environment:
       - "rabbitmq_host=amqp://webitel:${WEBITEL_PASS}@rabbitmq?heartbeat=0"
-    networks:
-      - wtel
