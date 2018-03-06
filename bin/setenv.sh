@@ -56,3 +56,7 @@ fi
     mkdir "${WEBITEL_DIR}/esdata6/backups"
     chown -R 1000:1000 "${WEBITEL_DIR}/esdata6"
 fi
+
+if [ ! -d "${WEBITEL_DIR}/backup/" ]; then
+    mkdir ${WEBITEL_DIR}/backup/
+fi

@@ -15,9 +15,7 @@ case "$1" in
     "backup")
         docker exec -t mongo bash -c 'mongodump -h mongo -o /data/db/dump/'
         docker exec -e PGPASSWORD=webitel -t postgres bash -c 'pg_dump -U webitel webitel > /var/lib/postgresql/data/dump.sql'
-        if [ ! -d "${WEBITEL_DIR}/backup/" ]; then
-            mkdir ${WEBITEL_DIR}/backup/
-        fi
+        
         docker exec -it elasticsearch curl -XPUT -d '{"type": "fs","settings": {"location": "es"}}' -H 'Content-Type: application/json' localhost:9200/_snapshot/es
         docker exec -it elasticsearch curl -XPUT "localhost:9200/_snapshot/es/snapshot?wait_for_completion=true"
         
