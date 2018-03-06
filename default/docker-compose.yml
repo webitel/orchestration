@@ -154,7 +154,9 @@ services:
       - "${DIR}/env/common"
       - "${DIR}/env/storage"
     environment:
+      - "broker:account:connectionString=amqp://webitel:${WEBITEL_PASS}@rabbitmq?heartbeat=0"
       - "broker:publisher:connectionString=amqp://webitel:${WEBITEL_PASS}@rabbitmq?heartbeat=0"
+      - "broker:receiver:connectionString=amqp://webitel:${WEBITEL_PASS}@rabbitmq?heartbeat=0"
     depends_on:
       - rabbitmq
       - postgres
