@@ -1,5 +1,5 @@
 --- 
-version: '2'
+version: '2.2'
 
 services:
   elasticsearch:
@@ -174,7 +174,6 @@ services:
     volumes:
       - "${WEBITEL_DIR}/recordings:/recordings"
       - "${WEBITEL_DIR}/ssl:/ssl"
-      - storage:/cdr/cache
     depends_on:
       - elasticsearch
       - mongo
@@ -221,9 +220,8 @@ services:
   
 volumes:
   rabbitmq:
-  storage:
-  fs-data:
   fs-sounds:
+  fs-data:
 
 networks:
   wtel:
