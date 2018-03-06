@@ -33,9 +33,5 @@ services:
     image: "webitel/cdr-migration"
     environment:
       - "rabbitmq_host=amqp://webitel:${WEBITEL_PASS}@rabbitmq?heartbeat=0"
-    depends_on:
-      - mongo
-      - rabbitmq
-      - elasticsearch
     networks:
       - wtel
