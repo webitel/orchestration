@@ -38,6 +38,8 @@ services:
         hard: -1
     volumes:
       - "${WEBITEL_DIR}/esdata6/1:/usr/share/elasticsearch/data"
+    depends_on:
+      - elasticsearch
     networks:
       - wtel
   rabbitmq:
@@ -155,6 +157,7 @@ services:
       - "broker:publisher:connectionString=amqp://webitel:${WEBITEL_PASS}@rabbitmq?heartbeat=0"
     depends_on:
       - rabbitmq
+      - postgres
       - elasticsearch
     networks:
       - wtel
