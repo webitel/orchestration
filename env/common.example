@@ -1,5 +1,6 @@
 ssl:enabled=false
 application:loglevel=warn
+application:writeUserStatus=true
 application:dialerCbMinusAttempt=true
 conference:enable=false
 conference:validateMail=false
