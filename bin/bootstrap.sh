@@ -79,6 +79,12 @@ case "$1" in
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" stop mongo-repair 
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" rm -f mongo-repair
         ;;
+    "cdr-upgrade")
+        printf "Upgrade CDR to 3.9\n\n"
+        $DC -p webitel -f "${DIR}/misc/utils-compose.yml" up cdr-upgrade
+        $DC -p webitel -f "${DIR}/misc/utils-compose.yml" stop cdr-upgrade
+        $DC -p webitel -f "${DIR}/misc/utils-compose.yml" rm -f cdr-upgrade
+        ;;
     "3.8.x-3.9.0")
         printf "Create dump of the pqsql 9.6 and restore it in 10.0.\n\n"
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" up -d postgres9
