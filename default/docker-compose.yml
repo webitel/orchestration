@@ -128,6 +128,7 @@ services:
       - "172.17.0.1:10022:10022"
     depends_on:
       - mongo
+      - rabbitmq
       - wconsole
       - freeswitch
     environment:
@@ -142,6 +143,19 @@ services:
     volumes:
       - "${WEBITEL_DIR}/ssl:/ssl"
       - "${WEBITEL_DIR}/widgets:/webitel/widgets/domains"
+    networks:
+      - wtel
+  cdr:
+    image: "webitel/cdr-server:${WEBITEL_VERSION}"
+    container_name: cdr
+    env_file:
+      - "${DIR}/env/common"
+      - "${DIR}/env/storage"
+    environment:
+      - "broker:publisher:connectionString=amqp://webitel:${WEBITEL_PASS}@rabbitmq?heartbeat=0"
+    depends_on:
+      - rabbitmq
+      - elasticsearch
     networks:
       - wtel
   storage:
