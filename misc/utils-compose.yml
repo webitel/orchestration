@@ -32,4 +32,4 @@ services:
   cdr-upgrade:
     image: "webitel/cdr-migration"
     environment:
-      - "rabbitmq_host=amqp://webitel:${WEBITEL_PASS}@rabbitmq?heartbeat=0"
+      - "rabbitmq_host=amqp://webitel:${WEBITEL_PASS}@172.17.0.1?heartbeat=0"
