@@ -46,6 +46,7 @@ services:
     image: "webitel/amqp:${WEBITEL_VERSION}"
     container_name: rabbitmq
     ports:
+      - "172.17.0.1:15672:15672"    
       - "172.17.0.1:5672:5672"
     environment:
       - "RABBITMQ_DEFAULT_USER=webitel"
