@@ -154,7 +154,7 @@ services:
     container_name: cdr
     env_file:
       - "${DIR}/env/common"
-      - "${DIR}/env/storage"
+      - "${DIR}/env/cdr"
     environment:
       - "broker:account:connectionString=amqp://webitel:${WEBITEL_PASS}@rabbitmq?heartbeat=0"
       - "broker:publisher:connectionString=amqp://webitel:${WEBITEL_PASS}@rabbitmq?heartbeat=0"

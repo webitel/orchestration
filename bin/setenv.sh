@@ -28,6 +28,11 @@ if [ ! -f "$DIR/env/storage" ]; then
     cp "$DIR/env/storage.example" "$DIR/env/storage"
 fi
 
+if [ ! -f "$DIR/env/cdr" ]; then
+    echo "$DIR/env/cdr not found!"
+    cp "$DIR/env/cdr.example" "$DIR/env/cdr"
+fi
+
 if [ ! -f "$DIR/env/archive" ]; then
     echo "$DIR/env/archive not found!"
     cp "$DIR/env/archive.example" "$DIR/env/archive"

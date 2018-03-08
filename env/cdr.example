@@ -1,0 +1,3 @@
+#broker:publisher:bulkCount=10
+broker:account:enable=true
+elastic:enable=true
