@@ -51,6 +51,7 @@ services:
     environment:
       - "RABBITMQ_DEFAULT_USER=webitel"
       - "RABBITMQ_DEFAULT_PASS=${WEBITEL_PASS}"
+      - "RABBITMQ_NODENAME=node@rabbitmq"
     volumes:
       - rabbitmq:/var/lib/rabbitmq
     networks:
