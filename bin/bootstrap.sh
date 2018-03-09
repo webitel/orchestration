@@ -23,6 +23,7 @@ case "$1" in
         
         docker exec -it elasticsearch curl -XDELETE localhost:9200/_snapshot/es
         rm -rf ${WEBITEL_DIR}/mongodb/dump
+        rm -rf ${WEBITEL_DIR}/pgsql/dump.sql
         rm -rf ${WEBITEL_DIR}/esdata6/backups/es
         find ${WEBITEL_DIR}/backup/ -maxdepth 1 -mtime +$BACKUP_LIFETIME_DAYS -type f -exec rm {} \;
         ;;
