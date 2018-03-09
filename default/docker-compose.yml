@@ -30,6 +30,7 @@ services:
     environment:
       - cluster.name=webitel-cluster
       - bootstrap.memory_lock=true
+      - path.repo=/usr/share/elasticsearch/backups
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - "discovery.zen.ping.unicast.hosts=elasticsearch"
     ulimits:
@@ -38,6 +39,7 @@ services:
         hard: -1
     volumes:
       - "${WEBITEL_DIR}/esdata6/1:/usr/share/elasticsearch/data"
+      - "${WEBITEL_DIR}/esdata6/backups:/usr/share/elasticsearch/backups"
     depends_on:
       - elasticsearch
     networks:
