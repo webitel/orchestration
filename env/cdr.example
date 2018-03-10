@@ -1,3 +1,3 @@
-#broker:publisher:bulkCount=10
+maxGoroutines=1
 broker:account:enable=true
 elastic:enable=true
