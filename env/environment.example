@@ -1,5 +1,5 @@
 # Environment variables for webitel docker continers
-# changed at 2018-02-13
+# changed at 2018-03-14
 #
 # Webitel root password. Change it!!!
 export WEBITEL_PASS="secret"
@@ -25,3 +25,5 @@ export BACKUP_LIFETIME_DAYS="2"
 # Elastisearch memory limits
 export ES_MEMORY="2g"
 export ES_MEMORY_LIMIT="4g"
+# MongoDB memory limit
+export MONGO_MEMORY_LIMIT="4g"
