@@ -37,6 +37,7 @@ services:
       memlock:
         soft: -1
         hard: -1
+    mem_limit: "1g"
     volumes:
       - "${WEBITEL_DIR}/esdata6/1:/usr/share/elasticsearch/data"
       - "${WEBITEL_DIR}/esdata6/backups:/usr/share/elasticsearch/backups"
@@ -71,6 +72,7 @@ services:
     ulimits:
       nproc: 65535
       nofile: 65535
+    mem_limit: "${MONGO_MEMORY_LIMIT}"
   postgres:
     image: postgres:10.0-alpine
     container_name: postgres

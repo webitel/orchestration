@@ -5,6 +5,7 @@ export TIMESTAMP=`date "+%Y-%m-%d" -u`
 export DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" && pwd )"
 export ES_MEMORY="2g"
 export ES_MEMORY_LIMIT="4g"
+export MONGO_MEMORY_LIMIT="4g"
 export WEBITEL_DC="default"
 
 if [ ! -f "$DIR/env/environment" ]; then
