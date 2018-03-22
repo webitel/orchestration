@@ -31,13 +31,13 @@ services:
       - cluster.name=webitel-cluster
       - bootstrap.memory_lock=true
       - path.repo=/usr/share/elasticsearch/backups
-      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - "ES_JAVA_OPTS=-Xms${ES_MEMORY} -Xmx${ES_MEMORY}"
       - "discovery.zen.ping.unicast.hosts=elasticsearch"
     ulimits:
       memlock:
         soft: -1
         hard: -1
-    mem_limit: "2g"
+    mem_limit: "${ES_MEMORY_LIMIT}"
     volumes:
       - "${WEBITEL_DIR}/esdata6/1:/usr/share/elasticsearch/data"
       - "${WEBITEL_DIR}/esdata6/backups:/usr/share/elasticsearch/backups"
