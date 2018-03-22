@@ -3,7 +3,7 @@ version: '2'
 
 services:
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.2.2
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.2.3
     container_name: elasticsearch
     restart: always
     environment:
@@ -23,14 +23,15 @@ services:
     networks:
       - wtel
   elasticsearch2:
-    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.2.2
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.2.3
     container_name: elasticsearch2
     restart: always
     environment:
       - cluster.name=webitel-cluster
       - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "ES_JAVA_OPTS=-Xms${ES_MEMORY} -Xmx${ES_MEMORY}"
       - "discovery.zen.ping.unicast.hosts=elasticsearch"
+    mem_limit: "${ES_MEMORY_LIMIT}"
     ulimits:
       memlock:
         soft: -1
