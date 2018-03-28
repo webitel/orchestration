@@ -218,7 +218,7 @@ services:
     restart: always
     env_file:
       - "${DIR}/env/common"
-      - "${DIR}/env/cdr"
+      - "${DIR}/env/storage"
     environment:
       - "WEBITEL_HOST=${WEBITEL_HOST}"
       - "WEBITEL_SSL=${WEBITEL_SSL}"
