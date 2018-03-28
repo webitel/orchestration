@@ -217,7 +217,7 @@ services:
     container_name: nginx
     restart: always
     env_file:
-      - "${DIR}/env/storage"
+      - "${DIR}/env/common"
     environment:
       - "WEBITEL_HOST=${WEBITEL_HOST}"
       - "WEBITEL_SSL=${WEBITEL_SSL}"
