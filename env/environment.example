@@ -4,7 +4,7 @@
 # Webitel root password. Change it!!!
 export WEBITEL_PASS="secret"
 # webitel version
-export WEBITEL_VERSION="3.9.0"
+export WEBITEL_VERSION="latest"
 # WebSocket protocol: ws or wss (WebSocket with SSL)
 export WEBITEL_WS="ws"
 # WebSocket protocol: off or on (for HTTPS)
@@ -27,3 +27,6 @@ export ES_MEMORY="2g"
 export ES_MEMORY_LIMIT="4g"
 # MongoDB memory limit
 export MONGO_MEMORY_LIMIT="4g"
+# TFTP 'true' or 'false'
+export TFTP_ENABLED="false"
+export TFTP_IP="0.0.0.0"

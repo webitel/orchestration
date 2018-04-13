@@ -114,5 +114,8 @@ case "$1" in
     *)
         printf "Webitel ${WEBITEL_DC} containers\n\n"
         $DC -p webitel -f "${DIR}/${WEBITEL_DC}/docker-compose.yml" $1 $2 $3 $4 $5 $6 $7 $8 $9
+        if [ "${TFTP_ENABLED}" == "true" ]; then
+            $DC -p webitel -f "${DIR}/misc/utils-compose.yml" $1 tftpd
+        fi
         ;;
 esac
