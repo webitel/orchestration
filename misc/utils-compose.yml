@@ -37,6 +37,6 @@ services:
     image: webitel/tftpd
     container_name: tftpd
     volumes_from:
-      - wconsole
+      - wconsole:wconsole
     ports:
       - "${TFTP_IP}:69:69/udp"
