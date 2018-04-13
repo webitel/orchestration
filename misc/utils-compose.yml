@@ -40,5 +40,3 @@ services:
       - wconsole
     ports:
       - "${TFTP_IP}:69:69/udp"
-    networks:
-      - wtel
