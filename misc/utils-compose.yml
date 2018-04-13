@@ -33,10 +33,3 @@ services:
     image: "webitel/cdr-migration"
     environment:
       - "rabbitmq_host=amqp://webitel:${WEBITEL_PASS}@172.17.0.1?heartbeat=0"
-  tftpd:
-    image: webitel/tftpd
-    container_name: tftpd
-    volumes_from:
-      - wconsole:wconsole
-    ports:
-      - "${TFTP_IP}:69:69/udp"

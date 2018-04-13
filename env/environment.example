@@ -27,6 +27,3 @@ export ES_MEMORY="2g"
 export ES_MEMORY_LIMIT="4g"
 # MongoDB memory limit
 export MONGO_MEMORY_LIMIT="4g"
-# TFTP 'true' or 'false'
-export TFTP_ENABLED="false"
-export TFTP_IP="0.0.0.0"
