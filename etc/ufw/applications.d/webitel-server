@@ -1,4 +1,4 @@
 [Webitel]
 title=Webitel VoIP Platform
 description=Webitel is a scalable, distributed, cloud-based VoIP telephony platform.
-ports=80,443,5060,5061,5070,5071,5080/tcp|5060,5070,5080,10000:55000/udp
+ports=80,443,5060,5061,5070,5071,5080,9200,15672,5672,27017,5432,10021:10030,8021/tcp|5060,5070,5080,10000:55000/udp
