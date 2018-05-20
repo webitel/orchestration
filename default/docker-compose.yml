@@ -205,10 +205,12 @@ services:
       nofile: 65536
     env_file: "${DIR}/env/freeswitch"
     volumes:
-      - fs-data:/recordings
       - fs-sounds:/sounds      
-      - "${WEBITEL_DIR}/lua:/scripts/lua"
+      - fs-data:/recordings
       - "${WEBITEL_DIR}/ssl:/certs"
+      - "${WEBITEL_DIR}/lua:/scripts/lua"
+      - "${DIR}/env/drop-from-ip:/drop-from-ip"
+      - "${DIR}/env/drop-sip-uac:/drop-sip-uac"
     depends_on:
       - rabbitmq
       - postgres
