@@ -39,6 +39,16 @@ if [ ! -f "$DIR/env/archive" ]; then
     cp "$DIR/env/archive.example" "$DIR/env/archive"
 fi
 
+if [ ! -f "$DIR/env/drop-sip-uac" ]; then
+    echo "$DIR/env/drop-sip-uac not found!"
+    cp "$DIR/env/drop-sip-uac.example" "$DIR/env/drop-sip-uac"
+fi
+
+if [ ! -f "$DIR/env/drop-from-ip" ]; then
+    echo "$DIR/env/drop-from-ip not found!"
+    cp "$DIR/env/drop-from-ip.example" "$DIR/env/drop-from-ip"
+fi
+
 if [ ! -f "${WEBITEL_DIR}/ssl/token.key" ]; then
     echo "${WEBITEL_DIR}/ssl/token.key not found!"
     mkdir -p "${WEBITEL_DIR}/ssl/"
