@@ -15,12 +15,12 @@ case "$1" in
     "backup")
         docker exec -t mongo bash -c 'mongodump -h mongo -o /data/db/dump/'
         docker exec -e PGPASSWORD=webitel -t postgres bash -c 'pg_dump -Fc -U webitel webitel > /var/lib/postgresql/data/dump.sql'
-        
+
         docker exec -it elasticsearch curl -XPUT -d '{"type": "fs","settings": {"location": "es"}}' -H 'Content-Type: application/json' localhost:9200/_snapshot/es
         docker exec -it elasticsearch curl -XPUT "localhost:9200/_snapshot/es/snapshot?wait_for_completion=true"
-        
+
         tar -cvzf ${WEBITEL_DIR}/backup/$TIMESTAMP.tgz "${WEBITEL_DIR}/esdata6/backups/es" "${DIR}/env" "${DIR}/custom" "${WEBITEL_DIR}/ssl" "${WEBITEL_DIR}/db" "${WEBITEL_DIR}/mongodb/dump" "${WEBITEL_DIR}/pgsql/dump.sql"
-        
+
         docker exec -it elasticsearch curl -XDELETE localhost:9200/_snapshot/es
         rm -rf ${WEBITEL_DIR}/mongodb/dump
         rm -rf ${WEBITEL_DIR}/pgsql/dump.sql
@@ -44,6 +44,9 @@ case "$1" in
         ;;
     "fs")
         docker exec -it freeswitch /usr/local/freeswitch/bin/fs_cli -H 172.17.0.1
+        ;;
+    "ipfw-reload")
+        docker exec -it freeswitch /iptables-reload.sh
         ;;
     "letsencrypt")
         echo "boostraping dependencies to work with letsencrypt and acquiring the certificates"
@@ -77,7 +80,7 @@ case "$1" in
     "db-repair")
         printf "Mongo DB repair\n\n"
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" up mongo-repair
-        $DC -p webitel -f "${DIR}/misc/utils-compose.yml" stop mongo-repair 
+        $DC -p webitel -f "${DIR}/misc/utils-compose.yml" stop mongo-repair
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" rm -f mongo-repair
         ;;
     "cdr-upgrade")
@@ -108,6 +111,7 @@ case "$1" in
         echo "backup - Backup webitel files and databases"
         echo "cdr2csv - Export webitel CDR from MongoDB into CSV file"
         echo "db-repair - Repair MongoDB after crash"
+        echo "ipfw-reload - Reload iptable rules"
         echo "letsencrypt - Get your free HTTPS certificate"
         exit 0
         ;;
