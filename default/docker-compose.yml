@@ -1,4 +1,4 @@
---- 
+---
 version: '2.2'
 
 services:
@@ -49,7 +49,7 @@ services:
     image: webitel/amqp
     container_name: rabbitmq
     ports:
-      - "172.17.0.1:15672:15672"    
+      - "172.17.0.1:15672:15672"
       - "172.17.0.1:5672:5672"
     environment:
       - "RABBITMQ_DEFAULT_USER=webitel"
@@ -119,7 +119,7 @@ services:
     privileged: true
     restart: always
     env_file: "${DIR}/env/common"
-    environment: 
+    environment:
       - "ROOT_PASSWORD=${WEBITEL_PASS}"
     volumes:
       - "${WEBITEL_DIR}/db:/webitel/db"
@@ -205,12 +205,12 @@ services:
       nofile: 65536
     env_file: "${DIR}/env/freeswitch"
     volumes:
-      - fs-sounds:/sounds      
+      - fs-sounds:/sounds
       - fs-data:/recordings
       - "${WEBITEL_DIR}/ssl:/certs"
       - "${WEBITEL_DIR}/lua:/scripts/lua"
-      - "${DIR}/env/drop-from-ip:/drop-from-ip"
-      - "${DIR}/env/drop-sip-uac:/drop-sip-uac"
+      - "${DIR}/env/drop-from-ip:/drop-from-ip:rw"
+      - "${DIR}/env/drop-sip-uac:/drop-sip-uac:rw"
     depends_on:
       - rabbitmq
       - postgres
@@ -235,7 +235,7 @@ services:
       - storage
     networks:
       - wtel
-  
+
 volumes:
   rabbitmq:
   fs-sounds:
