@@ -6,6 +6,7 @@ env/freeswitch
 env/environment
 env/drop-sip-uac
 env/drop-from-ip
+env/allow-from-ip
 bin/db2scv.sh
 .vscode
 custom/*

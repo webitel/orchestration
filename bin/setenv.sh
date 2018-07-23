@@ -49,6 +49,11 @@ if [ ! -f "$DIR/env/drop-from-ip" ]; then
     cp "$DIR/env/drop-from-ip.example" "$DIR/env/drop-from-ip"
 fi
 
+if [ ! -f "$DIR/env/allow-from-ip" ]; then
+    echo "$DIR/env/allow-from-ip not found!"
+    cp "$DIR/env/allow-from-ip.example" "$DIR/env/allow-from-ip"
+fi
+
 if [ ! -f "${WEBITEL_DIR}/ssl/token.key" ]; then
     echo "${WEBITEL_DIR}/ssl/token.key not found!"
     mkdir -p "${WEBITEL_DIR}/ssl/"

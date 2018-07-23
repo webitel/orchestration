@@ -209,8 +209,9 @@ services:
       - fs-data:/recordings
       - "${WEBITEL_DIR}/ssl:/certs"
       - "${WEBITEL_DIR}/lua:/scripts/lua"
-      - "${DIR}/env/drop-from-ip:/drop-from-ip:rw"
       - "${DIR}/env/drop-sip-uac:/drop-sip-uac:rw"
+      - "${DIR}/env/drop-from-ip:/drop-from-ip:rw"
+      - "${DIR}/env/allow-from-ip:/allow-from-ip:rw"
     depends_on:
       - rabbitmq
       - postgres
