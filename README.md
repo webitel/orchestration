@@ -1,8 +1,8 @@
 # Webitel orchestration
 
-[![Build Status](https://travis-ci.org/webitel/orchestration.svg?branch=master)](https://travis-ci.org/webitel/orchestration) [![Documentation Status](https://readthedocs.org/projects/webitel/badge/?version=latest)](http://api.webitel.com/en/latest/?badge=latest) 
+[![Build Status](https://travis-ci.org/webitel/orchestration.svg?branch=master)](https://travis-ci.org/webitel/orchestration) [![Documentation Status](https://readthedocs.org/projects/webitel/badge/?version=latest)](http://api.webitel.com/en/latest/?badge=latest)
 
-Orchestrate webitel containers 
+Orchestrate webitel containers
 
 ## Requirement
 
@@ -11,13 +11,13 @@ Orchestrate webitel containers
 
 ## Download the source code with Git
 
-Webitel is constantly evolving therefore, we advise you to download and use the latest tagged release. 
+Webitel is constantly evolving therefore, we advise you to download and use the latest tagged release.
 
 	$ cd /opt
 	$ git clone https://github.com/webitel/orchestration.git
 	$ cd /opt/orchestration
 	$ git tag -l
-	$ git checkout v3.9.0
+	$ git checkout v3.10.0
 
 ## Configure webitel
 

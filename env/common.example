@@ -5,6 +5,7 @@ application:dialerCbMinusAttempt=true
 conference:enable=false
 conference:validateMail=false
 mongodb:uri=mongodb://mongo:27017/webitel
+#mongodb:uri=mongodb://mongo:27017,mongo-rep:27017,mongo-arb:27017/webitel?replicaSet=webitel
 webitelServer:host=wconsole
 cdrServer:useProxy=false
 #defaultPublicRout=0000

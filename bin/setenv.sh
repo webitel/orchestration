@@ -78,6 +78,15 @@ fi
     chown -R 1000:1000 "${WEBITEL_DIR}/esdata6"
 fi
 
+if [ ! -d "${WEBITEL_DIR}/pgsql/" ]; then
+    mkdir ${WEBITEL_DIR}/pgsql/
+    chmod -R 777 ${WEBITEL_DIR}/pgsql/
+fi
+
+if [ ! -d "${WEBITEL_DIR}/mongodb/" ]; then
+    mkdir ${WEBITEL_DIR}/mongodb/
+fi
+
 if [ ! -d "${WEBITEL_DIR}/backup/" ]; then
     mkdir ${WEBITEL_DIR}/backup/
 fi
