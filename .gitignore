@@ -8,6 +8,7 @@ env/environment
 env/drop-sip-uac
 env/drop-from-ip
 env/allow-from-ip
+bin/ka-notify.sh
 bin/db2scv.sh
 .vscode
 custom/*
