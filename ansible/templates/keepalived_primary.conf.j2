@@ -1,0 +1,17 @@
+vrrp_instance VRRP1 {
+    state MASTER
+    interface {{ net_dev }}
+    virtual_router_id 41
+    priority 200
+    advert_int 1
+
+    notify "/etc/keepalived/ka-notify.sh"
+
+    authentication {
+        auth_type PASS
+        auth_pass webitel
+    }
+    virtual_ipaddress {
+        {{ fs_ip }}
+    }
+}

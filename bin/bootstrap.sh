@@ -106,6 +106,41 @@ case "$1" in
         $DC -p webitel -f "${DIR}/misc/utils-compose.yml" rm -f postgres10
         rm -rf ${WEBITEL_DIR}/pgsql/dump.sql
         ;;
+    "deploy")
+        printf "Webitel swarm stack deploing\n\n"
+        if [ ! -f "$DIR/env/swarm" ]; then
+            echo "$DIR/env/swarm not found!"
+            cp "$DIR/env/swarm.example" "$DIR/env/swarm"
+        fi
+        case "$2" in
+            "init")
+                cp -rv "${DIR}/etc/haproxy" ${WEBITEL_DIR}/
+                ansible-playbook -i "${DIR}/ansible/hosts/webitel" "${DIR}/ansible/playbook/init.yml"
+                ;;
+            "db-init")
+                docker stack deploy --compose-file "${DIR}/swarm/deploy-db.yml" webitel
+                sleep 5s
+                ansible-playbook -i "${DIR}/ansible/hosts/webitel" "${DIR}/ansible/playbook/databases.yml"
+                ;;
+            "db")
+                docker stack deploy --compose-file "${DIR}/swarm/deploy-db.yml" webitel
+                ;;
+            "webitel")
+                docker stack deploy --compose-file "${DIR}/swarm/deploy-webitel.yml" webitel
+                ansible-playbook -i "${DIR}/ansible/hosts/webitel" "${DIR}/ansible/playbook/freeswitch.yml"
+                ;;
+            "proxy")
+                docker stack deploy --compose-file "${DIR}/swarm/deploy-proxy.yml" webitel
+                ;;
+            "all")
+                docker stack deploy --compose-file "${DIR}/swarm/deploy-db.yml" webitel
+                sleep 3s
+                docker stack deploy --compose-file "${DIR}/swarm/deploy-webitel.yml" webitel
+                ansible-playbook -i "${DIR}/ansible/hosts/webitel" "${DIR}/ansible/playbook/freeswitch.yml"
+                docker stack deploy --compose-file "${DIR}/swarm/deploy-proxy.yml" webitel
+                ;;
+        esac
+        ;;
     "help")
         echo "fs - Run FreeSWITCH client"
         echo "backup - Backup webitel files and databases"

@@ -1,0 +1,13 @@
+---
+
+- hosts: webitel
+  become: true
+  gather_facts: false
+  name: "Setup webitel"
+
+  vars_files:
+    - ../vars/webitel.yml
+
+  tasks:
+    - include: ../tasks/rabbitmq.yml
+    - include: ../tasks/mongo.yml

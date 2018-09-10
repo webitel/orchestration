@@ -5,7 +5,7 @@
 # distributed under the terms of the Artistic Licence 2.0
 #
 
-HELL=/bin/sh
+SHELL=/bin/sh
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
 */1 *   * * *   root    unison webitel &> /dev/null

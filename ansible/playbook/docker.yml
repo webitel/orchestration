@@ -1,0 +1,10 @@
+---
+
+- hosts: all
+  become: true
+  name: "Setup Docker"
+
+  vars_files:
+    - ../vars/setup.yml
+  tasks:
+    - include: ../tasks/docker.yml

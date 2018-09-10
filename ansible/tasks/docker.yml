@@ -1,0 +1,17 @@
+---
+- include: apt.yml
+  when: ansible_os_family == 'Debian'
+
+- name: "Add docker repository for YUM"
+  shell: "curl -sSL https://get.docker.com/ | sh"
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: "Get docker with YUM"
+  yum: name={{ item }} state=latest
+  with_items:
+    - docker-ce
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: "Start docker"
+  service: name=docker state=started enabled=yes
+

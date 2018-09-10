@@ -1,0 +1,56 @@
+---
+- name: Create the data volume
+  docker_volume:
+    name: fs-data
+  when: node_type == 'primary' or node_type == 'secondary'
+
+- name: Create the sound volume
+  docker_volume:
+    name: fs-sounds
+  when: node_type == 'primary' or node_type == 'secondary'
+
+- name: Create FreeSWITCH
+  docker_container:
+    name: freeswitch
+    image: webitel/freeswitch:3.10.0
+    state: stopped
+    restart_policy: on-failure
+    network_mode: host
+    privileged: yes
+    env_file: "{{ webitel_orchestration }}/env/freeswitch"
+    volumes:
+      - fs-sounds:/sounds
+      - fs-data:/recordings
+      - "{{ webitel_dir }}/ssl:/certs"
+      - "{{ webitel_dir }}/lua:/scripts/lua"
+      - "{{ webitel_dir }}/env/drop-sip-uac:/drop-sip-uac:rw"
+      - "{{ webitel_dir }}/env/drop-from-ip:/drop-from-ip:rw"
+      - "{{ webitel_dir }}/env/allow-from-ip:/allow-from-ip:rw"
+    ulimits:
+      - nproc:-1
+      - memlock:-1
+      - nofile:65535:65535
+  when: node_type != fs_node and (node_type == 'primary' or node_type == 'secondary')
+
+- name: Start FreeSWITCH
+  docker_container:
+    name: freeswitch
+    image: webitel/freeswitch:3.10.0
+    state: started
+    restart_policy: on-failure
+    network_mode: host
+    privileged: yes
+    env_file: "{{ webitel_orchestration }}/env/freeswitch"
+    volumes:
+      - fs-sounds:/sounds
+      - fs-data:/recordings
+      - "{{ webitel_dir }}/ssl:/certs"
+      - "{{ webitel_dir }}/lua:/scripts/lua"
+      - "{{ webitel_dir }}/env/drop-sip-uac:/drop-sip-uac:rw"
+      - "{{ webitel_dir }}/env/drop-from-ip:/drop-from-ip:rw"
+      - "{{ webitel_dir }}/env/allow-from-ip:/allow-from-ip:rw"
+    ulimits:
+      - nproc:-1
+      - memlock:-1
+      - nofile:65535:65535
+  when: node_type == fs_node

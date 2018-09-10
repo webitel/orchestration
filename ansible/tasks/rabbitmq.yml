@@ -1,0 +1,28 @@
+---
+- name: Check Rabbit container ID
+  command: bash -c "docker ps | grep amqp | awk '{print $1}'"
+  register: rabbit_id
+  changed_when: false
+  when: node_type == 'secondary'
+
+- name: Rabbit stop app
+  command: "docker exec {{ rabbit_id.stdout }} rabbitmqctl stop_app"
+  when: node_type == 'secondary'
+
+- name: Rabbit join cluster
+  command: "docker exec {{ rabbit_id.stdout }} rabbitmqctl join_cluster rabbit@rabbitmq"
+  when: node_type == 'secondary'
+
+- name: Rabbit start app
+  command: "docker exec {{ rabbit_id.stdout }} rabbitmqctl start_app"
+  when: node_type == 'secondary'
+
+- name: Check Rabbit container ID
+  command: bash -c "docker ps | grep amqp | awk '{print $1}'"
+  register: rabbit_pid
+  changed_when: false
+  when: node_type == 'primary'
+
+- name:  Set HA mode
+  command: "docker exec {{ rabbit_pid.stdout }} rabbitmqctl set_policy ha \".\" '{\"ha-mode\":\"all\"}'"
+  when: node_type == 'primary'

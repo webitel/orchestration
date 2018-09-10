@@ -1,0 +1,5 @@
+---
+fs_ip: "192.168.255.130/24"
+fs_node: "primary"
+webitel_dir: "/opt/webitel"
+webitel_orchestration: "/opt/orchestration"

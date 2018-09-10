@@ -1,0 +1,14 @@
+---
+
+- hosts: all
+  become: true
+  name: "Setup linux shell"
+
+  vars_files:
+    - ../vars/setup.yml
+    - ../vars/webitel.yml
+
+  tasks:
+    - include: ../tasks/setup.yml
+    - include: ../tasks/sysctl.yml
+    - include: ../tasks/keepalived.yml

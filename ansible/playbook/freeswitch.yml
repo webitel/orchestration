@@ -1,0 +1,14 @@
+---
+
+- hosts: webitel
+  become: true
+  gather_facts: false
+  name: "Setup FreeSWITCH"
+  vars:
+    fs_node: "{{ fs_node }}"
+  vars_files:
+    - ../vars/webitel.yml
+
+  tasks:
+    - include: ../tasks/sysctl.yml
+    - include: ../tasks/freeswitch.yml

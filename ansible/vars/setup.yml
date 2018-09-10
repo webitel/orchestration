@@ -1,0 +1,37 @@
+---
+# Generate additional locales
+locales_gen:
+  - "uk_UA.UTF-8"
+  - "en_US.UTF-8"
+
+# The software list
+software:
+  - jq
+  - zsh
+  - git
+  - vim
+  - ntp
+  - mtr
+  - nmap
+  - curl
+  - sudo
+  - tree
+  - tmux
+  - mosh
+  - lsof
+  - htop
+  - iotop
+  - iftop
+  - iperf
+  - tree
+  - tmux
+  - mosh
+  - lsof
+  - htop
+  - iotop
+  - iftop
+  - iperf
+  - ngrep
+  - tcpdump
+  - python-pip
+

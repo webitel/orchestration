@@ -1,0 +1,12 @@
+---
+
+- hosts: webitel
+  become: true
+  gather_facts: false
+  name: "webitel swarm init"
+
+  vars_files:
+    - ../vars/webitel.yml
+
+  tasks:
+    - include: ../tasks/init.yml

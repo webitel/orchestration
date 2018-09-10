@@ -1,0 +1,23 @@
+[node1]
+192.168.255.132 ansible_ssh_port=45793 ansible_ssh_user=webiteladm
+
+[node2]
+192.168.255.131 ansible_ssh_port=45793 ansible_ssh_user=webiteladm
+
+[node3]
+192.168.255.134 ansible_ssh_port=2234 ansible_ssh_user=webiteladm
+
+[webitel:children]
+node1
+node2
+
+[node1:vars]
+node_type=primary
+net_dev=ens160
+
+[node2:vars]
+node_type=secondary
+net_dev=ens160
+
+[node3:vars]
+snode_type=master

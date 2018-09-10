@@ -1,0 +1,24 @@
+---
+version: '3.4'
+
+services:
+  nginx:
+    image: "webitel/nginx:${WEBITEL_VERSION}"
+    env_file: "${DIR}/env/swarm"
+    environment:
+      - "WEBITEL_HOST=${WEBITEL_HOST}"
+      - "WEBITEL_SSL=${WEBITEL_SSL}"
+    volumes:
+      - "${WEBITEL_DIR}/ssl:/etc/nginx/ssl"
+#      - "${WEBITEL_DIR}/widgets:/webitel/widgets/domains"
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - wtel
+    deploy:
+
+networks:
+  wtel:
+    driver: overlay
+    attachable: true

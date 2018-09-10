@@ -1,0 +1,28 @@
+---
+- name: "Install apt-transport-https"
+  apt: name=apt-transport-https state=latest
+
+- name: "Add docker repository key"
+  shell: "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -"
+
+- name: "Add docker repository for Debian"
+  apt_repository: repo='deb https://download.docker.com/linux/debian {{ ansible_lsb.codename }} stable' update_cache=yes
+  when: ansible_lsb.id == 'Debian'
+
+- name: "Add docker repository for Ubuntu"
+  apt_repository: repo='deb https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable' update_cache=yes
+  when: ansible_lsb.id == 'Ubuntu'
+
+- name: "Get docker with APT"
+  apt: name={{ item }} state=latest
+  with_items:
+    - docker-ce
+
+- name: "Set memory limit in GRUB"
+  lineinfile:
+    dest: '/etc/default/grub'
+    regexp: '^GRUB_CMDLINE_LINUX_DEFAULT'
+    line: 'GRUB_CMDLINE_LINUX_DEFAULT="cgroup_enable=memory swapaccount=1"'
+
+- name: "Load new GRUB config"
+  command: update-grub

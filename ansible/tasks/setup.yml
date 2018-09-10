@@ -1,0 +1,60 @@
+---
+# Common roles for all hosts
+
+- name: 'Updates apt cache & upgrades dist'
+  apt:
+    upgrade: 'yes'
+    update_cache: 'yes'
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: 'Install all necessary software with APT'
+  apt:
+    name: '{{ item }}'
+    state: latest
+  with_items:
+    - '{{ software }}'
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- apt:
+    name: '{{ item }}'
+    state: latest
+  with_items:
+    - 'locales'
+    - 'dnsutils'
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- locale_gen:
+    name: '{{ item }}'
+    state: present
+  with_items:
+    - '{{ locales_gen }}'
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: "Start ntp"
+  service: name=ntp state=started enabled=yes
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: 'Updates YUM packages'
+  yum:
+    name: '*'
+    state: latest
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: 'Install all necessary software with YUM'
+  yum:
+    name: '{{ item }}'
+    state: latest
+  with_items:
+    - '{{ software }}'
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: 'Install bind-utils with YUM'
+  yum: name=bind-utils state=latest
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: "Start ntp"
+  service: name=ntpd state=started enabled=yes
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: "Install docker-py"
+  pip: name=docker-py

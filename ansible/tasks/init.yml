@@ -1,0 +1,83 @@
+---
+- name: Create pgsql
+  file:
+    path: "{{ webitel_dir }}/pgsql"
+    state: directory
+    mode: 0777
+
+- name: Create db
+  file:
+    path: "{{ webitel_dir }}/db"
+    state: directory
+    mode: 0777
+
+- name: Create recordings
+  file:
+    path: "{{ webitel_dir }}/recordings"
+    state: directory
+    owner: user
+    group: user
+    mode: 0777
+
+- name: Create widgets
+  file:
+    path: "{{ webitel_dir }}/widgets"
+    state: directory
+    owner: user
+    group: user
+    mode: 0777
+
+- name: Create rabbit/data
+  file:
+    path: "{{ webitel_dir }}/rabbit/data"
+    state: directory
+    owner: user
+    group: user
+    mode: 0777
+
+- name: Create rabbit/logs
+  file:
+    path: "{{ webitel_dir }}/rabbit/logs"
+    state: directory
+    owner: user
+    group: user
+    mode: 0777
+
+- name: Create mongodb
+  file:
+    path: "{{ webitel_dir }}/mongodb"
+    state: directory
+    owner: user
+    group: user
+    mode: 0777
+
+- name: Create es/backups
+  file:
+    path: "{{ webitel_dir }}/es/backups"
+    state: directory
+    owner: user
+    group: user
+    mode: 0777
+
+- name: Create es/data
+  file:
+    path: "{{ webitel_dir }}/es/data"
+    state: directory
+    owner: user
+    group: user
+    mode: 0777
+
+- name: Synchronization env
+  synchronize:
+    src: "{{ webitel_orchestration }}/env"
+    dest: "{{ webitel_orchestration }}"
+
+- name: Synchronization haproxy
+  synchronize:
+    src: "../../etc/haproxy"
+    dest: "{{ webitel_dir }}"
+
+- name: Synchronization ssl
+  synchronize:
+    src: "{{ webitel_dir }}/ssl"
+    dest: "{{ webitel_dir }}"

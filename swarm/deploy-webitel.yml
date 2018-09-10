@@ -1,0 +1,117 @@
+---
+version: '3.4'
+
+services:
+  acr:
+    image: "webitel/acr:${WEBITEL_VERSION}"
+    hostname: 'acr'
+    env_file: "${DIR}/env/swarm"
+    networks:
+      - wtel
+    ports:
+      - "10030:10030"
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+      placement:
+        constraints:
+        - "node.role == worker"
+  wconsole:
+    image: "webitel/wconsole:${WEBITEL_VERSION}"
+    hostname: 'wconsole'
+    env_file: "${DIR}/env/swarm"
+    environment:
+      - "ROOT_PASSWORD=${WEBITEL_PASS}"
+    volumes:
+      - "${WEBITEL_DIR}/db:/webitel/db"
+    ports:
+      - "10024:10024"
+    networks:
+      - wtel
+    deploy:
+      placement:
+        constraints:
+        - "node.role == worker"
+  engine:
+    image: "webitel/engine:${WEBITEL_VERSION}"
+    hostname: 'engine'
+    env_file: "${DIR}/env/swarm"
+    environment:
+      - "webitelServer:secret=${WEBITEL_PASS}"
+      - "cdrServer:host=${WEBITEL_PROTO}://${WEBITEL_HOST}/cdr/"
+      - "freeSWITCH:verto=${WEBITEL_WS}://${WEBITEL_HOST}/verto/"
+      - "server:baseUrl=${WEBITEL_PROTO}://${WEBITEL_HOST}/engine/"
+      - "widget:baseUri=${WEBITEL_PROTO}://${WEBITEL_HOST}/widgets"
+      - "widget:publicWebRtc=${WEBITEL_WS}://${WEBITEL_HOST}/public/"
+      - "widget:publicPostApi=${WEBITEL_PROTO}://${WEBITEL_HOST}/callback/members"
+    volumes:
+      - "${WEBITEL_DIR}/ssl:/ssl"
+      - "${WEBITEL_DIR}/widgets:/webitel/widgets/domains"
+    networks:
+      - wtel
+    deploy:
+      placement:
+        constraints:
+        - "node.role == worker"
+  cdr:
+    image: "webitel/cdr-server:${WEBITEL_VERSION}"
+    env_file: "${DIR}/env/swarm"
+    environment:
+      - elastic:host=http://hap:9200
+    networks:
+      - wtel
+    deploy:
+      placement:
+        constraints:
+        - "node.role == worker"
+  storage:
+    image: "webitel/storage:${WEBITEL_VERSION}"
+    hostname: 'storage'
+    ports:
+      - "10021:10021"
+      - "10023:10023"
+      - "10025:10025"
+    env_file: "${DIR}/env/swarm"
+    volumes:
+      - "${WEBITEL_DIR}/recordings:/recordings"
+      - "${WEBITEL_DIR}/ssl:/ssl"
+    networks:
+      - wtel
+    deploy:
+      placement:
+        constraints:
+        - "node.role == worker"
+  kibana:
+    image: "webitel/kibana:${WEBITEL_VERSION}"
+    hostname: 'kibana'
+    environment:
+      - "ENGINE_URL=${WEBITEL_PROTO}://${WEBITEL_HOST}/engine/"
+      - "FS_URL=${WEBITEL_WS}://${WEBITEL_HOST}/verto/"
+    networks:
+      - wtel
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+      placement:
+        constraints:
+        - node.role == worker
+  hap:
+    image: haproxy:1-alpine
+    hostname: 'hap'
+    volumes:
+      - "${WEBITEL_DIR}/haproxy:/usr/local/etc/haproxy:ro"
+    ports:
+      - "1936:1936"
+      - "9200:9200"
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - wtel
+    deploy:
+
+networks:
+  wtel:
+    driver: overlay
+    attachable: true

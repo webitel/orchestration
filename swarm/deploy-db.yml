@@ -1,0 +1,189 @@
+---
+version: '3.4'
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.2.3
+    hostname: 'elasticsearch'
+    environment:
+      - cluster.name=webitel-cluster
+      - path.repo=/usr/share/elasticsearch/backups
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - "${WEBITEL_DIR}/es/data/:/usr/share/elasticsearch/data"
+      - "${WEBITEL_DIR}/es/backups:/usr/share/elasticsearch/backups"
+    networks:
+      - wtel
+    deploy:
+      mode: global
+      resources:
+        limits:
+          memory: 1G
+      placement:
+        constraints:
+        - node.labels.type == primary
+        - node.role == worker
+  elasticsearch2:
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.2.3
+    hostname: 'elasticsearch2'
+    environment:
+      - cluster.name=webitel-cluster
+      - path.repo=/usr/share/elasticsearch/backups
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.zen.ping.unicast.hosts=elasticsearch"
+    volumes:
+      - "${WEBITEL_DIR}/es/data/:/usr/share/elasticsearch/data"
+      - "${WEBITEL_DIR}/es/backups:/usr/share/elasticsearch/backups"
+    networks:
+      - wtel
+    deploy:
+      mode: global
+      resources:
+        limits:
+          memory: 1G
+      placement:
+        constraints:
+        - node.labels.type == secondary
+        - node.role == worker
+  rabbitmq:
+    image: webitel/amqp
+    hostname: 'rabbitmq'
+    environment:
+      - "RABBITMQ_DEFAULT_USER=webitel"
+      - "RABBITMQ_DEFAULT_PASS=webitel"
+      - "RABBITMQ_NODENAME=rabbit@rabbitmq"
+      - "RABBITMQ_ERLANG_COOKIE=UZAQEIMURXXMFBFRNVKU"
+      - "RABBITMQ_LOGS=/var/log/rabbitmq/rabbit.log"
+    volumes:
+      - "${WEBITEL_DIR}/rabbit/data:/var/lib/rabbitmq"
+      - "${WEBITEL_DIR}/rabbit/logs:/var/log/rabbitmq"
+    networks:
+      - wtel
+    deploy:
+      mode: global
+      resources:
+        limits:
+          memory: 1G
+      placement:
+        constraints:
+        - node.labels.type == primary
+        - node.role == worker
+  rabbitmq2:
+    image: webitel/amqp
+    hostname: 'rabbitmq2'
+    environment:
+      - "RABBITMQ_DEFAULT_USER=webitel"
+      - "RABBITMQ_DEFAULT_PASS=webitel"
+      - "RABBITMQ_ERLANG_COOKIE=UZAQEIMURXXMFBFRNVKU"
+      - "RABBITMQ_LOGS=/var/log/rabbitmq/rabbit.log"
+    volumes:
+      - "${WEBITEL_DIR}/rabbit/data:/var/lib/rabbitmq"
+      - "${WEBITEL_DIR}/rabbit/logs:/var/log/rabbitmq"
+    networks:
+      - wtel
+    deploy:
+      mode: global
+      resources:
+        limits:
+          memory: 1G
+      placement:
+        constraints:
+        - node.labels.type == secondary
+        - node.role == worker
+  postgres:
+    hostname: 'postgres'
+    image: crunchydata/crunchy-postgres:centos7-10.5-2.1.0
+    environment:
+      - PGHOST=/tmp
+      - MAX_CONNECTIONS=100
+      - MAX_WAL_SENDERS=5
+      - PG_MODE=primary
+      - PG_PRIMARY_USER=primaryuser
+      - PG_PRIMARY_PASSWORD=password
+      - PG_DATABASE=webitel
+      - PG_USER=webitel
+      - PG_PASSWORD=webitel
+      - PG_ROOT_PASSWORD=webitel
+      - PG_PRIMARY_PORT=5432
+    volumes:
+      - "${WEBITEL_DIR}/pgsql:/pgdata"
+    ports:
+      - "5432:5432"
+    networks:
+      - wtel
+    deploy:
+      mode: global
+      placement:
+        constraints:
+        - node.role != worker
+  pgreplica:
+    hostname: 'pgreplica'
+    image: crunchydata/crunchy-postgres:centos7-10.5-2.1.0
+    environment:
+      - PGHOST=/tmp
+      - MAX_CONNECTIONS=100
+      - MAX_WAL_SENDERS=5
+      - PG_MODE=replica
+      - PG_PRIMARY_HOST=postgres
+      - PG_PRIMARY_PORT=5432
+      - PG_PRIMARY_USER=primaryuser
+      - PG_PRIMARY_PASSWORD=password
+      - PG_DATABASE=webitel
+      - PG_USER=webitel
+      - PG_PASSWORD=webitel
+      - PG_ROOT_PASSWORD=webitel
+    volumes:
+      - "${WEBITEL_DIR}/pgsql:/pgdata"
+    networks:
+      - wtel
+    deploy:
+      mode: global
+      placement:
+        constraints:
+        - node.role == worker
+  mongo:
+    image: mongo:3.4
+    hostname: 'mongo'
+    volumes:
+      - "${WEBITEL_DIR}/mongodb:/data/db"
+    command: --replSet "webitel"
+    networks:
+      - wtel
+    deploy:
+      mode: global
+      placement:
+        constraints:
+        - node.labels.type == primary
+        - node.role == worker
+  mongo-rep:
+    image: mongo:3.4
+    hostname: 'mongo-rep'
+    volumes:
+      - "${WEBITEL_DIR}/mongodb:/data/db"
+    command: --replSet "webitel"
+    networks:
+      - wtel
+    deploy:
+      mode: global
+      placement:
+        constraints:
+        - node.labels.type == secondary
+        - node.role == worker
+  mongo-arb:
+    image: mongo:3.4
+    hostname: 'mongo-arb'
+    volumes:
+      - "${WEBITEL_DIR}/mongodb:/data/db"
+    command: --replSet "webitel"
+    networks:
+      - wtel
+    deploy:
+      mode: global
+      placement:
+        constraints:
+        - node.role != worker
+
+networks:
+  wtel:
+    driver: overlay
+    attachable: true

@@ -1,0 +1,40 @@
+---
+- name: 'Install keepalived with APT'
+  apt:
+    name: keepalived
+    state: latest
+  when: node_type == 'primary' or node_type == 'secondary'
+
+- name: Add keepalived.conf
+  template:
+    src: "{{ webitel_orchestration }}/ansible/templates/keepalived_primary.conf.j2"
+    dest: "/etc/keepalived/keepalived.conf"
+    owner: root
+    group: root
+    mode: 0644
+  when: node_type == 'primary'
+
+- name: Add keepalived.conf
+  template:
+    src: "{{ webitel_orchestration }}/ansible/templates/keepalived_secondary.conf.j2"
+    dest: "/etc/keepalived/keepalived.conf"
+    owner: root
+    group: root
+    mode: 0644
+  when: node_type == 'secondary'
+
+- name: Copy ka-notify.sh
+  copy:
+    src: "{{ webitel_orchestration }}/ansible/templates/ka-notify.sh"
+    dest: "/etc/keepalived/ka-notify.sh"
+    owner: root
+    group: root
+    mode: u=rwx,g=rx,o=rx
+  when: node_type == 'primary' or node_type == 'secondary'
+
+- name: Start keepalived
+  service:
+    name=keepalived
+    state=restarted
+    enabled=yes
+  when: node_type == 'primary' or node_type == 'secondary'

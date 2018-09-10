@@ -1,0 +1,10 @@
+---
+- name: Check mongo container ID
+  command: bash -c "docker ps | grep mongo | awk '{print $1}'"
+  register: mongo_id
+  changed_when: false
+  when: node_type == 'primary'
+
+- name:  Initiate replica set
+  command: "docker exec {{ mongo_id.stdout }} mongo --eval 'var config ={_id : \"webitel\", members: [{ _id: 0, host: \"mongo:27017\" }, { _id: 1, host: \"mongo-rep:27017\" }]}; rs.initiate( config ); while (rs.status().startupStatus || (rs.status().hasOwnProperty(\"myState\") && rs.status().myState != 1)) { sleep(1000); }; printjson( rs.addArb(\"mongo-arb:27017\") );'"
+  when: node_type == 'primary'
