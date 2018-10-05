@@ -20,4 +20,4 @@ node_type=secondary
 net_dev=ens160
 
 [node3:vars]
-snode_type=master
+node_type=master
