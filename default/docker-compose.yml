@@ -3,12 +3,13 @@ version: '2.2'
 
 services:
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.2.3
+    image: webitel/elasticsearch:6.5.4-ROR
     container_name: elasticsearch
     restart: always
     environment:
       - cluster.name=webitel-cluster
       - bootstrap.memory_lock=true
+      - node.name=elasticsearch
       - path.repo=/usr/share/elasticsearch/backups
       - "ES_JAVA_OPTS=-Xms${ES_MEMORY} -Xmx${ES_MEMORY}"
     ulimits:
@@ -24,12 +25,13 @@ services:
     networks:
       - wtel
   elasticsearch2:
-    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.2.3
+    image: webitel/elasticsearch:6.5.4
     container_name: elasticsearch2
     restart: always
     environment:
       - cluster.name=webitel-cluster
       - bootstrap.memory_lock=true
+      - node.name=elasticsearch2
       - path.repo=/usr/share/elasticsearch/backups
       - "ES_JAVA_OPTS=-Xms${ES_MEMORY} -Xmx${ES_MEMORY}"
       - "discovery.zen.ping.unicast.hosts=elasticsearch"
@@ -75,7 +77,7 @@ services:
       nofile: 65535
     mem_limit: "${MONGO_MEMORY_LIMIT}"
   postgres:
-    image: postgres:10.5-alpine
+    image: postgres:10.6-alpine
     container_name: postgres
     restart: always
     environment:
@@ -89,7 +91,7 @@ services:
     networks:
       - wtel
   kibana:
-    image: "webitel/kibana:${WEBITEL_VERSION}"
+    image: webitel/kibana:6.5.4
     container_name: kibana
     environment:
       - "ENGINE_URL=${WEBITEL_PROTO}://${WEBITEL_HOST}/engine/"
@@ -194,7 +196,7 @@ services:
     networks:
       - wtel
   freeswitch:
-    image: "webitel/freeswitch:${WEBITEL_VERSION}"
+    image: webitel/freeswitch:1.6.20
     container_name: freeswitch
     restart: always
     privileged: true
