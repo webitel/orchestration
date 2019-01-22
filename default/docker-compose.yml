@@ -171,7 +171,7 @@ services:
     depends_on:
       - rabbitmq
       - postgres
-      - elasticsearch
+      - elasticsearch2
     networks:
       - wtel
   storage:
@@ -191,7 +191,7 @@ services:
       - "${WEBITEL_DIR}/recordings:/recordings"
       - "${WEBITEL_DIR}/ssl:/ssl"
     depends_on:
-      - elasticsearch
+      - elasticsearch2
       - mongo
     networks:
       - wtel

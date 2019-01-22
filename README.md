@@ -17,7 +17,7 @@ Webitel is constantly evolving therefore, we advise you to download and use the 
 	$ git clone https://github.com/webitel/orchestration.git
 	$ cd /opt/orchestration
 	$ git tag -l
-	$ git checkout v3.10.2
+	$ git checkout v3.11.0
 
 ## Configure webitel
 
