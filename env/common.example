@@ -3,6 +3,7 @@ application:loglevel=warn
 application:writeUserStatus=true
 application:dialerCbMinusAttempt=true
 application:dialerCbCheckForSessionId=false
+application:auth:useTOTP=false
 conference:enable=false
 conference:validateMail=false
 mongodb:uri=mongodb://mongo:27017/webitel
