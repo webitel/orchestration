@@ -25,7 +25,7 @@ services:
     networks:
       - wtel
   elasticsearch2:
-    image: webitel/elasticsearch:6.5.4
+    image: webitel/elasticsearch:6.5.4-ROR
     container_name: elasticsearch2
     restart: always
     environment:
@@ -165,6 +165,7 @@ services:
       - "${DIR}/env/common"
       - "${DIR}/env/cdr"
     environment:
+      - "elastic:httpAuth=kibana:kibana"
       - "broker:account:connectionString=amqp://webitel:${WEBITEL_PASS}@rabbitmq?heartbeat=0"
       - "broker:publisher:connectionString=amqp://webitel:${WEBITEL_PASS}@rabbitmq?heartbeat=0"
       - "broker:receiver:connectionString=amqp://webitel:${WEBITEL_PASS}@rabbitmq?heartbeat=0"
@@ -186,6 +187,7 @@ services:
       - "${DIR}/env/common"
       - "${DIR}/env/storage"
     environment:
+      - "elastic:httpAuth=kibana:kibana"
       - "broker:connectionString=amqp://webitel:${WEBITEL_PASS}@rabbitmq?heartbeat=0"
     volumes:
       - "${WEBITEL_DIR}/recordings:/recordings"
