@@ -48,7 +48,7 @@ services:
     networks:
       - wtel
   rabbitmq:
-    image: webitel/amqp
+    image: webitel/amqp:3.7
     container_name: rabbitmq
     ports:
       - "172.17.0.1:15672:15672"
