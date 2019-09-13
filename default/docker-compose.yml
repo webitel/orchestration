@@ -219,6 +219,13 @@ services:
     depends_on:
       - rabbitmq
       - postgres
+  geo:
+    image: "webitel/geo"
+    container_name: geo
+    restart: always
+    env_file: "${DIR}/env/common"
+    networks:
+      - wtel
   nginx:
     image: "webitel/nginx:${WEBITEL_VERSION}"
     container_name: nginx
@@ -236,6 +243,7 @@ services:
       - "80:80"
       - "443:443"
     depends_on:
+      - geo
       - engine
       - storage
     networks:
