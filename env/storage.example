@@ -27,3 +27,4 @@ mediaFile:providers:local:fileRoot=/recordings/
 #tts:polly:accessToken=
 #tts:microsoft:accessKey=
 #tts:microsoft:accessToken=
+#GOOGLE_APPLICATION_CREDENTIALS=/ssl/TTSapp-fx871e84f0444.json
