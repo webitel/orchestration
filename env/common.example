@@ -3,6 +3,7 @@ application:loglevel=warn
 application:writeUserStatus=true
 application:dialerCbMinusAttempt=true
 application:dialerCbCheckForSessionId=false
+application:maxSocketPerUser=20
 application:auth:useTOTP=false
 conference:enable=false
 conference:validateMail=false
