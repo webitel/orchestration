@@ -77,7 +77,7 @@ services:
       nofile: 65535
     mem_limit: "${MONGO_MEMORY_LIMIT}"
   postgres:
-      image: postgres:10.10-alpine
+    image: postgres:10.10-alpine
     container_name: postgres
     restart: always
     environment:
