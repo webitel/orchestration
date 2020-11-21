@@ -17,7 +17,7 @@ Webitel is constantly evolving therefore, we advise you to download and use the 
 	$ git clone https://github.com/webitel/orchestration.git
 	$ cd /opt/orchestration
 	$ git tag -l
-	$ git checkout v3.11.5
+	$ git checkout v3.11.6
 
 ## Configure webitel
 
@@ -42,6 +42,12 @@ Open in browser: http://YOUR_HOST_IP/
 - **login**: root
 - **password**: secret
 - **server**: http://YOUR_HOST_IP/engine
+
+### update certificate to X.509v3
+
+	sudo -s
+	docker exec -it freeswitch openssl req -new -newkey rsa:2048 -x509 -sha256 -days 900 -nodes -keyout /certs/key.pem -out /certs/cert.pem
+	cat /opt/webitel/ssl/key.pem /opt/webitel/ssl/cert.pem > /opt/webitel/ssl/dtls-srtp.pem
 
 ## Autostart webitel
 
