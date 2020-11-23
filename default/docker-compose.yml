@@ -69,7 +69,7 @@ services:
       - "${WEBITEL_DIR}/mongodb:/data/db"
     ports:
       - "172.17.0.1:27017:27017"
-    command: --nojournal --storageEngine wiredTiger --wiredTigerCacheSizeGB 0 --wiredTigerJournalCompressor none --wiredTigerCollectionBlockCompressor none --wiredTigerIndexPrefixCompression false
+    command: --storageEngine wiredTiger --wiredTigerEngineConfigString="cache_size=1G"
     networks:
       - wtel
     ulimits:
