@@ -8,5 +8,5 @@
 SHELL=/bin/sh
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
-4 4  1 * *   root    /opt/orchestration/bin/bootstrap.sh letsencrypt > /var/log/webitel.log 2>&1
+4 3  1 * *   root    /opt/orchestration/bin/bootstrap.sh letsencrypt renew > /var/log/webitel.log 2>&1
 
